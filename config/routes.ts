@@ -42,7 +42,13 @@
         routes: [
           {
             path: '/leaderPage',
-            redirect: '/leaderPage/onlineManage',
+            redirect: '/leaderPage/undone',
+          },
+          {
+            path: '/leaderPage/undone',
+            name: '我的待办',
+            access: 'hasMenu',
+            component: './leaderPage/undone',
           },
           {
             path: '/leaderPage/onlineManage',
