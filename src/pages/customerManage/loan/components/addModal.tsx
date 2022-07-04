@@ -204,7 +204,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
                       },
                       ({ getFieldValue }) => ({
                         validator(_, value) {
-                          if (Number(getFieldValue('code')) === 1) {
+                          if (Number(getFieldValue('phoneArea')) === 1) {
                             if (REGS.TELEPHONE_REG.test(value)) {
                               return Promise.resolve()
                             } else {
