@@ -42,6 +42,7 @@ const RoleManage: React.FC = () => {
       title: intl.formatMessage({
         id: 'sys.process.name',
       }),
+      width: '25%',
       key: 'name',
       dataIndex: 'name',
     },
@@ -119,8 +120,30 @@ const RoleManage: React.FC = () => {
   const getList = async (param: processListParamProps) => {
     // console.log(param)
     const { rows, total } = await getProcessList(param)
+    const newData: any[] = []
+    const obj = {}
+    const ids: any[] = []
+    rows.forEach((item: any) => {
+      if (!obj[item.key]) {
+        ids.push(item)
+      }
+      obj[item.key] = item.key
+    })
+    ids.forEach((item) => {
+      const arr = rows.filter((ss: any) => ss.key === item.key)
+      const children = arr.sort((a: any, b: any) => b.version - a.version)
+      const newItem: any = {
+        ...children.shift(),
+      }
+      if (children.length) {
+        newItem.children = children
+      }
+      newData.push(newItem)
+    })
+    // console.log(ids, newData)
+
     return {
-      data: rows,
+      data: newData,
       total,
     }
   }
