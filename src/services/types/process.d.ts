@@ -21,5 +21,5 @@ export interface processListProps {
   key?: string
   version?: string
   deploymentTime?: string
-  suspendState?: string
+  suspendState: string
 }

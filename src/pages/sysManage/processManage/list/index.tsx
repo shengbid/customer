@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import MenuProTable from '@/components/ComProtable/MenuProTable'
 import type { processListProps, processListParamProps } from '@/services/types'
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
@@ -9,6 +9,7 @@ import AddModal from './components/addModal'
 import { useIntl, history } from 'umi'
 import { CloudUploadOutlined, FileImageOutlined } from '@ant-design/icons'
 import ViewBpmn from '@/components/Bpmn/ViewBpmn'
+import { getDictData } from '@/utils/dictData'
 
 const { MenuEditButton, MenuDelteButton } = MenuProTable
 const { Link } = Typography
@@ -19,6 +20,16 @@ const RoleManage: React.FC = () => {
   const intl = useIntl()
   const actionRef = useRef<ActionType>()
   const [svgVisible, setSvgVisible] = useState<boolean>(false)
+  const [statusData, setStatusData] = useState<any>({})
+
+  const getDict = async () => {
+    const obj = await getDictData('act_re_procdef_state')
+    setStatusData(obj)
+  }
+
+  useEffect(() => {
+    getDict()
+  }, [])
 
   // 删除
   const delteRecored = async (ids: string) => {
@@ -76,6 +87,7 @@ const RoleManage: React.FC = () => {
       key: 'suspendState',
       dataIndex: 'suspendState',
       hideInSearch: true,
+      render: (_, recored) => statusData[recored.suspendState],
     },
     {
       title: intl.formatMessage({
