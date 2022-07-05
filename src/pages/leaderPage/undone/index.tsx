@@ -1,74 +1,65 @@
-import { ProList } from '@ant-design/pro-list'
-import React, { useState } from 'react'
+import MenuProTable from '@/components/ComProtable/MenuProTable'
+import type { processListProps, processListParamProps } from '@/services/types'
+import type { ProColumns, ActionType } from '@ant-design/pro-table'
+import { Typography } from 'antd'
+import { getProcessList } from '@/services'
+import React, { useState, useRef } from 'react'
 import { StatisticCard } from '@ant-design/pro-card'
-import { Divider } from 'antd'
+import { useIntl } from 'umi'
+// import { FileImageOutlined } from '@ant-design/icons'
+
+const { Divider } = StatisticCard
+const { Link } = Typography
 
 const Undone: React.FC = () => {
   const [activeKey, setActiveKey] = useState<React.Key | undefined>('tab1')
+  const intl = useIntl()
+  const actionRef = useRef<ActionType>()
 
-  const dataSource = [
+  const getList = async (param: processListParamProps) => {
+    // console.log(param)
+    const { rows, total } = await getProcessList(param)
+
+    return {
+      data: rows,
+      total,
+    }
+  }
+
+  const columns: ProColumns<processListProps>[] = [
     {
-      name: '实验名称1',
-      desc: '系统性的沉淀B端知识体系',
-      content: [
-        {
-          label: '模型数',
-          value: 2903,
-        },
-        {
-          label: '指标数',
-          value: 3720,
-        },
-        {
-          label: '实验状态',
-          value: '成功',
-          status: 'success',
-        },
-      ],
+      title: '消息标题',
+      dataIndex: 'title',
     },
     {
-      name: '实验名称2',
-      desc: '系统性的沉淀B端知识体系',
-      content: [
-        {
-          label: '模型数',
-          value: 2904,
-        },
-        {
-          label: '指标数',
-          value: 3721,
-        },
-        {
-          label: '实验状态',
-          value: '成功',
-          status: 'success',
-        },
-      ],
+      title: '发起人',
+      dataIndex: 'name',
     },
     {
-      name: '实验名称3',
-      desc: '系统性的沉淀B端知识体系',
-      content: [
-        {
-          label: '模型数',
-          value: 2905,
-        },
-        {
-          label: '指标数',
-          value: 3722,
-        },
-        {
-          label: '实验状态',
-          value: '成功',
-          status: 'success',
-        },
+      title: '接收时间',
+      key: 'deploymentTime',
+      dataIndex: 'deploymentTime',
+      hideInSearch: true,
+    },
+    {
+      title: intl.formatMessage({
+        id: 'pages.table.option',
+      }),
+      width: 220,
+      key: 'option',
+      valueType: 'option',
+      render: () => [
+        <Link key="picture" onClick={async () => {}}>
+          {/* <FileImageOutlined style={{ marginRight: 3 }} /> */}
+          处理
+        </Link>,
       ],
     },
   ]
 
   return (
     <div>
-      <StatisticCard.Group direction={'row'}>
+      <StatisticCard.Group direction={'row'} style={{ marginBottom: 24 }}>
         <StatisticCard
           statistic={{
             title: '我的待办',
@@ -93,53 +84,12 @@ const Undone: React.FC = () => {
           }}
         />
       </StatisticCard.Group>
-      <ProList<any>
+      <MenuProTable<any>
         rowKey="name"
-        dataSource={dataSource}
-        metas={{
-          title: {
-            dataIndex: 'name',
-          },
-          description: {
-            dataIndex: 'desc',
-          },
-          content: {
-            dataIndex: 'content',
-            render: (text) => (
-              <div key="label" style={{ display: 'flex', justifyContent: 'space-around' }}>
-                {(text as any[]).map((t) => (
-                  <div key={t.label}>
-                    <div style={{ color: '#00000073' }}>{t.label}</div>
-                    <div style={{ color: '#000000D9' }}>
-                      {t.status === 'success' && (
-                        <span
-                          style={{
-                            display: 'inline-block',
-                            width: 8,
-                            height: 8,
-                            borderRadius: '50%',
-                            backgroundColor: '#52c41a',
-                            marginRight: 8,
-                          }}
-                        />
-                      )}
-                      {t.value}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ),
-          },
-          actions: {
-            render: (text, row) => [
-              activeKey === 'tab1' && (
-                <a href={row.html_url} target="_blank" rel="noopener noreferrer" key="link">
-                  处理
-                </a>
-              ),
-            ],
-          },
-        }}
+        request={getList}
+        columns={columns}
+        actionRef={actionRef}
+        search={false}
         toolbar={{
           menu: {
             activeKey,
