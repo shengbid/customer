@@ -1,0 +1,29 @@
+import type { pageLimitProps } from './base'
+
+export interface undoneListProps {
+  id: string
+  businessKey: string
+  instanceName: string // name
+  name: string
+  status: string //
+  createdDate?: string
+}
+export interface undoneListParamProps extends pageLimitProps {
+  instanceName: string // name
+}
+
+export interface leaveListProps {
+  id: string
+  instanceId: string
+  type: string
+  title: string
+  reason: string
+  leaveStartTime: string
+  leaveEndTime: string
+  taskName?: string
+}
+export interface leaveListParamProps extends pageLimitProps {
+  type: string
+  title: string
+  taskName?: string
+}

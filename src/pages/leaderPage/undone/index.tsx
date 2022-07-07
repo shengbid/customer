@@ -1,8 +1,8 @@
 import MenuProTable from '@/components/ComProtable/MenuProTable'
-import type { processListProps, processListParamProps } from '@/services/types'
+import type { undoneListProps, undoneListParamProps } from '@/services/types'
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import { Typography } from 'antd'
-import { getProcessList } from '@/services'
+import { getUndoneList } from '@/services'
 import React, { useState, useRef } from 'react'
 import { StatisticCard } from '@ant-design/pro-card'
 import { useIntl } from 'umi'
@@ -16,9 +16,9 @@ const Undone: React.FC = () => {
   const intl = useIntl()
   const actionRef = useRef<ActionType>()
 
-  const getList = async (param: processListParamProps) => {
+  const getList = async (param: undoneListParamProps) => {
     // console.log(param)
-    const { rows, total } = await getProcessList(param)
+    const { rows, total } = await getUndoneList(param)
 
     return {
       data: rows,
@@ -26,19 +26,32 @@ const Undone: React.FC = () => {
     }
   }
 
-  const columns: ProColumns<processListProps>[] = [
+  const columns: ProColumns<undoneListProps>[] = [
     {
-      title: '消息标题',
-      dataIndex: 'title',
+      title: '流程名称',
+      dataIndex: 'instanceName',
     },
     {
-      title: '发起人',
+      title: '任务节点名称',
       dataIndex: 'name',
+      hideInSearch: true,
     },
     {
-      title: '接收时间',
+      title: '任务状态',
+      key: 'status',
+      dataIndex: 'status',
+      hideInSearch: true,
+    },
+    {
+      title: '办理人',
       key: 'deploymentTime',
       dataIndex: 'deploymentTime',
+      hideInSearch: true,
+    },
+    {
+      title: '创建时间',
+      key: 'createdDate',
+      dataIndex: 'createdDate',
       hideInSearch: true,
     },
     {
