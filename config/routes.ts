@@ -51,6 +51,12 @@
             component: './leaderPage/undone',
           },
           {
+            path: '/leaderPage/leave',
+            name: '请假流程',
+            access: 'hasMenu',
+            component: './leaderPage/leave',
+          },
+          {
             path: '/leaderPage/onlineManage',
             name: '在线经营贷',
             access: 'hasMenu',
