@@ -5,6 +5,7 @@ import { Typography } from 'antd'
 import { getLeaveList } from '@/services'
 import React, { useState, useRef } from 'react'
 import AddModal from './components/addModal'
+import DetailModal from './components/detailModal'
 import { useIntl } from 'umi'
 
 const { MenuAddButton } = MenuProTable
@@ -12,7 +13,8 @@ const { MenuAddButton } = MenuProTable
 const { Link } = Typography
 const Leave: React.FC = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false)
-  const [id, setId] = useState<any>()
+  const [detailVisible, setDetailVisible] = useState<boolean>(false)
+  const [info, setInfo] = useState<any>()
   const intl = useIntl()
   const actionRef = useRef<ActionType>()
 
@@ -65,8 +67,14 @@ const Leave: React.FC = () => {
       width: 220,
       key: 'option',
       valueType: 'option',
-      render: () => [
-        <Link key="picture" onClick={() => {}}>
+      render: (_, recored) => [
+        <Link
+          key="picture"
+          onClick={() => {
+            setInfo(recored.instanceId)
+            setDetailVisible(true)
+          }}
+        >
           审批详情
         </Link>,
         <Link key="look" onClick={() => {}}>
@@ -93,7 +101,7 @@ const Leave: React.FC = () => {
           <MenuAddButton
             authorword="system:post:add"
             onClick={() => {
-              setId(null)
+              setInfo(null)
               setModalVisible(true)
             }}
           />
@@ -103,8 +111,13 @@ const Leave: React.FC = () => {
       <AddModal
         modalVisible={modalVisible}
         handleSubmit={submit}
-        info={id}
+        info={info}
         handleCancel={() => setModalVisible(false)}
+      />
+      <DetailModal
+        modalVisible={detailVisible}
+        info={info}
+        handleCancel={() => setDetailVisible(false)}
       />
     </>
   )
