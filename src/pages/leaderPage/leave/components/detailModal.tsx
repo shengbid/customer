@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import { Modal, Descriptions, Spin, Button } from 'antd'
 import type { detailModalProps, leaveListProps } from '@/services/types'
-import { leaveDetail } from '@/services'
+import { leaveDetail, leaveHistory } from '@/services'
 
 const DetailModal: React.FC<detailModalProps> = ({ modalVisible, handleCancel, info }) => {
   const [spinning, setSpinning] = useState<boolean>(true)
   const [infoData, setInfoData] = useState<leaveListProps>({})
+  const [historyData, setHistoyData] = useState<any>([])
 
   const getDetail = async () => {
     const { data } = await leaveDetail(info)
+    const res = await leaveHistory(info)
+    setHistoyData(res.data)
     setSpinning(false)
     setInfoData(data)
   }
@@ -44,6 +47,19 @@ const DetailModal: React.FC<detailModalProps> = ({ modalVisible, handleCancel, i
           <Descriptions.Item label="开始时间">{infoData.leaveStartTime}</Descriptions.Item>
           <Descriptions.Item label="结束时间">{infoData.leaveEndTime}</Descriptions.Item>
         </Descriptions>
+        {historyData.length &&
+          historyData.map((item: any) => (
+            <Descriptions title={item.taskNodeName} key={item.id}>
+              <Descriptions.Item label="审批人">{item.createName}</Descriptions.Item>
+              <Descriptions.Item label="审批时间">{item.createdDate}</Descriptions.Item>
+              {item.formHistoryDataDTO &&
+                item.formHistoryDataDTO.map((subItem: any) => (
+                  <Descriptions.Item key={item.title} label={subItem.title}>
+                    {subItem.value}
+                  </Descriptions.Item>
+                ))}
+            </Descriptions>
+          ))}
       </Spin>
     </Modal>
   )

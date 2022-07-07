@@ -71,7 +71,7 @@ const Leave: React.FC = () => {
         <Link
           key="picture"
           onClick={() => {
-            setInfo(recored.instanceId)
+            setInfo(recored.id)
             setDetailVisible(true)
           }}
         >

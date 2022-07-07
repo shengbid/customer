@@ -8,6 +8,7 @@ import type {
 import { paramsToPageParams } from '@/utils/base'
 
 const url = '/activiti/task'
+const leaveurl = '/activiti/leave'
 
 /** 获取待办列表 */
 export async function getUndoneList(params: undoneListParamProps) {
@@ -18,7 +19,7 @@ export async function getUndoneList(params: undoneListParamProps) {
 
 /** 获取请假列表 */
 export async function getLeaveList(params: leaveListParamProps) {
-  return request<{ rows: leaveListProps[]; total: number }>(`/activiti/leave/listAll`, {
+  return request<{ rows: leaveListProps[]; total: number }>(`/activiti/leave/list`, {
     params: paramsToPageParams(params),
   })
 }
@@ -32,8 +33,12 @@ export async function addLeva(data: leaveListProps) {
 }
 
 /** 请假详情 */
-export async function leaveDetail(deploymentId: string) {
-  return request<{ data: any }>(`${url}/formDataShow/${deploymentId}`)
+export async function leaveDetail(id: string) {
+  return request<{ data: any }>(`${leaveurl}/ById/${id}`)
+}
+/** 审批历史 */
+export async function leaveHistory(id: string) {
+  return request<{ data: any }>(`/activiti/historyFromData/ByInstanceId/${id}`)
 }
 /** 审批意见框 */
 export async function approvalOpeator(deploymentId: string) {
