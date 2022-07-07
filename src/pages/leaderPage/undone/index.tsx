@@ -6,6 +6,7 @@ import { getUndoneList } from '@/services'
 import React, { useState, useRef } from 'react'
 import { StatisticCard } from '@ant-design/pro-card'
 import { useIntl } from 'umi'
+import AddModal from './components/addModal'
 // import { FileImageOutlined } from '@ant-design/icons'
 
 const { Divider } = StatisticCard
@@ -15,6 +16,8 @@ const Undone: React.FC = () => {
   const [activeKey, setActiveKey] = useState<React.Key | undefined>('tab1')
   const intl = useIntl()
   const actionRef = useRef<ActionType>()
+  const [modalVisible, setModalVisible] = useState<boolean>(false)
+  const [info, setInfo] = useState<any>()
 
   const getList = async (param: undoneListParamProps) => {
     // console.log(param)
@@ -61,14 +64,25 @@ const Undone: React.FC = () => {
       width: 220,
       key: 'option',
       valueType: 'option',
-      render: () => [
-        <Link key="picture" onClick={async () => {}}>
+      render: (_, recored) => [
+        <Link
+          key="picture"
+          onClick={async () => {
+            setInfo(recored)
+            setModalVisible(true)
+          }}
+        >
           {/* <FileImageOutlined style={{ marginRight: 3 }} /> */}
           处理
         </Link>,
       ],
     },
   ]
+
+  const submit = () => {
+    setModalVisible(false)
+    actionRef?.current?.reload()
+  }
 
   return (
     <div>
@@ -126,6 +140,13 @@ const Undone: React.FC = () => {
             },
           },
         }}
+      />
+
+      <AddModal
+        modalVisible={modalVisible}
+        handleSubmit={submit}
+        info={info}
+        handleCancel={() => setModalVisible(false)}
       />
     </div>
   )

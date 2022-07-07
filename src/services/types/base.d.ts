@@ -9,6 +9,11 @@ export interface addModalProps {
   handleCancel: () => void
   info?: any
 }
+export interface detailModalProps {
+  modalVisible: boolean
+  handleCancel: () => void
+  info: any
+}
 
 // select option
 export interface selectOptionProps {

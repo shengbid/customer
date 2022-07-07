@@ -21,6 +21,7 @@ export interface leaveListProps {
   leaveStartTime: string
   leaveEndTime: string
   taskName?: string
+  createName?: string
 }
 export interface leaveListParamProps extends pageLimitProps {
   type: string
