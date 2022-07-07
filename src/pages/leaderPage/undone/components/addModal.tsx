@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react'
-import { Modal, Button, Form, Input, message, Spin, DatePicker, Select, Radio } from 'antd'
+import { Modal, Button, Form, Input, message, Spin, Radio } from 'antd'
 import type { addModalProps } from '@/services/types'
 import { approvalOpeator, approvalSave } from '@/services'
 // import DictSelect from '@/components/ComSelect'
 import { useIntl } from 'umi'
-import { dateFormat } from '@/utils/base'
-import moment from 'moment'
+// import { dateFormat } from '@/utils/base'
+// import moment from 'moment'
 
 const { TextArea } = Input
-const { Option } = Select
+// const { Option } = Select
 
 const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleCancel, info }) => {
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
   const [spinning, setSpinning] = useState<boolean>(false)
+  const [approvalData, setApprovalData] = useState<any[]>([])
   const [form] = Form.useForm()
   const intl = useIntl()
 
@@ -21,6 +22,20 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
     const { data } = await approvalOpeator(info.id)
     setSpinning(false)
     if (data) {
+      const arr: any[] = []
+      data.forEach((item: any) => {
+        const strings = item.split('--__!!')
+        arr.push({
+          controlId: strings[0],
+          controlType: strings[1],
+          controlLable: strings[2],
+          controlIsParam: strings[3],
+          controlValue: '',
+          controlDefault: strings[4] ? strings[4] : null,
+        })
+      })
+      setApprovalData(arr)
+      console.log(arr)
       form.setFieldsValue(info)
     }
   }
@@ -34,9 +49,9 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
   const handleOk = async (values: any) => {
     setConfirmLoading(true)
     try {
-      Reflect.set(values, 'leaveStartTime', moment(values.leaveStartTime).format(dateFormat))
-      Reflect.set(values, 'leaveEndTime', moment(values.leaveEndTime).format(dateFormat))
-      await approvalSave(values)
+      approvalData[0].controlValue = values.opinion
+      approvalData[1].controlValue = values.reason
+      await approvalSave(info.id, approvalData)
       setConfirmLoading(false)
     } catch (error) {
       setConfirmLoading(false)
@@ -78,7 +93,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
           <Form.Item label="id" name="id" style={{ display: 'none' }}>
             <Input />
           </Form.Item>
-          <Form.Item
+          {/* <Form.Item
             label="请假类型"
             name="type"
             rules={[
@@ -93,10 +108,10 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
               <Option value="病假">病假</Option>
               <Option value="事假">事假</Option>
             </Select>
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item
             label="标题"
-            name="title"
+            name="instanceName"
             rules={[
               {
                 required: true,
@@ -106,7 +121,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
           >
             <Input maxLength={50} />
           </Form.Item>
-          <Form.Item
+          {/* <Form.Item
             label="开始时间"
             name="leaveStartTime"
             rules={[
@@ -129,9 +144,9 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
             ]}
           >
             <DatePicker format={dateFormat} />
-          </Form.Item>
+          </Form.Item> */}
 
-          <Form.Item
+          {/* <Form.Item
             label="原因"
             name="reason"
             rules={[
@@ -146,11 +161,11 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
             ]}
           >
             <TextArea autoSize={{ minRows: 3, maxRows: 5 }} maxLength={500} />
-          </Form.Item>
+          </Form.Item> */}
 
           <Form.Item
             label="审批意见"
-            name="leaveEndTime"
+            name="opinion"
             rules={[
               {
                 required: true,
@@ -159,8 +174,8 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
             ]}
           >
             <Radio.Group>
-              <Radio value={1}>A</Radio>
-              <Radio value={2}>B</Radio>
+              <Radio value={0}>同意</Radio>
+              <Radio value={1}>不同意</Radio>
             </Radio.Group>
           </Form.Item>
 

@@ -45,6 +45,9 @@ export async function approvalOpeator(deploymentId: string) {
   return request<{ data: any }>(`${url}/formDataShow/${deploymentId}`)
 }
 /** 审批操作 */
-export async function approvalSave(deploymentId: string) {
-  return request<{ data: any }>(`${url}/formDataSave/${deploymentId}`)
+export async function approvalSave(deploymentId: string, data: any) {
+  return request<{ data: any }>(`${url}/formDataSave/${deploymentId}`, {
+    method: 'post',
+    data,
+  })
 }
