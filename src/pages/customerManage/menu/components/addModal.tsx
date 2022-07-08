@@ -4,7 +4,7 @@ import type { addModalProps } from '@/services/types'
 import TreeDataSelect from '@/components/ComSelect/treeSelect'
 import IconSelect from '@/components/ComSelect/iconSelect'
 import type { RadioChangeEvent } from 'antd'
-import { addMenu, menuDetail } from '@/services'
+import { addCusMenu, editCusMenu, menuCusDetail } from '@/services'
 import DictSelect from '@/components/ComSelect'
 import { useIntl } from 'umi'
 
@@ -38,7 +38,7 @@ const AddModal: React.FC<modalProps> = ({
 
   // 获取详情
   const getMenuDetail = async () => {
-    const { data } = await menuDetail(info)
+    const { data } = await menuCusDetail(info)
     form.setFieldsValue({ ...data })
     setMenuType(data.menuType)
   }
@@ -57,7 +57,11 @@ const AddModal: React.FC<modalProps> = ({
     console.log(values)
     setConfirmLoading(true)
     try {
-      await addMenu(values)
+      if (values.menuId) {
+        await editCusMenu(values)
+      } else {
+        await addCusMenu(values)
+      }
       setConfirmLoading(false)
     } catch (error) {
       setConfirmLoading(false)
@@ -120,7 +124,7 @@ const AddModal: React.FC<modalProps> = ({
             },
           ]}
         >
-          <TreeDataSelect type="1" />
+          <TreeDataSelect type="2" />
         </Form.Item>
 
         <Row>

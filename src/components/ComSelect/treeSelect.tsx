@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { TreeSelect } from 'antd'
-import { getDeptTreeList, getMenuTreeData } from '@/services'
+import { getDeptTreeList, getMenuTreeData, getCusMenuTreeData } from '@/services'
 import { handleTreeData } from '@/utils/base'
 import { useIntl } from 'umi'
 export interface treeSelectProps {
@@ -37,7 +37,17 @@ const TreeDataSelect: React.FC<treeSelectProps> = (props) => {
         data = await getDeptTreeList()
         break
       case '1':
-        const arr = await getMenuTreeData()
+        let arr: any = await getMenuTreeData()
+        data.data = [
+          {
+            id: 0,
+            label: '主类目',
+            children: arr.data,
+          },
+        ]
+        break
+      case '2':
+        arr = await getCusMenuTreeData()
         data.data = [
           {
             id: 0,

@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 import MenuProTable from '@/components/ComProtable/MenuProTable'
-import { getMenuTreeList, deleteMenu } from '@/services'
+import { getCusMenuTreeList, deleteCusMenu } from '@/services'
 import type { menuParamProps, menuListProps } from '@/services/types'
 import DictSelect from '@/components/ComSelect'
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
@@ -22,7 +22,7 @@ const Meun: React.FC = () => {
 
   // 删除
   const delteItem = async (id: number) => {
-    await deleteMenu(id)
+    await deleteCusMenu(id)
     message.success(
       intl.formatMessage({
         id: 'pages.form.delete',
@@ -164,7 +164,7 @@ const Meun: React.FC = () => {
   ]
 
   const getList = async (param: menuParamProps) => {
-    const { data } = await getMenuTreeList(param)
+    const { data } = await getCusMenuTreeList(param)
     return {
       data,
     }

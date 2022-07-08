@@ -29,14 +29,16 @@ export async function editCusMenu(data: menuListProps) {
 }
 /** 删除菜单 */
 export async function deleteCusMenu(id: number) {
-  return request(`${url}/${id}`, {
+  return request(`${url}/remove/${id}`, {
     method: 'delete',
   })
 }
 
 /** 获取菜单详情 */
-export async function menuCusDetail(id: number) {
-  return request<{ data: menuListProps }>(`${url}/remove/${id}`)
+export async function menuCusDetail(menuId: number) {
+  return request<{ data: menuListProps }>(`${url}/details`, {
+    params: { menuId },
+  })
 }
 
 // /** 获取角色菜单id */
