@@ -5,21 +5,24 @@ import type { getdetailProps } from '@/services/types'
 import BpmnViewer from 'bpmn-js/lib/Viewer'
 import styles from './index.less'
 
-const ViewBpmn: React.FC<{ info: getdetailProps }> = ({ info }) => {
+const ViewBpmn: React.FC<{ info: getdetailProps; highLightData?: any }> = ({
+  info,
+  highLightData,
+}) => {
   const [spinLoading, setSpinLoading] = useState<boolean>(true)
   const [bpmnModler, setBpmnModler] = useState<any>(null)
   const bpmnRef = useRef<any>()
 
   // 设置节点颜色
-  // const setNodeColor = (ids: any, newBpmn: any, colorClass: string) => {
-  //   const elementRegistry = newBpmn.get('elementRegistry')
+  const setNodeColor = (ids: any, newBpmn: any, colorClass: string) => {
+    const elementRegistry = newBpmn.get('elementRegistry')
 
-  //   ids.forEach((item: any) => {
-  //     const element = elementRegistry._elements[item].gfx
-  //     element.classList.add(colorClass)
-  //     // console.log(elementRegistry, element)
-  //   })
-  // }
+    ids.forEach((item: any) => {
+      const element = elementRegistry._elements[item].gfx
+      element.classList.add(colorClass)
+      // console.log(elementRegistry, element)
+    })
+  }
 
   const createDiagram = (xmlstr: string) => {
     bpmnModler && bpmnModler.destroy && bpmnModler.destroy()
@@ -33,14 +36,16 @@ const ViewBpmn: React.FC<{ info: getdetailProps }> = ({ info }) => {
         message.error(err)
       } else {
         canvas.zoom('fit-viewport', 'auto')
-        // const successIds = ['startevent1', 'Flow_1f9e7ri']
-        // const procesingIds = ['usertask9']
-        // const undoneIds = ['Flow_18lp7ad', 'Gateway_0gffbux']
-        // // console.log(1, newBpmn, canvas)
+        if (highLightData) {
+          const successIds = ['startevent1', 'Flow_1f9e7ri']
+          const procesingIds = ['usertask9']
+          const undoneIds = ['Flow_18lp7ad', 'Gateway_0gffbux']
+          // console.log(1, newBpmn, canvas)
 
-        // setNodeColor(successIds, newBpmn, 'nodeSuccess')
-        // setNodeColor(procesingIds, newBpmn, 'nodeProcing')
-        // setNodeColor(undoneIds, newBpmn, 'nodeError')
+          setNodeColor(successIds, newBpmn, 'nodeSuccess')
+          setNodeColor(procesingIds, newBpmn, 'nodeProcing')
+          setNodeColor(undoneIds, newBpmn, 'nodeError')
+        }
       }
     })
     setBpmnModler(newBpmn)

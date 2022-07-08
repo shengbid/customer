@@ -4,12 +4,12 @@ import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import { Typography } from 'antd'
 import { getUndoneList } from '@/services'
 import React, { useState, useRef } from 'react'
-import { StatisticCard } from '@ant-design/pro-card'
+// import { StatisticCard } from '@ant-design/pro-card'
 import { useIntl } from 'umi'
 import AddModal from './components/addModal'
 // import { FileImageOutlined } from '@ant-design/icons'
 
-const { Divider } = StatisticCard
+// const { Divider } = StatisticCard
 const { Link } = Typography
 
 const Undone: React.FC = () => {
@@ -54,6 +54,7 @@ const Undone: React.FC = () => {
     {
       title: '创建时间',
       key: 'createdDate',
+      width: 180,
       dataIndex: 'createdDate',
       hideInSearch: true,
     },
@@ -61,7 +62,7 @@ const Undone: React.FC = () => {
       title: intl.formatMessage({
         id: 'pages.table.option',
       }),
-      width: 220,
+      width: 120,
       key: 'option',
       valueType: 'option',
       render: (_, recored) => [
@@ -86,7 +87,7 @@ const Undone: React.FC = () => {
 
   return (
     <div>
-      <StatisticCard.Group direction={'row'} style={{ marginBottom: 24 }}>
+      {/* <StatisticCard.Group direction={'row'} style={{ marginBottom: 24 }}>
         <StatisticCard
           statistic={{
             title: '我的待办',
@@ -110,7 +111,7 @@ const Undone: React.FC = () => {
             suffix: '个任务',
           }}
         />
-      </StatisticCard.Group>
+      </StatisticCard.Group> */}
       <MenuProTable<any>
         rowKey="name"
         request={getList}

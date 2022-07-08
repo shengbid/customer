@@ -51,3 +51,13 @@ export async function approvalSave(deploymentId: string, data: any) {
     data,
   })
 }
+/** 获取流程标识 */
+export async function getProcessInfo(instanceId: string) {
+  return request<{ data: any }>(`/activiti/processDefinition/getDefinitions/${instanceId}`)
+}
+/** 获取流程进度 */
+export async function getProcessIds(instanceId: string) {
+  return request<{ data: any }>(`/activiti/activitiHistory/gethighLine`, {
+    params: { instanceId },
+  })
+}

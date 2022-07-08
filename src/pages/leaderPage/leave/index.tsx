@@ -1,12 +1,13 @@
 import MenuProTable from '@/components/ComProtable/MenuProTable'
 import type { leaveListProps, leaveListParamProps } from '@/services/types'
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
-import { Typography } from 'antd'
-import { getLeaveList } from '@/services'
+import { Typography, Modal } from 'antd'
+import { getLeaveList, getProcessInfo, getProcessIds } from '@/services'
 import React, { useState, useRef } from 'react'
 import AddModal from './components/addModal'
 import DetailModal from './components/detailModal'
 import { useIntl } from 'umi'
+import ViewBpmn from '@/components/Bpmn/ViewBpmn'
 
 const { MenuAddButton } = MenuProTable
 
@@ -14,18 +15,28 @@ const { Link } = Typography
 const Leave: React.FC = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [detailVisible, setDetailVisible] = useState<boolean>(false)
+  const [svgVisible, setSvgVisible] = useState<boolean>(false)
   const [info, setInfo] = useState<any>()
+  const [bpmnInfo, setBpmnInfo] = useState<any>()
+  const [highLightData, setHighLightData] = useState<any>({})
   const intl = useIntl()
   const actionRef = useRef<ActionType>()
 
   const getList = async (param: leaveListParamProps) => {
     // console.log(param)
     const { rows, total } = await getLeaveList(param)
-
     return {
       data: rows,
       total,
     }
+  }
+
+  const lookView = async (id: string) => {
+    const { data } = await getProcessInfo(id)
+    const res = await getProcessIds(id)
+    setHighLightData(res.data)
+    setBpmnInfo(data)
+    setSvgVisible(true)
   }
 
   const columns: ProColumns<leaveListProps>[] = [
@@ -77,7 +88,7 @@ const Leave: React.FC = () => {
         >
           审批详情
         </Link>,
-        <Link key="look" onClick={() => {}}>
+        <Link key="look" onClick={() => lookView(recored.instanceId)}>
           查看进度
         </Link>,
       ],
@@ -119,6 +130,23 @@ const Leave: React.FC = () => {
         info={info}
         handleCancel={() => setDetailVisible(false)}
       />
+
+      {/* 查看流程图弹窗 */}
+      {svgVisible && (
+        <Modal
+          title={`查看流程图`}
+          maskClosable={false}
+          destroyOnClose
+          width={'65%'}
+          visible={svgVisible}
+          footer={false}
+          onCancel={() => {
+            setSvgVisible(false)
+          }}
+        >
+          <ViewBpmn info={bpmnInfo} highLightData={highLightData} />
+        </Modal>
+      )}
     </>
   )
 }
