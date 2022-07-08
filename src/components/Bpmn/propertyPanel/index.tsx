@@ -21,7 +21,7 @@ const PropertyPanel: React.FC<{ bpmnModeler: any }> = ({ bpmnModeler }) => {
   // const [isStart, setIsStart] = useState<boolean>(false) // 表单设置
   const [isSequenceFlow, setSequenceFlow] = useState<boolean>(true) // 条件流转
   const [isGateway, setIsGateway] = useState<boolean>(false) // 执行监听
-  const [formList, setFormList] = useState<any>([]) // 流程表单
+  // const [formList, setFormList] = useState<any>([]) // 流程表单
   const [element, setElement] = useState<any>() // 当前选中的元素
   const [rootElement, setRootElement] = useState<any>(null) // 根节点元素
   const [saveProperties, setSaveProperties] = useState<any>({})
@@ -76,18 +76,18 @@ const PropertyPanel: React.FC<{ bpmnModeler: any }> = ({ bpmnModeler }) => {
   } as any)
 
   // 获取流程表单
-  const getFormType = () => {
-    setFormList([
-      {
-        value: 'projectInitiatedForm',
-        label: '立项表单',
-      },
-    ])
-  }
+  // const getFormType = () => {
+  //   setFormList([
+  //     {
+  //       value: 'projectInitiatedForm',
+  //       label: '立项表单',
+  //     },
+  //   ])
+  // }
 
-  useEffect(() => {
-    getFormType()
-  }, [])
+  // useEffect(() => {
+  //   getFormType()
+  // }, [])
 
   const elementChangeEvent = (e: any) => {
     console.log('element', e)
@@ -683,7 +683,7 @@ const PropertyPanel: React.FC<{ bpmnModeler: any }> = ({ bpmnModeler }) => {
           {isTask && (
             <Panel header="表单设置" key="3">
               <Form.Item label="表单" name="formKey">
-                <Select options={formList} placeholder="请选择表单" />
+                <DictSelect authorword="process_form" />
               </Form.Item>
             </Panel>
           )}
