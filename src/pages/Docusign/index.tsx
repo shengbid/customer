@@ -17,26 +17,26 @@ const Docusign: React.FC = () => {
   const [confirmLoading2, setConfirmLoading2] = useState<boolean>(false)
   const [signType, setSignType] = useState<number>(1)
   const [templateList, setTemplateList] = useState<any>([
-    {
-      envelopeId: '454c1c7a-747a-4e89-9a29-3afc4fdd44f5',
-      signerEmail: 'lsm2022@163.com',
-      signerName: 'ShouMei Lai',
-      roleName: 'partyA',
-      countryCode: '+86',
-      phoneNumber: '18033098150',
-      recipientId: '21990853',
-      signerClientId: '1a95540f-4f60-4e7e-a399-af0d91360846',
-    },
-    {
-      envelopeId: '454c1c7a-747a-4e89-9a29-3afc4fdd44f5',
-      signerEmail: '441974767@qq.com',
-      signerName: 'jixang',
-      roleName: 'partyB',
-      countryCode: '+86',
-      phoneNumber: '18033098150',
-      recipientId: '56569690',
-      signerClientId: 'ba12c6a2-156c-4951-90a9-40ce39c4b021',
-    },
+    // {
+    //   envelopeId: '454c1c7a-747a-4e89-9a29-3afc4fdd44f5',
+    //   signerEmail: 'lsm2022@163.com',
+    //   signerName: 'ShouMei Lai',
+    //   roleName: 'partyA',
+    //   countryCode: '+86',
+    //   phoneNumber: '18033098150',
+    //   recipientId: '21990853',
+    //   signerClientId: '1a95540f-4f60-4e7e-a399-af0d91360846',
+    // },
+    // {
+    //   envelopeId: '454c1c7a-747a-4e89-9a29-3afc4fdd44f5',
+    //   signerEmail: '441974767@qq.com',
+    //   signerName: 'jixang',
+    //   roleName: 'partyB',
+    //   countryCode: '+86',
+    //   phoneNumber: '18033098150',
+    //   recipientId: '56569690',
+    //   signerClientId: 'ba12c6a2-156c-4951-90a9-40ce39c4b021',
+    // },
   ])
   const [templateInfo, setTemplateInfo] = useState<any>({})
 
@@ -90,9 +90,9 @@ const Docusign: React.FC = () => {
       setConfirmLoading2(true)
       const response = await getPhoneSignUrl(values)
       console.log(response)
-      // if (response.status === 200) {
-      //   window.location = response.data
-      // }
+      if (response.status === 200) {
+        window.location = response.data.redirectUrl
+      }
       setConfirmLoading2(false)
     } else if (signType === 3) {
       setConfirmLoading(true)
