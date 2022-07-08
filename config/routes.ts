@@ -278,6 +278,13 @@
             access: 'hasMenu',
             component: './customerManage/loan',
           },
+          {
+            path: '/customerManage/menu',
+            name: '菜单管理',
+            access: 'hasMenu',
+            icon: 'SettingOutlined',
+            component: './customerManage/menu',
+          },
         ],
       },
       {

@@ -16,4 +16,5 @@ export * from './sys/timedTask' // 定时任务
 export * from './docusin/index' // docusign
 export * from './sys/process' // 流程管理
 export * from './customer/loan' // 客户管理
+export * from './customer/menu' // 客户菜单管理
 export * from './leader/task' // 待办管理

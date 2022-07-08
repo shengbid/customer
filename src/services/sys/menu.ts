@@ -2,13 +2,6 @@ import { request } from 'umi'
 import type { menuParamProps, menuListProps } from '@/services/types'
 const url = '/system/menu'
 
-/** 获取菜单列表 */
-export async function getMenuList(params: menuParamProps) {
-  return request<{ data: any[] }>('/getRouters', {
-    params,
-  })
-}
-
 /** 获取菜单树形列表 */
 export async function getMenuTreeList(params: menuParamProps) {
   return request<{ data: any[] }>(`${url}/tree/list`, {
