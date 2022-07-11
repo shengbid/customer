@@ -18,8 +18,10 @@ const ViewBpmn: React.FC<{ info: getdetailProps; highLightData?: any }> = ({
     const elementRegistry = newBpmn.get('elementRegistry')
 
     ids.forEach((item: any) => {
-      const element = elementRegistry._elements[item].gfx
-      element.classList.add(colorClass)
+      if (elementRegistry._elements[item]) {
+        const element = elementRegistry._elements[item].gfx
+        element.classList.add(colorClass)
+      }
       // console.log(elementRegistry, element)
     })
   }
@@ -37,9 +39,9 @@ const ViewBpmn: React.FC<{ info: getdetailProps; highLightData?: any }> = ({
       } else {
         canvas.zoom('fit-viewport', 'auto')
         if (highLightData) {
-          const successIds = ['startevent1', 'Flow_1f9e7ri']
-          const procesingIds = ['usertask9']
-          const undoneIds = ['Flow_18lp7ad', 'Gateway_0gffbux']
+          const successIds = highLightData.highLine.concat(highLightData.highPoint)
+          const procesingIds = highLightData.waitingToDo
+          const undoneIds = highLightData.iDo
           // console.log(1, newBpmn, canvas)
 
           setNodeColor(successIds, newBpmn, 'nodeSuccess')

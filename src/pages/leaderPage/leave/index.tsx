@@ -35,7 +35,7 @@ const Leave: React.FC = () => {
     const { data } = await getProcessInfo(id)
     const res = await getProcessIds(id)
     setHighLightData(res.data)
-    setBpmnInfo(data)
+    setBpmnInfo({ ...data, deploymentId: data.deploymentID })
     setSvgVisible(true)
   }
 
