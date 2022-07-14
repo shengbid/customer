@@ -178,8 +178,8 @@ const ProcessDesign: React.FC<{ query: getdetailProps }> = ({ query }) => {
       })
     }
     if (errorNum > 0) {
-      message.error('该流程图存在错误节点，请检查流程图！')
-      return
+      message.error(`该流程图存在${errorNum}错误节点`)
+      // return
     }
     if (warningNum > 0) {
       message.error(`存在${warningNum}个警告`)
