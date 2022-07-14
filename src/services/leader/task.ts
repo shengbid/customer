@@ -61,3 +61,10 @@ export async function getProcessIds(instanceId: string) {
     params: { instanceId },
   })
 }
+
+export async function addCredit(data: any) {
+  return request<{ data: any[] }>(`/activiti/sxsp/jinjian`, {
+    method: 'post',
+    data,
+  })
+}

@@ -161,7 +161,7 @@ const ProcessDesign: React.FC<{ query: getdetailProps }> = ({ query }) => {
     let errorNum: number = 0
     let warningNum: number = 0
 
-    console.log(issues, Object.getOwnPropertyNames(issues))
+    // console.log(issues, Object.getOwnPropertyNames(issues))
     let issuesArr: any[] = []
     if (Object.getOwnPropertyNames(issues).length > 0) {
       issuesArr = Object.getOwnPropertyNames(issues).filter((item) => item !== '_')
@@ -197,7 +197,7 @@ const ProcessDesign: React.FC<{ query: getdetailProps }> = ({ query }) => {
     })
     const formData = new FormData()
     formData.append('stringBPMN', bpmnXml)
-    console.log(bpmnXml)
+    // console.log(bpmnXml)
     setLoading(false)
     await addProcess(formData)
     message.success('部署成功!')

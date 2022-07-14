@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { Modal, Button, Form, Input, message, Spin, DatePicker, Select } from 'antd'
 import type { addModalProps } from '@/services/types'
-import { addLeva, postDetail } from '@/services'
+import {
+  // addLeva,
+  addCredit,
+  postDetail,
+} from '@/services'
 // import DictSelect from '@/components/ComSelect'
 import { useIntl } from 'umi'
 import { dateFormat } from '@/utils/base'
-import moment from 'moment'
+// import moment from 'moment'
 
 const { TextArea } = Input
 const { Option } = Select
@@ -41,9 +45,10 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
   const handleOk = async (values: any) => {
     setConfirmLoading(true)
     try {
-      Reflect.set(values, 'leaveStartTime', moment(values.leaveStartTime).format(dateFormat))
-      Reflect.set(values, 'leaveEndTime', moment(values.leaveEndTime).format(dateFormat))
-      await addLeva(values)
+      // Reflect.set(values, 'leaveStartTime', moment(values.leaveStartTime).format(dateFormat))
+      // Reflect.set(values, 'leaveEndTime', moment(values.leaveEndTime).format(dateFormat))
+      // await addLeva(values)
+      await addCredit({ enterpriseCreditname: values.title })
       setConfirmLoading(false)
     } catch (error) {
       setConfirmLoading(false)
@@ -92,7 +97,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
             name="type"
             rules={[
               {
-                required: true,
+                required: false,
                 message: '请选择请假类型',
               },
             ]}
@@ -120,7 +125,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
             name="leaveStartTime"
             rules={[
               {
-                required: true,
+                required: false,
                 message: '请选择开始时间',
               },
             ]}
@@ -132,7 +137,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
             name="leaveEndTime"
             rules={[
               {
-                required: true,
+                required: false,
                 message: '请选择结束时间',
               },
             ]}
