@@ -36,7 +36,7 @@
       },
       {
         path: '/leaderPage',
-        name: '领导驾驶舱',
+        name: '工作台',
         access: 'hasMenu',
         icon: 'DesktopOutlined',
         routes: [
@@ -49,6 +49,12 @@
             name: '我的待办',
             access: 'hasMenu',
             component: './leaderPage/undone',
+          },
+          {
+            path: '/leaderPage/undone/approval',
+            // name: '我的待办',
+            // access: 'hasMenu',
+            component: './approvalPage',
           },
           {
             path: '/leaderPage/leave',

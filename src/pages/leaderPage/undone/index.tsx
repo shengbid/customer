@@ -5,7 +5,7 @@ import { Typography } from 'antd'
 import { getUndoneList } from '@/services'
 import React, { useState, useRef } from 'react'
 // import { StatisticCard } from '@ant-design/pro-card'
-import { useIntl } from 'umi'
+import { useIntl, history } from 'umi'
 import AddModal from './components/addModal'
 // import { FileImageOutlined } from '@ant-design/icons'
 
@@ -70,7 +70,13 @@ const Undone: React.FC = () => {
           key="picture"
           onClick={async () => {
             setInfo(recored)
-            setModalVisible(true)
+            // setModalVisible(true)
+            history.push({
+              pathname: '/leaderPage/undone/approval',
+              query: {
+                id: recored.businessKey,
+              },
+            })
           }}
         >
           {/* <FileImageOutlined style={{ marginRight: 3 }} /> */}
