@@ -169,6 +169,13 @@
               },
             ],
           },
+          {
+            path: '/sys/template',
+            name: '模板管理',
+            access: 'hasMenu',
+            icon: 'SettingOutlined',
+            component: './sysManage/templateManage',
+          },
         ],
       },
       {
