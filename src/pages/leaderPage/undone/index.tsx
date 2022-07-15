@@ -74,7 +74,7 @@ const Undone: React.FC = () => {
             history.push({
               pathname: '/leaderPage/undone/approval',
               query: {
-                id: recored.businessKey,
+                id: recored.id,
               },
             })
           }}
