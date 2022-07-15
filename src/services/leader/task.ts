@@ -42,7 +42,7 @@ export async function leaveHistory(id: string) {
 }
 /** 审批意见框 */
 export async function approvalOpeator(deploymentId: string) {
-  return request<{ data: any }>(`${url}/formDataShow/${deploymentId}`)
+  return request<{ data: any }>(`${url}/getButton/${deploymentId}`)
 }
 /** 审批操作 */
 export async function approvalSave(deploymentId: string, data: any) {
