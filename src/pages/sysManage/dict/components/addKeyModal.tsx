@@ -166,7 +166,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
               },
             ]}
           >
-            <Input maxLength={3} />
+            <Input maxLength={30} />
           </Form.Item>
 
           <Form.Item
