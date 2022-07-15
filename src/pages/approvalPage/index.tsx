@@ -1,7 +1,80 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { Button } from 'antd'
+import styles from './index.less'
+import ComDescriptions from '@/components/ComPage/Descriptions'
+import { history } from 'umi'
+import ComCard from '@/components/ComPage/ComCard'
+import ApprovalForm from './components/approvalForm'
+import ComCollapse from '@/components/ComPage/ComCollapse'
+import ViewBpmn from '@/components/Bpmn/ViewBpmn'
+import { approvalSave } from '@/services'
+
+const { Panel } = ComCollapse
+
+const { DescriptionsItem } = ComDescriptions
 
 const ApprovalPage: React.FC = () => {
-  return <></>
+  const [infoData, setInfoData] = useState<any>({})
+  const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
+  const title = '香港吉祥公司--授信申请'
+  const formName = 'credit'
+
+  const DetailDom = {
+    credit: <></>,
+  }
+  const approvalDom = {
+    credit: <></>,
+  }
+
+  useEffect(() => {
+    setInfoData({
+      time: '2022-07-14 13:13:13',
+      name: '吉祥',
+      typeNo: '33333333',
+    })
+  }, [])
+
+  const BpmnInfo = {
+    deploymentId: '7cb256ea-f78b-11ec-aafa-50ebf6e9ee70',
+    resourceName: 'CreateWithBPMNJS.bpmn',
+  }
+
+  // 点击审批
+  const approval = async (values: any) => {
+    console.log(values)
+    setConfirmLoading(true)
+    await approvalSave(BpmnInfo.deploymentId, values)
+    setConfirmLoading(false)
+  }
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <ComDescriptions
+          title={title}
+          extra={
+            <Button type="primary" onClick={() => history.goBack()}>
+              返回
+            </Button>
+          }
+        >
+          <DescriptionsItem label="创建任务时间">{infoData.time}</DescriptionsItem>
+          <DescriptionsItem label="发起人">{infoData.name}</DescriptionsItem>
+          <DescriptionsItem label="任务编号">{infoData.typeNo}</DescriptionsItem>
+        </ComDescriptions>
+      </div>
+      <ComCard title="详情信息">{DetailDom[formName]}</ComCard>
+      <ComCard title="审核信息">{approvalDom[formName]}</ComCard>
+      {/* 审核表单 */}
+      <ApprovalForm confirmLoading={confirmLoading} handleSubmit={approval} BpmnInfo={BpmnInfo} />
+      {/* 流程图 */}
+      <ComCollapse>
+        <Panel header="流程图" key="1">
+          <ViewBpmn info={BpmnInfo} />
+        </Panel>
+      </ComCollapse>
+    </div>
+  )
 }
 
 export default ApprovalPage

@@ -54,6 +54,7 @@
             path: '/leaderPage/undone/approval',
             // name: '我的待办',
             // access: 'hasMenu',
+            hideInBreadcrumb: true,
             component: './approvalPage',
           },
           {
