@@ -39,7 +39,7 @@ const ApprovalForm: React.FC<approvalProps> = ({ confirmLoading, handleSubmit, B
 
   const getDetail = async () => {
     setSpinning(true)
-    const { data } = await approvalOpeator(BpmnInfo.deploymentId)
+    const { data } = await approvalOpeator(BpmnInfo.id)
     setSpinning(false)
     if (data) {
       const arr: any[] = []

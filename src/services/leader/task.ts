@@ -62,9 +62,9 @@ export async function getProcessIds(instanceId: string) {
   })
 }
 
-export async function addCredit(data: any) {
-  return request<{ data: any[] }>(`/activiti/sxsp/jinjian`, {
+export async function addCredit(params: any) {
+  return request<{ data: any[] }>(`/activiti/sxsp/startProcessRuntime`, {
     method: 'post',
-    data,
+    params,
   })
 }

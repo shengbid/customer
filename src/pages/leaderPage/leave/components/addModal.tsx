@@ -48,7 +48,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
       // Reflect.set(values, 'leaveStartTime', moment(values.leaveStartTime).format(dateFormat))
       // Reflect.set(values, 'leaveEndTime', moment(values.leaveEndTime).format(dateFormat))
       // await addLeva(values)
-      await addCredit({ enterpriseCreditname: values.title })
+      await addCredit({ key: 'sxspProcess', username: values.title })
       setConfirmLoading(false)
     } catch (error) {
       setConfirmLoading(false)
@@ -109,7 +109,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
             </Select>
           </Form.Item>
           <Form.Item
-            label="标题"
+            label="用户"
             name="title"
             rules={[
               {

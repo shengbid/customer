@@ -13,11 +13,14 @@ const { Panel } = ComCollapse
 
 const { DescriptionsItem } = ComDescriptions
 
-const ApprovalPage: React.FC = () => {
+const ApprovalPage: React.FC = (props: any) => {
   const [infoData, setInfoData] = useState<any>({})
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
   const title = '香港吉祥公司--授信申请'
   const formName = 'credit'
+
+  const { query } = props.location
+  const { id } = query
 
   const DetailDom = {
     credit: <></>,
@@ -66,7 +69,7 @@ const ApprovalPage: React.FC = () => {
       <ComCard title="详情信息">{DetailDom[formName]}</ComCard>
       <ComCard title="审核信息">{approvalDom[formName]}</ComCard>
       {/* 审核表单 */}
-      <ApprovalForm confirmLoading={confirmLoading} handleSubmit={approval} BpmnInfo={BpmnInfo} />
+      <ApprovalForm confirmLoading={confirmLoading} handleSubmit={approval} BpmnInfo={{ id }} />
       {/* 流程图 */}
       <ComCollapse>
         <Panel header="流程图" key="1">
