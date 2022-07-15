@@ -1,11 +1,12 @@
 import MenuProTable from '@/components/ComProtable/MenuProTable'
-import type { leaveListProps, leaveListParamProps } from '@/services/types'
+import type { templateProps, templateParamProps } from '@/services/types'
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import { Typography } from 'antd'
-import { getLeaveList } from '@/services'
+import { getTemplateList } from '@/services'
 import React, { useState, useRef } from 'react'
 import AddModal from './components/addModal'
 import { useIntl } from 'umi'
+import ComUpload from '@/components/ComUpload'
 
 const { MenuAddButton } = MenuProTable
 
@@ -16,30 +17,31 @@ const Leave: React.FC = () => {
   const intl = useIntl()
   const actionRef = useRef<ActionType>()
 
-  const getList = async (param: leaveListParamProps) => {
+  const getList = async (param: templateParamProps) => {
     // console.log(param)
-    const { rows, total } = await getLeaveList(param)
+    const { rows, total } = await getTemplateList(param)
     return {
       data: rows,
       total,
     }
   }
 
-  const columns: ProColumns<leaveListProps>[] = [
+  const columns: ProColumns<templateProps>[] = [
     {
       title: '模板名称',
-      dataIndex: 'type',
+      dataIndex: 'templateName',
     },
     {
       title: '模板ID',
-      dataIndex: 'title',
+      dataIndex: 'templateId',
       hideInSearch: true,
     },
     {
       title: '附件',
-      key: 'reason',
-      dataIndex: 'reason',
+      key: 'fileList',
+      dataIndex: 'fileList',
       hideInSearch: true,
+      render: (_, recored) => <ComUpload value={[recored]} isDetail />,
     },
     {
       title: intl.formatMessage({
@@ -52,7 +54,7 @@ const Leave: React.FC = () => {
         <Link
           key="picture"
           onClick={() => {
-            setInfo(recored.id)
+            setInfo({ id: recored.id, templateId: recored.templateId })
             setModalVisible(true)
           }}
         >

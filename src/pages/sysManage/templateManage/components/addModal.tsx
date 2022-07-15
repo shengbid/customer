@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Modal, Button, Form, Input, message, Spin } from 'antd'
 import type { addModalProps } from '@/services/types'
-import {
-  // addLeva,
-  addCredit,
-  postDetail,
-} from '@/services'
+import { addTemplate, editTemplate, templateDetail } from '@/services'
 import ComUpload from '@/components/ComUpload'
 import { useIntl } from 'umi'
 
@@ -24,10 +20,17 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
 
   const getDetail = async () => {
     setSpinning(true)
-    const { data } = await postDetail(info)
+    const { data } = await templateDetail(info.templateId)
     setSpinning(false)
     if (data) {
-      form.setFieldsValue({ ...data })
+      form.setFieldsValue({
+        ...data,
+        fileList: [
+          {
+            ...data,
+          },
+        ],
+      })
     }
   }
 
@@ -40,7 +43,13 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
   const handleOk = async (values: any) => {
     setConfirmLoading(true)
     try {
-      await addCredit({ enterpriseCreditname: values.title })
+      const files = values.fileList.length ? values.fileList[0] : {}
+      files.templateId = files.fileId
+      if (values.id) {
+        await editTemplate({ ...values, ...files })
+      } else {
+        await addTemplate({ ...values, ...files })
+      }
       setConfirmLoading(false)
     } catch (error) {
       setConfirmLoading(false)
@@ -84,7 +93,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
           </Form.Item>
           <Form.Item
             label="模板名称"
-            name="type"
+            name="templateName"
             rules={[
               {
                 required: false,
@@ -96,7 +105,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
           </Form.Item>
           <Form.Item
             label="模板文件"
-            name="title"
+            name="fileList"
             rules={[
               {
                 required: true,
@@ -104,7 +113,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
               },
             ]}
           >
-            <ComUpload />
+            <ComUpload limit={1} />
           </Form.Item>
 
           <div className="modal-btns">

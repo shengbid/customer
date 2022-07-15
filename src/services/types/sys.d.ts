@@ -162,3 +162,13 @@ export interface timedTaskLogProps {
   status?: string
   createTime?: string
 }
+// 模板管理
+export interface templateProps {
+  id: number
+  templateId: string
+  templateName?: string
+  fileName: string
+  filePrefix: string
+  fileUrl: string
+  fileList: any[]
+}

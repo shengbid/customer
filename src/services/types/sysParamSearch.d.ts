@@ -95,3 +95,7 @@ export interface timedTaskLogParamProps extends pageLimitProps {
   status?: string
   createTime?: string
 }
+// 模板管理查询参数
+export interface templateParamProps extends pageLimitProps {
+  templateName?: string
+}
