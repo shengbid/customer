@@ -15,53 +15,27 @@ interface approvalProps {
 const ApprovalForm: React.FC<approvalProps> = ({ confirmLoading, handleSubmit, BpmnInfo }) => {
   const [spinning, setSpinning] = useState<boolean>(true)
   const [approvalBtns, setApprovalBtns] = useState<any[]>([])
-  const [approvalData, setApprovalData] = useState<any[]>([])
 
   const [form] = Form.useForm()
 
-  const getBtns = () => {
-    setApprovalBtns([
-      {
-        label: '通过',
-        value: 1,
-      },
-      {
-        label: '拒绝',
-        value: 2,
-      },
-      {
-        label: '驳回',
-        value: 3,
-      },
-    ])
-    setSpinning(false)
-  }
-
-  const getDetail = async () => {
+  // 获取审批按钮
+  const getBtns = async () => {
     setSpinning(true)
     const { data } = await approvalOpeator(BpmnInfo.id)
     setSpinning(false)
     if (data) {
       const arr: any[] = []
       data.forEach((item: any) => {
-        const strings = item.split('--__!!')
-        arr.push({
-          controlId: strings[0],
-          controlType: strings[1],
-          controlLable: strings[2],
-          controlIsParam: strings[3],
-          controlValue: '',
-          controlDefault: strings[4] ? strings[4] : null,
-        })
+        if (item.attributes) {
+          const obj = { label: '', value: '' }
+          obj.value = item.attributes.code ? item.attributes.code[0].value : ''
+          obj.label = item.attributes.name ? item.attributes.name[0].value : ''
+          arr.push(obj)
+        }
       })
-      setApprovalData(arr)
-      console.log(approvalData, arr)
+      setApprovalBtns(arr)
     }
   }
-
-  useEffect(() => {
-    getDetail()
-  }, [])
 
   useEffect(() => {
     getBtns()
