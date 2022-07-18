@@ -51,6 +51,7 @@ const AddModal: React.FC<modalProps> = ({
         getMenuDetail()
       }
     }
+    setMenuType('C')
   }, [modalVisible])
 
   const handleOk = async (values: any) => {
@@ -164,7 +165,7 @@ const AddModal: React.FC<modalProps> = ({
               </Radio.Group>
             </Form.Item>
           </Col>
-          {menuType !== 'M' ? (
+          {menuType === 'C' ? (
             <Col span={11}>
               <Form.Item
                 label={intl.formatMessage({
