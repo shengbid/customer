@@ -75,6 +75,7 @@ const Undone: React.FC = () => {
               pathname: '/leaderPage/undone/approval',
               query: {
                 id: recored.id,
+                businessKey: recored.businessKey,
               },
             })
           }}

@@ -7,7 +7,7 @@ import ComCard from '@/components/ComPage/ComCard'
 import ApprovalForm from './components/approvalForm'
 import ComCollapse from '@/components/ComPage/ComCollapse'
 import ViewBpmn from '@/components/Bpmn/ViewBpmn'
-import { approvalSave } from '@/services'
+import { approvalSave, getProcessInfo } from '@/services'
 
 const { Panel } = ComCollapse
 
@@ -20,7 +20,7 @@ const ApprovalPage: React.FC = (props: any) => {
   const formName = 'credit'
 
   const { query } = props.location
-  const { id } = query
+  const { id, businessKey } = query
 
   const DetailDom = {
     credit: <></>,
@@ -41,6 +41,15 @@ const ApprovalPage: React.FC = (props: any) => {
     deploymentId: '7cb256ea-f78b-11ec-aafa-50ebf6e9ee70',
     resourceName: 'CreateWithBPMNJS.bpmn',
   }
+
+  // 获取流程信息
+  const getProcess = async () => {
+    await getProcessInfo(businessKey)
+  }
+
+  useEffect(() => {
+    getProcess()
+  }, [])
 
   // 点击审批
   const approval = async (values: any) => {
