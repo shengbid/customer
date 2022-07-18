@@ -145,7 +145,7 @@ const ComUpload: React.FC<comuploadProps> = ({
   const onPreview = (file: any) => {
     // console.log(file)
     let { url } = file
-    const { name } = file
+    // const { name } = file
     if (file.response) {
       url = `${file.response?.prefix}${file.response?.fileUrl}`
     }
