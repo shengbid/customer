@@ -8,6 +8,7 @@ import ApprovalForm from './components/approvalForm'
 import ComCollapse from '@/components/ComPage/ComCollapse'
 import ViewBpmn from '@/components/Bpmn/ViewBpmn'
 import { approvalSave, getProcessInfo } from '@/services'
+import CreditApproval from './businessDetail/creditApproval'
 
 const { Panel } = ComCollapse
 
@@ -23,7 +24,7 @@ const ApprovalPage: React.FC = (props: any) => {
   const { id, businessKey } = query
 
   const DetailDom = {
-    credit: <></>,
+    credit: <CreditApproval />,
   }
   const approvalDom = {
     credit: <></>,

@@ -55,7 +55,11 @@ const ApprovalForm: React.FC<approvalProps> = ({ confirmLoading, handleSubmit, B
           onFinish={handleOk}
           form={form}
           autoComplete="off"
+          initialValues={{ taskId: BpmnInfo.id }}
         >
+          <Form.Item label="taskId" name="taskId" style={{ display: 'none' }}>
+            <Input />
+          </Form.Item>
           <Form.Item
             label="处理结果"
             name="instanceName"
