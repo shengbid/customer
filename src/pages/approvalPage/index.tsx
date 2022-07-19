@@ -22,7 +22,7 @@ const ApprovalPage: React.FC = (props: any) => {
   const formName = 'credit'
 
   const { query } = props.location
-  const { id, businessKey } = query
+  const { id, businessKey, taskNodeName } = query
 
   const DetailDom = {
     credit: <CreditApproval />,
@@ -57,7 +57,7 @@ const ApprovalPage: React.FC = (props: any) => {
   const approval = async (values: any) => {
     console.log(values)
     setConfirmLoading(true)
-    await approvalSave(BpmnInfo.deploymentId, values)
+    await approvalSave(id, { ...values, businessKey, taskNodeName })
     setConfirmLoading(false)
   }
 

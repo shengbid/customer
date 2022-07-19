@@ -62,7 +62,7 @@ const ApprovalForm: React.FC<approvalProps> = ({ confirmLoading, handleSubmit, B
           </Form.Item>
           <Form.Item
             label="处理结果"
-            name="instanceName"
+            name="radioValue"
             rules={[
               {
                 required: true,
@@ -81,7 +81,7 @@ const ApprovalForm: React.FC<approvalProps> = ({ confirmLoading, handleSubmit, B
 
           <Form.Item
             label="审批意见"
-            name="reason"
+            name="approvalComments"
             rules={[
               {
                 required: true,

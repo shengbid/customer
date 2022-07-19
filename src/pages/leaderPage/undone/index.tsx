@@ -76,6 +76,7 @@ const Undone: React.FC = () => {
               query: {
                 id: recored.id,
                 businessKey: recored.businessKey,
+                taskNodeName: recored.name,
               },
             })
           }}
