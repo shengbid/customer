@@ -9,6 +9,7 @@ import ComCollapse from '@/components/ComPage/ComCollapse'
 import ViewBpmn from '@/components/Bpmn/ViewBpmn'
 import { approvalSave, getProcessInfo } from '@/services'
 import CreditApproval from './businessDetail/creditApproval'
+import CreditDetail from './businessDetail/creditDetail'
 
 const { Panel } = ComCollapse
 
@@ -27,7 +28,7 @@ const ApprovalPage: React.FC = (props: any) => {
     credit: <CreditApproval />,
   }
   const approvalDom = {
-    credit: <></>,
+    credit: <CreditDetail />,
   }
 
   useEffect(() => {

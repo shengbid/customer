@@ -110,6 +110,15 @@ export interface setProductElementParam {
   showPercent?: boolean
 }
 
+// 转换金额
+export const transferAmount = (val: string | number, unit = 1) => {
+  if (val) {
+    const unis = unit === 1 ? 10000 : 100000000
+    return formatAmount(Number(val) / unis)
+  }
+  return 0
+}
+
 // 处理时间
 export const handleData = (date: string) => {
   if (date) {
