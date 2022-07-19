@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Button } from 'antd'
+import { Button, message } from 'antd'
 import styles from './index.less'
 import ComDescriptions from '@/components/ComPage/Descriptions'
 import { history } from 'umi'
@@ -25,7 +25,7 @@ const ApprovalPage: React.FC = (props: any) => {
   const { id, businessKey, taskNodeName } = query
 
   const DetailDom = {
-    credit: <CreditApproval />,
+    credit: <CreditApproval id={id} />,
   }
   const approvalDom = {
     credit: <CreditDetail />,
@@ -59,6 +59,8 @@ const ApprovalPage: React.FC = (props: any) => {
     setConfirmLoading(true)
     await approvalSave(id, { ...values, businessKey, taskNodeName })
     setConfirmLoading(false)
+    message.success('审批成功')
+    history.goBack()
   }
 
   return (

@@ -5,7 +5,7 @@ import ApprovalHistory from '../../components/approvalHistroy'
 const { TabPane } = Tabs
 
 // 授信申请的审核
-const CreditApproval: React.FC = () => {
+const CreditApproval: React.FC<{ id: string }> = ({ id }) => {
   return (
     <Tabs type="card">
       <TabPane tab="授信申请信息" key="1">
@@ -15,7 +15,7 @@ const CreditApproval: React.FC = () => {
         Content of Tab Pane 2
       </TabPane>
       <TabPane tab="审核记录" key="3">
-        <ApprovalHistory />
+        <ApprovalHistory id={id} />
       </TabPane>
     </Tabs>
   )

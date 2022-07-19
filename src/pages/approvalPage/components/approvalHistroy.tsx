@@ -5,9 +5,10 @@ import SimpleProtable from '@/components/ComProtable/SimpleProTable'
 import type { ProColumns } from '@ant-design/pro-table'
 import type { approvalHistoryProps } from '@/services/types'
 import ComUpload from '@/components/ComUpload'
+import { leaveHistory } from '@/services'
 
 // 审核记录
-const ApprovalHistory: React.FC = () => {
+const ApprovalHistory: React.FC<{ id: string }> = ({ id }) => {
   const [spinning, setSpinning] = useState<boolean>(true)
 
   const columns: ProColumns<approvalHistoryProps>[] = [
@@ -47,7 +48,8 @@ const ApprovalHistory: React.FC = () => {
   ]
 
   // 获取审核历史
-  const getList = () => {
+  const getList = async () => {
+    await leaveHistory(id)
     setSpinning(false)
     return {
       data: [],
