@@ -102,14 +102,6 @@ export function formatAmount(val: any, type = false) {
   return arr.join(',') + dotVal
 }
 
-export interface setProductElementParam {
-  data: any
-  standard: string
-  value: string
-  unit: string
-  showPercent?: boolean
-}
-
 // 转换金额
 export const transferAmount = (val: string | number, unit = 1) => {
   if (val) {

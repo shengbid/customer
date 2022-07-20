@@ -28,7 +28,7 @@ const ApprovalPage: React.FC = (props: any) => {
     credit: <CreditApproval id={id} />,
   }
   const approvalDom = {
-    credit: <CreditDetail />,
+    credit: <CreditDetail id={id} />,
   }
 
   useEffect(() => {
