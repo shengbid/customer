@@ -5,6 +5,7 @@ import settingDrawer from './zh-CN/settingDrawer'
 import pages from './zh-CN/pages'
 import sysManage from './zh-CN/sysManage'
 import customer from './zh-CN/customer'
+import credit from './zh-CN/credit'
 
 export default {
   'navBar.lang': '语言',
@@ -22,4 +23,5 @@ export default {
   ...component,
   ...sysManage,
   ...customer,
+  ...credit,
 }
