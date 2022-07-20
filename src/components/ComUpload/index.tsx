@@ -197,6 +197,7 @@ const ComUpload: React.FC<comuploadProps> = ({
       onChange={changeFile}
       fileList={files}
       beforeUpload={checkFileSize}
+      className={isDetail ? 'detailupload' : ''}
     >
       {limit > files.length && !isDetail && limit > value.length ? (
         <Button icon={<UploadOutlined />} type="text" />
