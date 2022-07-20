@@ -13,9 +13,10 @@ const { DescriptionsItem } = Descriptions
 
 interface infoProps {
   infoData: any
+  handleUpdate: () => void
 }
 // 企业基础信息
-const CompanyInfo: React.FC<infoProps> = ({ infoData }) => {
+const CompanyInfo: React.FC<infoProps> = ({ infoData, handleUpdate }) => {
   const [infoVisible, setInfoVisible] = useState<boolean>(false)
   const [companyVisible, setComapnyVisible] = useState<boolean>(false)
   const [fileVisible, setFileVisible] = useState<boolean>(false)
@@ -157,7 +158,16 @@ const CompanyInfo: React.FC<infoProps> = ({ infoData }) => {
       </CardTitle>
 
       {/* 修改企业信息 */}
-      <EditCompany modalVisible={companyVisible} handleCancel={() => setComapnyVisible(false)} />
+      <EditCompany
+        info={companyData.id}
+        modalVisible={companyVisible}
+        handleCancel={(val: any) => {
+          setComapnyVisible(false)
+          if (val === 1) {
+            handleUpdate()
+          }
+        }}
+      />
 
       {/* 修改企业经营信息 */}
       <EditCompanyBus modalVisible={infoVisible} handleCancel={() => setInfoVisible(false)} />
