@@ -2,6 +2,7 @@ import React from 'react'
 import { Button } from 'antd'
 import Descriptions from '@/components/ComPage/Descriptions'
 import SimpleProtable from '@/components/ComProtable/SimpleProTable'
+import CardTitle from '@/components/ComPage/CardTitle'
 
 const { DescriptionsItem } = Descriptions
 
@@ -59,15 +60,13 @@ const CompanyInfo: React.FC = () => {
         <DescriptionsItem label="申请额度(万元)">{infoData.companyName}</DescriptionsItem>
       </Descriptions>
       <SimpleProtable columns={columns} dataSource={tableData} />
-      <Descriptions
-        style={style}
+      <CardTitle
         title="企业资料附件清单"
+        style={{ marginTop: 30 }}
         extra={<Button type="primary">编辑</Button>}
       >
-        <DescriptionsItem span={2}>
-          <SimpleProtable columns={columns2} dataSource={tableData} />
-        </DescriptionsItem>
-      </Descriptions>
+        <SimpleProtable columns={columns2} dataSource={tableData} />
+      </CardTitle>
     </>
   )
 }
