@@ -21,6 +21,14 @@ export async function downloadFile(url: string) {
     method: 'post',
   })
 }
+// 下载上传的文件
+export async function downFile(params: { name: string; fileUrl: string }) {
+  return request(`/file/download/common`, {
+    params,
+    responseType: 'blob',
+    getResponse: true,
+  })
+}
 
 /** 导出模板 */
 export async function exportFile(url: string, data: any, all: boolean) {
