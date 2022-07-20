@@ -12,7 +12,7 @@ const CreditDetail: React.FC<creditprops> = () => {
   const [spinning, setSpinning] = useState(true)
   // 获取授信详情
   const getCredit = async () => {
-    const { data } = await getCreditDetail('62b845a1-07d7-11ed-a2b6-0a002700000a')
+    const { data } = await getCreditDetail('11112222')
     setSpinning(false)
     setInfoData(data)
   }

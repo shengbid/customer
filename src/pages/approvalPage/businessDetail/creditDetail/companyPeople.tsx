@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Modal, Button } from 'antd'
 import Descriptions from '@/components/ComPage/Descriptions'
 import LegalPerson from './editComponents/legalPerson'
@@ -6,17 +6,101 @@ import RealPersonInfo from './editComponents/realPersonInfo'
 import MetalPersonInfo from './editComponents/metaInfo'
 import Principal from './editComponents/principal'
 import FinancePrincipal from './editComponents/financePrincipal'
+import ComUpload from '@/components/ComUpload'
 
 const { DescriptionsItem } = Descriptions
 
+interface infoProps {
+  infoData: any
+}
+
 // 企业法人信息
-const CompanyPeople: React.FC = () => {
+const CompanyPeople: React.FC<infoProps> = ({ infoData }) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [type, setType] = useState<number>(1) // 编辑的类型
   const [title, setTitle] = useState<string>('') // 编辑的类型
-  const infoData = {
-    companyName: '吉祥',
-  }
+  const [legalData, setLegalData] = useState<any>({}) // 法人
+  const [realData, setRealData] = useState<any>({}) // 实控人
+  const [metalData, setMetalData] = useState<any>({}) // 实控人配偶
+  const [mianData, setMainData] = useState<any>({}) // 负责人
+  const [financeData, setFinanceData] = useState<any>({}) // 财务
+
+  useEffect(() => {
+    if (infoData.id && infoData.ryList) {
+      const ryList = infoData.ryList
+      const qyfr = ryList.qyfr
+      if (qyfr.backFileName) {
+        qyfr.idBack = [
+          {
+            fileName: qyfr.backFileName,
+            fileUrl: qyfr.backFileUrl,
+            pictureDomain: qyfr.pictureDomain,
+          },
+        ]
+      }
+      qyfr.idFront = [
+        {
+          fileName: qyfr.frontFileName,
+          fileUrl: qyfr.frontFileUrl,
+          pictureDomain: qyfr.pictureDomain,
+        },
+      ]
+      setLegalData(qyfr)
+      // 实控人
+      const skr = ryList.skr
+      if (skr.backFileName) {
+        skr.idBack = [
+          {
+            fileName: skr.backFileName,
+            fileUrl: skr.backFileUrl,
+            pictureDomain: skr.pictureDomain,
+          },
+        ]
+      }
+      skr.idFront = [
+        {
+          fileName: skr.frontFileName,
+          fileUrl: skr.frontFileUrl,
+          pictureDomain: skr.pictureDomain,
+        },
+      ]
+      setLegalData(skr)
+      skr.spouseCreditReport = JSON.parse(skr.spouseCreditReport)
+      if (skr.houseLicense) {
+        skr.houseLicense = JSON.parse(skr.houseLicense)
+      }
+      if (skr.driveLicense) {
+        skr.driveLicense = JSON.parse(skr.driveLicense)
+      }
+
+      setRealData(skr)
+
+      // 实控人配偶
+      const skrpo = ryList.skrpo
+      if (skrpo) {
+        if (skrpo.backFileName) {
+          skrpo.idBack = [
+            {
+              fileName: skrpo.backFileName,
+              fileUrl: skrpo.backFileUrl,
+              pictureDomain: skrpo.pictureDomain,
+            },
+          ]
+        }
+        skrpo.idFront = [
+          {
+            fileName: skrpo.frontFileName,
+            fileUrl: skrpo.frontFileUrl,
+            pictureDomain: skrpo.pictureDomain,
+          },
+        ]
+        skrpo.creditReport = JSON.parse(skrpo.creditReport)
+        setMetalData(skrpo)
+      }
+      setMainData(ryList.zyfzr)
+      setFinanceData(ryList.cwfzr)
+    }
+  }, [infoData])
 
   // 编辑
   const handleEdit = (val: number) => {
@@ -54,14 +138,18 @@ const CompanyPeople: React.FC = () => {
           </Button>
         }
       >
-        <DescriptionsItem label="法人/董事姓名">{infoData.companyName}</DescriptionsItem>
-        <DescriptionsItem label="身份证件类型">{infoData.companyName}</DescriptionsItem>
-        <DescriptionsItem label="证件号码">{infoData.companyName}</DescriptionsItem>
-        <DescriptionsItem label="证件正面">{infoData.companyName}</DescriptionsItem>
-        <DescriptionsItem label="证件反面">{infoData.companyName}</DescriptionsItem>
-        <DescriptionsItem label="手机号码">{infoData.companyName}</DescriptionsItem>
-        <DescriptionsItem label="婚姻情况">{infoData.companyName}</DescriptionsItem>
-        <DescriptionsItem label="住房地址">{infoData.companyName}</DescriptionsItem>
+        <DescriptionsItem label="法人/董事姓名">{legalData.name}</DescriptionsItem>
+        <DescriptionsItem label="身份证件类型">{legalData.identityType}</DescriptionsItem>
+        <DescriptionsItem label="证件号码">{legalData.identityNumber}</DescriptionsItem>
+        <DescriptionsItem label="证件正面">
+          <ComUpload isDetail value={legalData.idFront} />
+        </DescriptionsItem>
+        <DescriptionsItem label="证件反面">
+          <ComUpload isDetail value={legalData.idBack} />
+        </DescriptionsItem>
+        <DescriptionsItem label="手机号码">{legalData.phoneNumber}</DescriptionsItem>
+        <DescriptionsItem label="婚姻情况">{legalData.marriageStatus}</DescriptionsItem>
+        <DescriptionsItem label="住房地址">{legalData.houseAddr}</DescriptionsItem>
       </Descriptions>
 
       <Descriptions
@@ -72,37 +160,53 @@ const CompanyPeople: React.FC = () => {
           </Button>
         }
       >
-        <DescriptionsItem label="实控人姓名">{infoData.companyName}</DescriptionsItem>
-        <DescriptionsItem label="身份证件类型">{infoData.companyName}</DescriptionsItem>
-        <DescriptionsItem label="证件号码">{infoData.companyName}</DescriptionsItem>
-        <DescriptionsItem label="证件正面">{infoData.companyName}</DescriptionsItem>
-        <DescriptionsItem label="证件反面">{infoData.companyName}</DescriptionsItem>
-        <DescriptionsItem label="手机号码">{infoData.companyName}</DescriptionsItem>
-        <DescriptionsItem label="婚姻情况">{infoData.companyName}</DescriptionsItem>
-        <DescriptionsItem label="住房情况">{infoData.companyName}</DescriptionsItem>
-        <DescriptionsItem label="实控人行业从业年限">{infoData.companyName}</DescriptionsItem>
-        <DescriptionsItem label="住房地址">{infoData.companyName}</DescriptionsItem>
-        <DescriptionsItem label="征信报告">{infoData.companyName}</DescriptionsItem>
-        <DescriptionsItem label="房产证">{infoData.companyName}</DescriptionsItem>
-        <DescriptionsItem label="行驶证">{infoData.companyName}</DescriptionsItem>
+        <DescriptionsItem label="实控人姓名">{realData.name}</DescriptionsItem>
+        <DescriptionsItem label="身份证件类型">{realData.identityType}</DescriptionsItem>
+        <DescriptionsItem label="证件号码">{realData.identityNumber}</DescriptionsItem>
+        <DescriptionsItem label="证件正面">
+          <ComUpload isDetail value={realData.idFront} />
+        </DescriptionsItem>
+        <DescriptionsItem label="证件反面">
+          <ComUpload isDetail value={realData.idBack} />
+        </DescriptionsItem>
+        <DescriptionsItem label="手机号码">{realData.phoneNumber}</DescriptionsItem>
+        <DescriptionsItem label="婚姻情况">{realData.marriageStatus}</DescriptionsItem>
+        <DescriptionsItem label="住房情况">{realData.houseStatus}</DescriptionsItem>
+        <DescriptionsItem label="实控人行业从业年限">{realData.workYear}</DescriptionsItem>
+        <DescriptionsItem label="住房地址">{realData.houseAddr}</DescriptionsItem>
+        <DescriptionsItem label="征信报告">
+          <ComUpload isDetail value={realData.spouseCreditReport} />
+        </DescriptionsItem>
+        <DescriptionsItem label="房产证">
+          <ComUpload isDetail value={realData.houseLicense} />
+        </DescriptionsItem>
+        <DescriptionsItem label="行驶证">
+          <ComUpload isDetail value={realData.driveLicense} />
+        </DescriptionsItem>
       </Descriptions>
 
-      <Descriptions
-        title="实控人配偶信息"
-        extra={
-          <Button type="primary" onClick={() => handleEdit(3)}>
-            编辑
-          </Button>
-        }
-      >
-        <DescriptionsItem label="实控人配偶姓名">{infoData.companyName}</DescriptionsItem>
-        <DescriptionsItem label="身份证件类型">{infoData.companyName}</DescriptionsItem>
-        <DescriptionsItem label="证件号码">{infoData.companyName}</DescriptionsItem>
-        <DescriptionsItem label="证件正面">{infoData.companyName}</DescriptionsItem>
-        <DescriptionsItem label="证件反面">{infoData.companyName}</DescriptionsItem>
-        <DescriptionsItem label="手机号码">{infoData.companyName}</DescriptionsItem>
-        <DescriptionsItem label="征信报告">{infoData.companyName}</DescriptionsItem>
-      </Descriptions>
+      {metalData.name ? (
+        <Descriptions
+          title="实控人配偶信息"
+          extra={
+            <Button type="primary" onClick={() => handleEdit(3)}>
+              编辑
+            </Button>
+          }
+        >
+          <DescriptionsItem label="实控人配偶姓名">{metalData.name}</DescriptionsItem>
+          <DescriptionsItem label="身份证件类型">{metalData.identityType}</DescriptionsItem>
+          <DescriptionsItem label="证件号码">{metalData.identityNumber}</DescriptionsItem>
+          <DescriptionsItem label="证件正面">
+            <ComUpload isDetail value={metalData.idFront} />
+          </DescriptionsItem>
+          <DescriptionsItem label="证件反面">
+            <ComUpload isDetail value={metalData.idBack} />
+          </DescriptionsItem>
+          <DescriptionsItem label="手机号码">{metalData.phoneNumber}</DescriptionsItem>
+          <DescriptionsItem label="征信报告">{metalData.companyName}</DescriptionsItem>
+        </Descriptions>
+      ) : null}
 
       <Descriptions
         title="主要负责人信息"
@@ -112,9 +216,9 @@ const CompanyPeople: React.FC = () => {
           </Button>
         }
       >
-        <DescriptionsItem label="主要负责人姓名">{infoData.companyName}</DescriptionsItem>
-        <DescriptionsItem label="手机号码">{infoData.companyName}</DescriptionsItem>
-        <DescriptionsItem label="职务">{infoData.companyName}</DescriptionsItem>
+        <DescriptionsItem label="主要负责人姓名">{mianData.name}</DescriptionsItem>
+        <DescriptionsItem label="手机号码">{mianData.phoneNumber}</DescriptionsItem>
+        <DescriptionsItem label="职务">{mianData.duty}</DescriptionsItem>
       </Descriptions>
 
       <Descriptions
@@ -125,9 +229,9 @@ const CompanyPeople: React.FC = () => {
           </Button>
         }
       >
-        <DescriptionsItem label="财务负责人姓名">{infoData.companyName}</DescriptionsItem>
-        <DescriptionsItem label="手机号码">{infoData.companyName}</DescriptionsItem>
-        <DescriptionsItem label="职务">{infoData.companyName}</DescriptionsItem>
+        <DescriptionsItem label="财务负责人姓名">{financeData.name}</DescriptionsItem>
+        <DescriptionsItem label="手机号码">{financeData.phoneNumber}</DescriptionsItem>
+        <DescriptionsItem label="职务">{financeData.duty}</DescriptionsItem>
       </Descriptions>
 
       {/* 修改弹框 */}
