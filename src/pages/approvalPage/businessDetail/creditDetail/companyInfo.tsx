@@ -7,6 +7,7 @@ import EditCompanyFile from './editComponents/editCompanyFile'
 import EditCompanyBus from './editComponents/editCompanyBus'
 import EditCompany from './editComponents/editCompany'
 import { formatEmpty, transferAmount } from '@/utils/base'
+import ComUpload from '@/components/ComUpload'
 
 const { DescriptionsItem } = Descriptions
 
@@ -41,7 +42,7 @@ const CompanyInfo: React.FC<infoProps> = ({ infoData }) => {
     if (qyList && dsList) {
       for (const key in qyList) {
         if (obj[key]) {
-          const newItem: any = {}
+          const newItem: any = { id: key }
           newItem.fileType = obj[key]
           newItem.fileList = qyList[key]
           arr.push(newItem)
@@ -49,14 +50,14 @@ const CompanyInfo: React.FC<infoProps> = ({ infoData }) => {
       }
       for (const key in dsList) {
         if (obj[key]) {
-          const newItem: any = {}
+          const newItem: any = { id: key }
           newItem.fileType = obj[key]
           newItem.fileList = dsList[key]
           arr.push(newItem)
         }
       }
     }
-    console.log(arr)
+    // console.log(arr)
     setTableData(arr)
   }
 
@@ -96,7 +97,9 @@ const CompanyInfo: React.FC<infoProps> = ({ infoData }) => {
     {
       title: '附件',
       key: 'fileList',
+      width: '60%',
       dataIndex: 'fileList',
+      render: (val: any) => <ComUpload value={val} isDetail />,
     },
   ]
 
@@ -136,7 +139,11 @@ const CompanyInfo: React.FC<infoProps> = ({ infoData }) => {
           {transferAmount(infoData.applyQuota)}
         </DescriptionsItem>
       </Descriptions>
-      <SimpleProtable columns={columns} dataSource={infoData.businessDetailsList || []} />
+      <SimpleProtable
+        key="year"
+        columns={columns}
+        dataSource={infoData.businessDetailsList || []}
+      />
       <CardTitle
         title="企业资料附件清单"
         style={{ marginTop: 30 }}
@@ -146,7 +153,7 @@ const CompanyInfo: React.FC<infoProps> = ({ infoData }) => {
           </Button>
         }
       >
-        <SimpleProtable columns={columns2} dataSource={tableData} />
+        <SimpleProtable key="id" columns={columns2} isPagination={false} dataSource={tableData} />
       </CardTitle>
 
       {/* 修改企业信息 */}
