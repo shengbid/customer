@@ -27,21 +27,21 @@ export async function editCompany(data: any) {
 
 // 修改企业业务信息
 export async function editCompanyBus(data: any) {
-  return request<{ data: any }>(`${Url}/enterprise/get/details`, {
+  return request<{ data: any }>(`${Url}/edit/enterprise`, {
     method: 'post',
     data,
   })
 }
 // 修改企业清单
 export async function editCompanyFile(data: any) {
-  return request<{ data: any }>(`${Url}/edit`, {
+  return request<{ data: any }>(`${Url}/edit/operate`, {
     method: 'post',
     data,
   })
 }
 // 修改企业人员
 export async function editCompanyPeople(data: any) {
-  return request<{ data: any }>(`${Url}/enterprise/get/details`, {
+  return request<{ data: any }>(`${Url}/edit/person`, {
     method: 'post',
     data,
   })

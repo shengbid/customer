@@ -1,13 +1,22 @@
 import React, { useState, useEffect } from 'react'
-import { Modal, Button, Form, Spin } from 'antd'
+import { Modal, Button, Form, Spin, message } from 'antd'
 import { EditableProTable } from '@ant-design/pro-table'
+import ComUpload from '@/components/ComUpload'
+import { editCompanyFile } from '@/services'
 
 interface compnayProps {
   modalVisible: boolean
-  handleCancel: () => void
+  handleCancel: (val?: any) => void
+  infoData: any[]
+  extraInfo: any
 }
 // 修改企业文件
-const EditCompanyFile: React.FC<compnayProps> = ({ modalVisible, handleCancel }) => {
+const EditCompanyFile: React.FC<compnayProps> = ({
+  modalVisible,
+  handleCancel,
+  infoData,
+  extraInfo,
+}) => {
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([])
   const [dataSource, setDataSource] = useState<any[]>([])
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
@@ -17,32 +26,58 @@ const EditCompanyFile: React.FC<compnayProps> = ({ modalVisible, handleCancel })
   const columns = [
     {
       title: '附件类型',
-      dataIndex: 'fileType',
-      editable: false,
+      dataIndex: 'typeName',
       width: '40%',
+      editable: false,
     },
     {
       title: '附件',
       dataIndex: 'fileList',
-      editable: false,
       width: '60%',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            validator: ({ field }: any) => {
+              if (field.indexOf('qt') < 0) {
+                return Promise.reject(new Error('此项是必填项'))
+              }
+              return Promise.resolve()
+            },
+          },
+        ],
+      },
+      renderFormItem: () => <ComUpload limit={10} />,
     },
   ]
 
   // 获取详情
   const getDetail = () => {
+    if (infoData && infoData.length) {
+      infoData.push({ fileType: 'qt', typeName: '其他', fileList: [] })
+      setDataSource(infoData)
+      setEditableRowKeys(infoData.map((item: any) => item.fileType))
+    }
     setSpining(false)
   }
 
   useEffect(() => {
-    getDetail()
-  }, [])
+    if (modalVisible) {
+      getDetail()
+    }
+  }, [modalVisible])
 
   // 提交
-  const handleOk = () => {
+  const handleOk = async () => {
     tableForm.validateFields()
+    const data = { ...extraInfo }
+    dataSource.forEach((item: any) => {
+      data[item.fileType] = item.fileList
+    })
+    await editCompanyFile(data)
     setConfirmLoading(false)
-    handleCancel()
+    handleCancel(1)
+    message.success('修改成功')
   }
 
   const footer = (
@@ -65,12 +100,15 @@ const EditCompanyFile: React.FC<compnayProps> = ({ modalVisible, handleCancel })
       visible={modalVisible}
       footer={footer}
       onCancel={handleCancel}
+      bodyStyle={{ padding: '24px 0' }}
     >
       <Spin spinning={spining}>
         <EditableProTable<any>
-          rowKey="year"
+          border
+          rowKey="fileType"
           scroll={{
             x: 560,
+            y: 500,
           }}
           maxLength={5}
           // 关闭默认的新建按钮

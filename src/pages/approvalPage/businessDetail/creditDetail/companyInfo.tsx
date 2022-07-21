@@ -44,7 +44,8 @@ const CompanyInfo: React.FC<infoProps> = ({ infoData, handleUpdate }) => {
       for (const key in qyList) {
         if (obj[key]) {
           const newItem: any = { id: key }
-          newItem.fileType = obj[key]
+          newItem.typeName = obj[key]
+          newItem.fileType = key
           newItem.fileList = qyList[key]
           arr.push(newItem)
         }
@@ -52,7 +53,8 @@ const CompanyInfo: React.FC<infoProps> = ({ infoData, handleUpdate }) => {
       for (const key in dsList) {
         if (obj[key]) {
           const newItem: any = { id: key }
-          newItem.fileType = obj[key]
+          newItem.typeName = obj[key]
+          newItem.fileType = key
           newItem.fileList = dsList[key]
           arr.push(newItem)
         }
@@ -92,8 +94,8 @@ const CompanyInfo: React.FC<infoProps> = ({ infoData, handleUpdate }) => {
   const columns2 = [
     {
       title: '附件类型',
-      key: 'fileType',
-      dataIndex: 'fileType',
+      key: 'typeName',
+      dataIndex: 'typeName',
     },
     {
       title: '附件',
@@ -170,10 +172,32 @@ const CompanyInfo: React.FC<infoProps> = ({ infoData, handleUpdate }) => {
       />
 
       {/* 修改企业经营信息 */}
-      <EditCompanyBus modalVisible={infoVisible} handleCancel={() => setInfoVisible(false)} />
+      <EditCompanyBus
+        modalVisible={infoVisible}
+        infoData={infoData}
+        handleCancel={(val: any) => {
+          setInfoVisible(false)
+          if (val === 1) {
+            handleUpdate()
+          }
+        }}
+      />
 
       {/* 修改企业清单 */}
-      <EditCompanyFile modalVisible={fileVisible} handleCancel={() => setFileVisible(false)} />
+      <EditCompanyFile
+        infoData={tableData}
+        extraInfo={{
+          enterpriseId: infoData.enterpriseId,
+          businessTypeList: infoData.businessTypeList,
+        }}
+        modalVisible={fileVisible}
+        handleCancel={(val: any) => {
+          setFileVisible(false)
+          if (val === 1) {
+            handleUpdate()
+          }
+        }}
+      />
     </>
   )
 }
