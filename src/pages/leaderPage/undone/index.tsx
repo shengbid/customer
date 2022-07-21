@@ -121,7 +121,7 @@ const Undone: React.FC = () => {
         />
       </StatisticCard.Group> */}
       <MenuProTable<any>
-        rowKey="name"
+        rowKey="id"
         request={getList}
         columns={columns}
         actionRef={actionRef}
