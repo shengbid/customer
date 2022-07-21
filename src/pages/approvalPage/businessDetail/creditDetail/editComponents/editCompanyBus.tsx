@@ -1,29 +1,30 @@
 import React, { useState, useEffect } from 'react'
-import { Modal, Button, Form, Input, Tooltip } from 'antd'
+import { Modal, Button, Form, Input, Tooltip, message } from 'antd'
 import { useIntl } from 'umi'
 import ComInputNumber from '@/components/Input/InputNumber'
 import { EditableProTable } from '@ant-design/pro-table'
 import type { ProColumns } from '@ant-design/pro-table'
 import type { companyBusinessProps } from '@/services/types'
-import moment from 'moment'
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import DictSelect from '@/components/ComSelect'
 import RequiredLabel from '@/components/RequiredLabel'
+import { isEmpty } from 'lodash'
+import { editCompanyBus } from '@/services'
 
 const { TextArea } = Input
 
 interface compnayProps {
   modalVisible: boolean
-  handleCancel: () => void
-  infoData: any[]
+  handleCancel: (val?: any) => void
+  infoData: any
 }
 
 // 修改企业信息
 const EditCompany: React.FC<compnayProps> = ({ modalVisible, handleCancel, infoData }) => {
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([2022, 2021])
   const [dataSource, setDataSource] = useState<companyBusinessProps[]>(infoData)
-  const [busType, setBusType] = useState<string[]>(['B2C'])
-  const [unit, setUnit] = useState<number>(0)
+  const [busType, setBusType] = useState<string[]>([])
+  const [unit, setUnit] = useState<number>(1)
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
   const intl = useIntl()
   const [form] = Form.useForm()
@@ -31,23 +32,30 @@ const EditCompany: React.FC<compnayProps> = ({ modalVisible, handleCancel, infoD
 
   // 表格初始数据
   const initTable = () => {
-    const year = moment().year()
-    const preYear = year - 1
-    setEditableRowKeys([year, preYear])
-    setDataSource([{ year }, { year: preYear }])
-    setUnit(0)
+    setEditableRowKeys(infoData.businessDetailsList.map((item: any) => item.year))
+    setDataSource(infoData.businessDetailsList)
+    setUnit(1)
   }
 
   // 提交
-  const handleOk = (values) => {
+  const handleOk = async (values: any) => {
     console.log(values)
+    await editCompanyBus({ cusEnterpriseInfo: values, businessDetailsList: dataSource })
     setConfirmLoading(false)
-    handleCancel()
+    handleCancel(1)
+    message.success('修改成功')
   }
 
   useEffect(() => {
-    initTable()
-  }, [])
+    if (infoData && infoData.id) {
+      console.log(infoData)
+      if (!isEmpty(infoData.businessDetailsList)) {
+        initTable()
+      }
+      setBusType(infoData.businessTypeList)
+      form.setFieldsValue(infoData)
+    }
+  }, [infoData])
 
   const columns: ProColumns<companyBusinessProps>[] = [
     {
@@ -131,7 +139,7 @@ const EditCompany: React.FC<compnayProps> = ({ modalVisible, handleCancel, infoD
             id: 'credit.apply.companyName',
           })}
         >
-          <span>99</span>
+          <span>{infoData.enterpriseName}</span>
         </Form.Item>
 
         <Form.Item
@@ -150,7 +158,7 @@ const EditCompany: React.FC<compnayProps> = ({ modalVisible, handleCancel, infoD
             },
           ]}
         >
-          <DictSelect authorword="cus_zyyw" type="checkbox" onChange={setBusType} />
+          <DictSelect authorword="cus_zyyw" disabled type="checkbox" onChange={setBusType} />
         </Form.Item>
         <Form.Item
           name="sellProduct"
