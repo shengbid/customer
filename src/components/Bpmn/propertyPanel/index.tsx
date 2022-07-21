@@ -683,7 +683,8 @@ const PropertyPanel: React.FC<{ bpmnModeler: any }> = ({ bpmnModeler }) => {
           {isTask && (
             <Panel header="表单设置" key="3">
               <Form.Item label="表单" name="formKey">
-                <DictSelect authorword="process_form" />
+                {/* <DictSelect authorword="process_form" /> */}
+                <Input placeholder="请输入表单" />
               </Form.Item>
             </Panel>
           )}

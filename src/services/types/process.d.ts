@@ -9,7 +9,7 @@ export interface processListParamProps extends pageLimitProps {
 // 流程详情查询
 export interface getdetailProps {
   deploymentId: string
-  resourceName: string
+  resourceName?: string
 }
 
 // 流程列表
