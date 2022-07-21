@@ -7,7 +7,7 @@ import ComCard from '@/components/ComPage/ComCard'
 import ApprovalForm from './components/approvalForm'
 import ComCollapse from '@/components/ComPage/ComCollapse'
 import ViewBpmn from '@/components/Bpmn/ViewBpmn'
-import { approvalSave, getProcessInfo } from '@/services'
+import { approvalSave /*getProcessInfo*/ } from '@/services'
 import CreditApproval from './businessDetail/creditApproval'
 import CreditDetail from './businessDetail/creditDetail'
 
@@ -44,14 +44,14 @@ const ApprovalPage: React.FC = (props: any) => {
     resourceName: 'CreateWithBPMNJS.bpmn',
   }
 
-  // 获取流程信息
-  const getProcess = async () => {
-    await getProcessInfo(businessKey)
-  }
+  // // 获取流程信息
+  // const getProcess = async () => {
+  //   await getProcessInfo(businessKey)
+  // }
 
-  useEffect(() => {
-    getProcess()
-  }, [])
+  // useEffect(() => {
+  //   getProcess()
+  // }, [])
 
   // 点击审批
   const approval = async (values: any) => {
