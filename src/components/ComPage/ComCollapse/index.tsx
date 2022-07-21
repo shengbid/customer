@@ -3,7 +3,7 @@ import type { CollapseProps } from 'antd'
 
 const ComCollapse = (props: CollapseProps) => {
   return (
-    <Collapse {...props} bordered={false} expandIconPosition="right">
+    <Collapse {...props} className="pagecard" bordered={false} expandIconPosition="right">
       {props.children}
     </Collapse>
   )
