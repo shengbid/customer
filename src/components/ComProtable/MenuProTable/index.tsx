@@ -52,7 +52,9 @@ export default function MenuProTable<T>(props: ProTableProps<T, any> & FunctionP
   return (
     <ProTable<T>
       className="yue-pro-table"
-      pagination={props.pagination ? props.pagination : { defaultPageSize: 10 }} // 默认每页10条
+      pagination={
+        props.pagination ? props.pagination : { defaultPageSize: 10, showSizeChanger: true }
+      } // 默认每页10条
       form={{
         labelAlign: 'left',
       }}
@@ -63,7 +65,6 @@ export default function MenuProTable<T>(props: ProTableProps<T, any> & FunctionP
             key="search"
             type="primary"
             onClick={() => {
-              console.log(form, 63)
               ;(props.selectAll && props.selectAll()) || form?.submit()
             }}
           >
