@@ -20,3 +20,11 @@ export interface selectOptionProps {
   label: string
   value: string | number
 }
+// 上传文件类型
+export interface fileListOptionProps {
+  fileName: string
+  fileUrl: string
+  pictureDomain: string
+  name?: string
+  url?: string
+}

@@ -6,6 +6,8 @@ export interface undoneListProps {
   instanceName: string // name
   name: string
   status: string //
+  instanceId: string
+  formkey: string
   createdDate?: string
 }
 export interface undoneListParamProps extends pageLimitProps {
