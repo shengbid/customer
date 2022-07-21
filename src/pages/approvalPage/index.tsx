@@ -7,7 +7,7 @@ import ComCard from '@/components/ComPage/ComCard'
 import ApprovalForm from './components/approvalForm'
 import ComCollapse from '@/components/ComPage/ComCollapse'
 import ViewBpmn from '@/components/Bpmn/ViewBpmn'
-import { approvalSave /*getProcessInfo*/ } from '@/services'
+import { approvalSave, getProcessIds } from '@/services'
 import CreditApproval from './businessDetail/creditApproval'
 import CreditDetail from './businessDetail/creditDetail'
 
@@ -18,6 +18,7 @@ const { DescriptionsItem } = ComDescriptions
 const ApprovalPage: React.FC = (props: any) => {
   const [infoData, setInfoData] = useState<any>({})
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
+  const [higLigthData, setHigLigthData] = useState<any>([])
   const title = '香港吉祥公司--授信申请'
   const formName = 'credit'
 
@@ -40,18 +41,20 @@ const ApprovalPage: React.FC = (props: any) => {
   }, [])
 
   const BpmnInfo = {
-    deploymentId: '7cb256ea-f78b-11ec-aafa-50ebf6e9ee70',
-    resourceName: 'CreateWithBPMNJS.bpmn',
+    // deploymentId: '7cb256ea-f78b-11ec-aafa-50ebf6e9ee70',
+    deploymentId: businessKey,
+    // resourceName: 'CreateWithBPMNJS.bpmn',
   }
 
-  // // 获取流程信息
-  // const getProcess = async () => {
-  //   await getProcessInfo(businessKey)
-  // }
+  // 获取流程信息
+  const getProcess = async () => {
+    const { data } = await getProcessIds(id)
+    setHigLigthData(data)
+  }
 
-  // useEffect(() => {
-  //   getProcess()
-  // }, [])
+  useEffect(() => {
+    getProcess()
+  }, [])
 
   // 点击审批
   const approval = async (values: any) => {
@@ -86,7 +89,7 @@ const ApprovalPage: React.FC = (props: any) => {
       {/* 流程图 */}
       <ComCollapse>
         <Panel header="流程图" key="1">
-          <ViewBpmn info={BpmnInfo} />
+          <ViewBpmn info={BpmnInfo} highLightData={higLigthData} />
         </Panel>
       </ComCollapse>
     </div>

@@ -7,6 +7,7 @@ import MetalPersonInfo from './editComponents/metaInfo'
 import Principal from './editComponents/principal'
 import FinancePrincipal from './editComponents/financePrincipal'
 import ComUpload from '@/components/ComUpload'
+import DictShow from '@/components/ComSelect/dictShow'
 
 const { DescriptionsItem } = Descriptions
 
@@ -139,7 +140,9 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp }) => {
         }
       >
         <DescriptionsItem label="法人/董事姓名">{legalData.name}</DescriptionsItem>
-        <DescriptionsItem label="身份证件类型">{legalData.identityType}</DescriptionsItem>
+        <DescriptionsItem label="身份证件类型">
+          <DictShow dictValue={legalData.identityType} dictkey="cus_sfzlx" />
+        </DescriptionsItem>
         <DescriptionsItem label="证件号码">{legalData.identityNumber}</DescriptionsItem>
         <DescriptionsItem label="证件正面">
           <ComUpload isDetail value={legalData.idFront} />
@@ -147,8 +150,13 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp }) => {
         <DescriptionsItem label="证件反面">
           <ComUpload isDetail value={legalData.idReverse} />
         </DescriptionsItem>
-        <DescriptionsItem label="手机号码">{legalData.phoneNumber}</DescriptionsItem>
-        <DescriptionsItem label="婚姻情况">{legalData.marriageStatus}</DescriptionsItem>
+        <DescriptionsItem label="手机号码">
+          <DictShow dictValue={legalData.phoneArea} dictkey="phone_code" />
+          {legalData.phoneNumber}
+        </DescriptionsItem>
+        <DescriptionsItem label="婚姻情况">
+          <DictShow dictValue={legalData.marriageStatus} dictkey="hyqk" />
+        </DescriptionsItem>
         <DescriptionsItem label="住房地址">{legalData.houseAddr}</DescriptionsItem>
       </Descriptions>
 
@@ -161,7 +169,9 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp }) => {
         }
       >
         <DescriptionsItem label="实控人姓名">{realData.name}</DescriptionsItem>
-        <DescriptionsItem label="身份证件类型">{realData.identityType}</DescriptionsItem>
+        <DescriptionsItem label="身份证件类型">
+          <DictShow dictValue={realData.identityType} dictkey="cus_sfzlx" />
+        </DescriptionsItem>
         <DescriptionsItem label="证件号码">{realData.identityNumber}</DescriptionsItem>
         <DescriptionsItem label="证件正面">
           <ComUpload isDetail value={realData.idFront} />
@@ -169,9 +179,16 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp }) => {
         <DescriptionsItem label="证件反面">
           <ComUpload isDetail value={realData.idReverse} />
         </DescriptionsItem>
-        <DescriptionsItem label="手机号码">{realData.phoneNumber}</DescriptionsItem>
-        <DescriptionsItem label="婚姻情况">{realData.marriageStatus}</DescriptionsItem>
-        <DescriptionsItem label="住房情况">{realData.houseStatus}</DescriptionsItem>
+        <DescriptionsItem label="手机号码">
+          <DictShow dictValue={realData.phoneArea} dictkey="phone_code" />
+          {realData.phoneNumber}
+        </DescriptionsItem>
+        <DescriptionsItem label="婚姻情况">
+          <DictShow dictValue={realData.marriageStatus} dictkey="hyqk" />
+        </DescriptionsItem>
+        <DescriptionsItem label="住房情况">
+          <DictShow dictValue={realData.houseStatus} dictkey="zfqk" />
+        </DescriptionsItem>
         <DescriptionsItem label="实控人行业从业年限">{realData.workYear}</DescriptionsItem>
         <DescriptionsItem label="住房地址">{realData.houseAddr}</DescriptionsItem>
         <DescriptionsItem label="征信报告">
@@ -195,7 +212,9 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp }) => {
           }
         >
           <DescriptionsItem label="实控人配偶姓名">{metalData.name}</DescriptionsItem>
-          <DescriptionsItem label="身份证件类型">{metalData.identityType}</DescriptionsItem>
+          <DescriptionsItem label="身份证件类型">
+            <DictShow dictValue={metalData.identityType} dictkey="cus_sfzlx" />
+          </DescriptionsItem>
           <DescriptionsItem label="证件号码">{metalData.identityNumber}</DescriptionsItem>
           <DescriptionsItem label="证件正面">
             <ComUpload isDetail value={metalData.idFront} />
@@ -203,7 +222,10 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp }) => {
           <DescriptionsItem label="证件反面">
             <ComUpload isDetail value={metalData.idReverse} />
           </DescriptionsItem>
-          <DescriptionsItem label="手机号码">{metalData.phoneNumber}</DescriptionsItem>
+          <DescriptionsItem label="手机号码">
+            <DictShow dictValue={metalData.phoneArea} dictkey="phone_code" />
+            {metalData.phoneNumber}
+          </DescriptionsItem>
           <DescriptionsItem label="征信报告">
             <ComUpload isDetail value={metalData.creditReport} />
           </DescriptionsItem>
@@ -219,7 +241,10 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp }) => {
         }
       >
         <DescriptionsItem label="主要负责人姓名">{mianData.name}</DescriptionsItem>
-        <DescriptionsItem label="手机号码">{mianData.phoneNumber}</DescriptionsItem>
+        <DescriptionsItem label="手机号码">
+          <DictShow dictValue={mianData.phoneArea} dictkey="phone_code" />
+          {mianData.phoneNumber}
+        </DescriptionsItem>
         <DescriptionsItem label="职务">{mianData.duty}</DescriptionsItem>
       </Descriptions>
 
@@ -232,7 +257,10 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp }) => {
         }
       >
         <DescriptionsItem label="财务负责人姓名">{financeData.name}</DescriptionsItem>
-        <DescriptionsItem label="手机号码">{financeData.phoneNumber}</DescriptionsItem>
+        <DescriptionsItem label="手机号码">
+          <DictShow dictValue={financeData.phoneArea} dictkey="phone_code" />
+          {financeData.phoneNumber}
+        </DescriptionsItem>
         <DescriptionsItem label="职务">{financeData.duty}</DescriptionsItem>
       </Descriptions>
 

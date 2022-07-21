@@ -9,6 +9,7 @@ import EditCompany from './editComponents/editCompany'
 import { formatEmpty, transferAmount } from '@/utils/base'
 import ComUpload from '@/components/ComUpload'
 import { isEmpty } from 'lodash'
+import DictShow from '@/components/ComSelect/dictShow'
 
 const { DescriptionsItem } = Descriptions
 
@@ -145,7 +146,9 @@ const CompanyInfo: React.FC<infoProps> = ({ infoData, handleUpdate }) => {
           </Button>
         }
       >
-        <DescriptionsItem label="主营业务">{infoData.businessType}</DescriptionsItem>
+        <DescriptionsItem label="主营业务">
+          <DictShow dictValue={infoData.businessTypeList} dictkey="cus_zyyw" />
+        </DescriptionsItem>
         <DescriptionsItem label="销售产品类型">{infoData.sellProduct}</DescriptionsItem>
         <DescriptionsItem label="企业债务情况">{infoData.enterpriseDebt}</DescriptionsItem>
         <DescriptionsItem label="申请额度(万元)">
