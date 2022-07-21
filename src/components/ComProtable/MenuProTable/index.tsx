@@ -63,6 +63,7 @@ export default function MenuProTable<T>(props: ProTableProps<T, any> & FunctionP
             key="search"
             type="primary"
             onClick={() => {
+              console.log(form, 63)
               ;(props.selectAll && props.selectAll()) || form?.submit()
             }}
           >
@@ -72,7 +73,12 @@ export default function MenuProTable<T>(props: ProTableProps<T, any> & FunctionP
           <Button
             key="rest"
             onClick={() => {
-              ;(props.onReset && props.onReset()) || form?.resetFields()
+              if (props.onReset) {
+                props.onReset()
+              } else {
+                form?.resetFields()
+                form?.submit()
+              }
             }}
           >
             <ReloadOutlined />
