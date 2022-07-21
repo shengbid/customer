@@ -24,7 +24,7 @@ const CreditDetail: React.FC<creditprops> = () => {
   return (
     <Spin spinning={spinning}>
       <CompanyInfo handleUpdate={getCredit} infoData={infoData} />
-      <CompanyPeople infoData={infoData} />
+      <CompanyPeople handleUp={getCredit} infoData={infoData} />
     </Spin>
   )
 }

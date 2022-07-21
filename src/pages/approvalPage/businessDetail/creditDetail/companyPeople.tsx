@@ -12,10 +12,11 @@ const { DescriptionsItem } = Descriptions
 
 interface infoProps {
   infoData: any
+  handleUp: () => void
 }
 
 // 企业法人信息
-const CompanyPeople: React.FC<infoProps> = ({ infoData }) => {
+const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp }) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [type, setType] = useState<number>(1) // 编辑的类型
   const [title, setTitle] = useState<string>('') // 编辑的类型
@@ -30,7 +31,7 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData }) => {
       const ryList = infoData.ryList
       const qyfr = ryList.qyfr
       if (qyfr.backFileName) {
-        qyfr.idBack = [
+        qyfr.idReverse = [
           {
             fileName: qyfr.backFileName,
             fileUrl: qyfr.backFileUrl,
@@ -49,7 +50,7 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData }) => {
       // 实控人
       const skr = ryList.skr
       if (skr.backFileName) {
-        skr.idBack = [
+        skr.idReverse = [
           {
             fileName: skr.backFileName,
             fileUrl: skr.backFileUrl,
@@ -64,7 +65,6 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData }) => {
           pictureDomain: skr.pictureDomain,
         },
       ]
-      setLegalData(skr)
       skr.spouseCreditReport = JSON.parse(skr.spouseCreditReport)
       if (skr.houseLicense) {
         skr.houseLicense = JSON.parse(skr.houseLicense)
@@ -79,7 +79,7 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData }) => {
       const skrpo = ryList.skrpo
       if (skrpo) {
         if (skrpo.backFileName) {
-          skrpo.idBack = [
+          skrpo.idReverse = [
             {
               fileName: skrpo.backFileName,
               fileUrl: skrpo.backFileUrl,
@@ -145,7 +145,7 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData }) => {
           <ComUpload isDetail value={legalData.idFront} />
         </DescriptionsItem>
         <DescriptionsItem label="证件反面">
-          <ComUpload isDetail value={legalData.idBack} />
+          <ComUpload isDetail value={legalData.idReverse} />
         </DescriptionsItem>
         <DescriptionsItem label="手机号码">{legalData.phoneNumber}</DescriptionsItem>
         <DescriptionsItem label="婚姻情况">{legalData.marriageStatus}</DescriptionsItem>
@@ -167,7 +167,7 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData }) => {
           <ComUpload isDetail value={realData.idFront} />
         </DescriptionsItem>
         <DescriptionsItem label="证件反面">
-          <ComUpload isDetail value={realData.idBack} />
+          <ComUpload isDetail value={realData.idReverse} />
         </DescriptionsItem>
         <DescriptionsItem label="手机号码">{realData.phoneNumber}</DescriptionsItem>
         <DescriptionsItem label="婚姻情况">{realData.marriageStatus}</DescriptionsItem>
@@ -201,10 +201,12 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData }) => {
             <ComUpload isDetail value={metalData.idFront} />
           </DescriptionsItem>
           <DescriptionsItem label="证件反面">
-            <ComUpload isDetail value={metalData.idBack} />
+            <ComUpload isDetail value={metalData.idReverse} />
           </DescriptionsItem>
           <DescriptionsItem label="手机号码">{metalData.phoneNumber}</DescriptionsItem>
-          <DescriptionsItem label="征信报告">{metalData.companyName}</DescriptionsItem>
+          <DescriptionsItem label="征信报告">
+            <ComUpload isDetail value={metalData.creditReport} />
+          </DescriptionsItem>
         </Descriptions>
       ) : null}
 
@@ -248,35 +250,45 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData }) => {
       >
         {type === 1 && (
           <LegalPerson
+            info={legalData}
             handleCancel={() => {
+              handleUp()
               setModalVisible(false)
             }}
           />
         )}
         {type === 2 && (
           <RealPersonInfo
+            info={realData}
             handleCancel={() => {
+              handleUp()
               setModalVisible(false)
             }}
           />
         )}
         {type === 3 && (
           <MetalPersonInfo
+            info={metalData}
             handleCancel={() => {
+              handleUp()
               setModalVisible(false)
             }}
           />
         )}
         {type === 4 && (
           <Principal
+            info={mianData}
             handleCancel={() => {
+              handleUp()
               setModalVisible(false)
             }}
           />
         )}
         {type === 5 && (
           <FinancePrincipal
+            info={financeData}
             handleCancel={() => {
+              handleUp()
               setModalVisible(false)
             }}
           />

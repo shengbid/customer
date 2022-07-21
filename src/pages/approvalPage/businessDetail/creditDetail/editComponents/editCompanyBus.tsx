@@ -39,7 +39,7 @@ const EditCompany: React.FC<compnayProps> = ({ modalVisible, handleCancel, infoD
 
   // 提交
   const handleOk = async (values: any) => {
-    console.log(values)
+    // console.log(values)
     await editCompanyBus({ cusEnterpriseInfo: values, businessDetailsList: dataSource })
     setConfirmLoading(false)
     handleCancel(1)
@@ -48,7 +48,6 @@ const EditCompany: React.FC<compnayProps> = ({ modalVisible, handleCancel, infoD
 
   useEffect(() => {
     if (infoData && infoData.id) {
-      console.log(infoData)
       if (!isEmpty(infoData.businessDetailsList)) {
         initTable()
       }

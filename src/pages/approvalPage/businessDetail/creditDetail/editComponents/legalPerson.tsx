@@ -1,27 +1,42 @@
-import React, { useState } from 'react'
-import { Form, Input, Row, Col, Button } from 'antd'
+import React, { useState, useEffect } from 'react'
+import { Form, Input, Row, Col, Button, message } from 'antd'
 import DictSelect from '@/components/ComSelect'
 import { phoneReg, idCardReg } from '@/utils/reg'
 import RequiredLabel from '@/components/RequiredLabel'
 import { useIntl } from 'umi'
 import UploadImage from '@/components/ComUpload/uploadImage'
+import { editCompanyPeople } from '@/services'
+import { isEmpty } from 'lodash'
 
 interface reralProps {
   handleCancel: () => void
+  info: any
 }
 
 // 法人信息
-const LegalPerson: React.FC<reralProps> = ({ handleCancel }) => {
+const LegalPerson: React.FC<reralProps> = ({ handleCancel, info }) => {
   const intl = useIntl()
   const [idType, setIdTyp] = useState<string>('xgsfz')
   const [form] = Form.useForm()
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
 
+  useEffect(() => {
+    form.setFieldsValue(info)
+  }, [])
+
   // 修改
-  const handleOk = (values) => {
-    console.log(values)
+  const handleOk = async (values: any) => {
+    values.frontFileName = values.idFront[0].fileName
+    values.frontFileUrl = values.idFront[0].fileUrl
+    values.pictureDomain = values.idFront[0].pictureDomain
+    if (!isEmpty(values.idReverse)) {
+      values.backFileName = values.idReverse[0].fileName
+      values.backFileUrl = values.idReverse[0].fileUrl
+    }
+    await editCompanyPeople(values)
     setConfirmLoading(false)
     handleCancel()
+    message.success('修改成功')
   }
 
   const gutter = 24
@@ -38,6 +53,9 @@ const LegalPerson: React.FC<reralProps> = ({ handleCancel }) => {
       layout="vertical"
     >
       <Form.Item label="identity" name="identity" style={{ display: 'none' }}>
+        <Input />
+      </Form.Item>
+      <Form.Item label="id" name="id" style={{ display: 'none' }}>
         <Input />
       </Form.Item>
       <Row gutter={gutter}>
@@ -207,7 +225,7 @@ const LegalPerson: React.FC<reralProps> = ({ handleCancel }) => {
         </Col>
         <Col span={12}>
           <Form.Item
-            name="houseStatus"
+            name="houseAddr"
             label={intl.formatMessage({
               id: 'credit.apply.address',
             })}

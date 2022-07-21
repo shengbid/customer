@@ -1,27 +1,46 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useIntl } from 'umi'
 import DictSelect from '@/components/ComSelect'
 import { phoneReg, idCardReg } from '@/utils/reg'
 import RequiredLabel from '@/components/RequiredLabel'
-import { Form, Input, Row, Col, Button } from 'antd'
+import { Form, Input, Row, Col, Button, message } from 'antd'
 import ComUpload from '@/components/ComUpload'
 import UploadImage from '@/components/ComUpload/uploadImage'
+import { editCompanyPeople } from '@/services'
+import { isEmpty } from 'lodash'
 
 interface reralProps {
   handleCancel: () => void
+  info: any
 }
 // 实控人信息
-const RealPersonInfo: React.FC<reralProps> = ({ handleCancel }) => {
+const RealPersonInfo: React.FC<reralProps> = ({ handleCancel, info }) => {
   const intl = useIntl()
   const [idType, setIdTyp] = useState<string>('xgsfz')
   const [form] = Form.useForm()
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
 
+  useEffect(() => {
+    console.log(info)
+    form.setFieldsValue(info)
+  }, [])
+
   // 修改
-  const handleOk = (values) => {
-    console.log(values)
+  const handleOk = async (values: any) => {
+    values.frontFileName = values.idFront[0].fileName
+    values.frontFileUrl = values.idFront[0].fileUrl
+    values.pictureDomain = values.idFront[0].pictureDomain
+    if (!isEmpty(values.idReverse)) {
+      values.backFileName = values.idReverse[0].fileName
+      values.backFileUrl = values.idReverse[0].fileUrl
+    }
+    values.spouseCreditReport = JSON.stringify(values.spouseCreditReport)
+    values.houseLicense = JSON.stringify(values.houseLicense)
+    values.driveLicense = JSON.stringify(values.driveLicense)
+    await editCompanyPeople(values)
     setConfirmLoading(false)
     handleCancel()
+    message.success('修改成功')
   }
 
   const gutter = 24
@@ -36,6 +55,9 @@ const RealPersonInfo: React.FC<reralProps> = ({ handleCancel }) => {
       onFinish={handleOk}
     >
       <Form.Item label="identity" name="identity" style={{ display: 'none' }}>
+        <Input />
+      </Form.Item>
+      <Form.Item label="id" name="id" style={{ display: 'none' }}>
         <Input />
       </Form.Item>
       <Row gutter={gutter}>

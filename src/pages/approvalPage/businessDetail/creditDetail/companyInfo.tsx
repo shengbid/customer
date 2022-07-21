@@ -8,6 +8,7 @@ import EditCompanyBus from './editComponents/editCompanyBus'
 import EditCompany from './editComponents/editCompany'
 import { formatEmpty, transferAmount } from '@/utils/base'
 import ComUpload from '@/components/ComUpload'
+import { isEmpty } from 'lodash'
 
 const { DescriptionsItem } = Descriptions
 
@@ -40,9 +41,14 @@ const CompanyInfo: React.FC<infoProps> = ({ infoData, handleUpdate }) => {
     const arr: any[] = []
     const qyList = infoData.qyList
     const dsList = infoData.dsList
+    const qtItem: any = {}
     if (qyList && dsList) {
       for (const key in qyList) {
-        if (obj[key]) {
+        if (key === 'qt') {
+          qtItem.typeName = obj[key]
+          qtItem.fileType = key
+          qtItem.fileList = qyList[key]
+        } else if (obj[key]) {
           const newItem: any = { id: key }
           newItem.typeName = obj[key]
           newItem.fileType = key
@@ -58,6 +64,10 @@ const CompanyInfo: React.FC<infoProps> = ({ infoData, handleUpdate }) => {
           newItem.fileList = dsList[key]
           arr.push(newItem)
         }
+      }
+      // 对象遍历无顺序,其他放在最后一项
+      if (!isEmpty(qtItem)) {
+        arr.push(qtItem)
       }
     }
     // console.log(arr)

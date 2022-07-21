@@ -1,25 +1,32 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useIntl } from 'umi'
 import DictSelect from '@/components/ComSelect'
 import { phoneReg } from '@/utils/reg'
 import RequiredLabel from '@/components/RequiredLabel'
-import { Form, Input, Button } from 'antd'
+import { Form, Input, Button, message } from 'antd'
+import { editCompanyPeople } from '@/services'
 
 interface reralProps {
   handleCancel: () => void
+  info: any
 }
 
 // 财务负责人信息
-const MetalPersonInfo: React.FC<reralProps> = ({ handleCancel }) => {
+const MetalPersonInfo: React.FC<reralProps> = ({ handleCancel, info }) => {
   const intl = useIntl()
   const [form] = Form.useForm()
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
 
+  useEffect(() => {
+    form.setFieldsValue(info)
+  }, [])
+
   // 修改
-  const handleOk = (values) => {
-    console.log(values)
+  const handleOk = async (values: any) => {
+    await editCompanyPeople(values)
     setConfirmLoading(false)
     handleCancel()
+    message.success('修改成功')
   }
 
   return (
@@ -33,6 +40,9 @@ const MetalPersonInfo: React.FC<reralProps> = ({ handleCancel }) => {
       onFinish={handleOk}
     >
       <Form.Item label="identity" name="creditId" style={{ display: 'none' }}>
+        <Input />
+      </Form.Item>
+      <Form.Item label="id" name="id" style={{ display: 'none' }}>
         <Input />
       </Form.Item>
       <Form.Item
