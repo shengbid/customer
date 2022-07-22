@@ -1,7 +1,21 @@
 import { request } from 'umi'
+import type { creditListProps, creditListParamProps } from '@/services/types'
 
 const Url = '/system/credit'
 const url = '/system'
+
+/** 获取授信列表 */
+export async function getCeditList(params: creditListParamProps) {
+  return request<{ rows: creditListProps[]; total: number }>(`${Url}/list`, {
+    params,
+  })
+}
+/** 修改授信额度状态 */
+export async function editCeditQutoStatus(params: { id: number; quotaStatus: string }) {
+  return request(`${Url}/edit/quota`, {
+    params,
+  })
+}
 
 // 获取授信详情
 export async function getCreditDetail(taskNumber: string) {

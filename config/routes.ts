@@ -1,4 +1,5 @@
-﻿export default [
+﻿import businessRotes from './businessRotes'
+export default [
   {
     layout: false,
     name: 'login',
@@ -276,31 +277,7 @@
           },
         ],
       },
-      {
-        path: '/customerManage',
-        name: '客户管理',
-        access: 'hasMenu',
-        icon: 'DesktopOutlined',
-        routes: [
-          {
-            path: '/customerManage',
-            redirect: '/customerManage/loan',
-          },
-          {
-            path: '/customerManage/loan',
-            name: '借款客户管理',
-            access: 'hasMenu',
-            component: './customerManage/loan',
-          },
-          {
-            path: '/customerManage/menu',
-            name: '菜单管理',
-            access: 'hasMenu',
-            icon: 'SettingOutlined',
-            component: './customerManage/menu',
-          },
-        ],
-      },
+      ...businessRotes, // 业务菜单
       {
         path: '/personal/center',
         name: '个人中心',

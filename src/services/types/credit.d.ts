@@ -1,4 +1,21 @@
-import type { fileListOptionProps } from './base'
+import type { fileListOptionProps, pageLimitProps } from './base'
+
+// 授信筛选列表
+export interface creditListParamProps extends pageLimitProps {
+  enterpriseCreditName?: string
+  auditStatus?: string
+  quotaStatus?: string
+}
+
+// 授信列表
+export interface creditListProps {
+  id: number
+  enterpriseCreditName: string
+  auditStatus: string
+  quotaStatus: string
+  creditBecomDate: string
+  creditExpireDate: string
+}
 
 // 企业经营信息
 export interface companyBusProps {
