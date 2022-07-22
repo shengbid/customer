@@ -129,7 +129,9 @@ const CompanyInfo: React.FC<infoProps> = ({ infoData, handleUpdate }) => {
         }
       >
         <DescriptionsItem label="企业名称">{companyData.fullName}</DescriptionsItem>
-        <DescriptionsItem label="企业注册所在地区">{companyData.registerAddr}</DescriptionsItem>
+        <DescriptionsItem label="企业注册所在地区">
+          <DictShow dictValue={companyData.registerAddr} dictkey="company_register" />
+        </DescriptionsItem>
         <DescriptionsItem label="企业编号（注册编号\社会信用代码）">
           {formatEmpty(companyData.enterpriseNumber)}
         </DescriptionsItem>
