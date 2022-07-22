@@ -38,7 +38,7 @@ export async function leaveDetail(id: string) {
 }
 /** 审批历史 */
 export async function leaveHistory(id: string) {
-  return request<{ data: any }>(`/activiti/historyFromData/ByInstanceId/${id}`)
+  return request<{ data: any }>(`/activiti/historyFromData/By/${id}`)
 }
 /** 审批意见框 */
 export async function approvalOpeator(deploymentId: string) {

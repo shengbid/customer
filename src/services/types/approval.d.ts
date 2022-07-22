@@ -5,10 +5,11 @@ export interface fileListProps {
 }
 
 export interface approvalHistoryProps {
-  time: string
-  nodename: string
-  name: string
-  reason: string
-  result: string
+  id: number
+  createTime: string
+  taskNodeName: string
+  createBy: string
+  approvalComments: string
+  radioValue: string
   fileList?: fileListProps[]
 }

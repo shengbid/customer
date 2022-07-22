@@ -26,7 +26,7 @@ const ApprovalPage: React.FC = (props: any) => {
   const { id, businessKey, taskNodeName, instanceId } = query
 
   const DetailDom = {
-    credit: <CreditApproval id={instanceId} />,
+    credit: <CreditApproval id={businessKey} />,
   }
   const approvalDom = {
     credit: <CreditDetail id={id} />,
