@@ -4,6 +4,8 @@ import menu from './zh-TW/menu'
 import settingDrawer from './zh-TW/settingDrawer'
 import sysManage from './zh-TW/sysManage'
 import customer from './zh-TW/customer'
+import credit from './zh-TW/credit'
+import pages from './zh-TW/pages'
 
 export default {
   'navBar.lang': '語言',
@@ -17,4 +19,6 @@ export default {
   ...component,
   ...sysManage,
   ...customer,
+  ...credit,
+  ...pages,
 }
