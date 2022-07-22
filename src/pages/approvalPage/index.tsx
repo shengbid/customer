@@ -23,10 +23,10 @@ const ApprovalPage: React.FC = (props: any) => {
   const formName = 'credit'
 
   const { query } = props.location
-  const { id, businessKey, taskNodeName } = query
+  const { id, businessKey, taskNodeName, instanceId } = query
 
   const DetailDom = {
-    credit: <CreditApproval id={id} />,
+    credit: <CreditApproval id={instanceId} />,
   }
   const approvalDom = {
     credit: <CreditDetail id={id} />,
@@ -40,15 +40,9 @@ const ApprovalPage: React.FC = (props: any) => {
     })
   }, [])
 
-  const BpmnInfo = {
-    // deploymentId: '7cb256ea-f78b-11ec-aafa-50ebf6e9ee70',
-    deploymentId: businessKey,
-    // resourceName: 'CreateWithBPMNJS.bpmn',
-  }
-
   // 获取流程信息
   const getProcess = async () => {
-    const { data } = await getProcessIds(id)
+    const { data } = await getProcessIds(instanceId)
     setHigLigthData(data)
   }
 
@@ -89,7 +83,7 @@ const ApprovalPage: React.FC = (props: any) => {
       {/* 流程图 */}
       <ComCollapse>
         <Panel header="流程图" key="1">
-          <ViewBpmn info={BpmnInfo} highLightData={higLigthData} />
+          <ViewBpmn info={{ instanceId }} highLightData={higLigthData} height="40vh" />
         </Panel>
       </ComCollapse>
     </div>

@@ -77,6 +77,8 @@ const Undone: React.FC = () => {
                 id: recored.id,
                 businessKey: recored.businessKey,
                 taskNodeName: recored.name,
+                instanceId: recored.instanceId,
+                formkey: recored.formkey,
               },
             })
           }}

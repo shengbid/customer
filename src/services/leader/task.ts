@@ -61,6 +61,12 @@ export async function getProcessIds(instanceId: string) {
     params: { instanceId },
   })
 }
+/** 获取审批流程详情 */
+export async function processApprovalDetail(instanceId: string) {
+  return request(`/activiti/processDefinition/getDefinitionXML`, {
+    params: { instanceId },
+  })
+}
 
 export async function addCredit(params: any) {
   return request<{ data: any[] }>(`/activiti/sxsp/startProcessRuntime`, {

@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Spin, message } from 'antd'
-import { processDetail } from '@/services'
-import type { getdetailProps } from '@/services/types'
+import { processDetail, processApprovalDetail } from '@/services'
 import BpmnViewer from 'bpmn-js/lib/Viewer'
 import styles from './index.less'
 
-const ViewBpmn: React.FC<{ info: getdetailProps; highLightData?: any }> = ({
-  info,
-  highLightData,
-}) => {
+interface viewProps {
+  info: any
+  highLightData?: any
+  height?: string
+}
+const ViewBpmn: React.FC<viewProps> = ({ info, highLightData, height = '60vh' }) => {
   const [spinLoading, setSpinLoading] = useState<boolean>(true)
   const [bpmnModler, setBpmnModler] = useState<any>(null)
   const bpmnRef = useRef<any>()
@@ -30,7 +31,7 @@ const ViewBpmn: React.FC<{ info: getdetailProps; highLightData?: any }> = ({
     bpmnModler && bpmnModler.destroy && bpmnModler.destroy()
     const newBpmn = new BpmnViewer({
       container: bpmnRef.current,
-      height: '65vh',
+      height,
     })
     const canvas = newBpmn.get('canvas')
     newBpmn.importXML(xmlstr, (err: string) => {
@@ -41,12 +42,12 @@ const ViewBpmn: React.FC<{ info: getdetailProps; highLightData?: any }> = ({
         if (highLightData) {
           const successIds = highLightData.highLine.concat(highLightData.highPoint)
           const procesingIds = highLightData.waitingToDo
-          const undoneIds = highLightData.iDo
+          // const undoneIds = highLightData.iDo
           // console.log(1, newBpmn, canvas)
 
           setNodeColor(successIds, newBpmn, 'nodeSuccess')
           setNodeColor(procesingIds, newBpmn, 'nodeProcing')
-          setNodeColor(undoneIds, newBpmn, 'nodeError')
+          // setNodeColor(undoneIds, newBpmn, 'nodeError')
         }
       }
     })
@@ -54,7 +55,13 @@ const ViewBpmn: React.FC<{ info: getdetailProps; highLightData?: any }> = ({
   }
 
   const getProcessDetail = async () => {
-    const diagramXML = await processDetail(info)
+    let diagramXML
+    if (info.instanceId) {
+      // 如果是审批详情
+      diagramXML = await processApprovalDetail(info.instanceId)
+    } else {
+      diagramXML = await processDetail(info)
+    }
     createDiagram(diagramXML)
     setSpinLoading(false)
   }
@@ -65,6 +72,22 @@ const ViewBpmn: React.FC<{ info: getdetailProps; highLightData?: any }> = ({
 
   return (
     <Spin spinning={spinLoading} tip="正在加载...">
+      {info.instanceId ? (
+        <div className={styles.tip}>
+          <div className={styles.item}>
+            <div className={styles.susitem} />
+            <span>已审核</span>
+          </div>
+          <div className={styles.item}>
+            <div className={styles.proitem} />
+            <span>当前审核</span>
+          </div>
+          <div className={styles.item}>
+            <div className={styles.unitem} />
+            <span>待审核</span>
+          </div>
+        </div>
+      ) : null}
       <div id="canvas" ref={bpmnRef} className={styles.canvas} />
     </Spin>
   )

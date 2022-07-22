@@ -49,7 +49,7 @@ export async function editProcess(data: getdetailProps) {
 }
 /** 获取流程详情 */
 export async function processDetail(params: getdetailProps) {
-  return request(`${url}/getDefinitionXML`, {
+  return request(`${url}/getDefXML`, {
     params,
   })
 }
