@@ -97,14 +97,14 @@ const RoleManage: React.FC = () => {
       key: 'roleKey',
       dataIndex: 'roleKey',
     },
-    {
-      title: intl.formatMessage({
-        id: 'sys.menu.orderNum1',
-      }),
-      key: 'roleSort',
-      hideInSearch: true,
-      dataIndex: 'roleSort',
-    },
+    // {
+    //   title: intl.formatMessage({
+    //     id: 'sys.menu.orderNum1',
+    //   }),
+    //   key: 'roleSort',
+    //   hideInSearch: true,
+    //   dataIndex: 'roleSort',
+    // },
     {
       title: intl.formatMessage({
         id: 'sys.base.status',

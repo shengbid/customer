@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Modal, Button, Form, Input, InputNumber, message, Spin } from 'antd'
+import { Modal, Button, Form, Input, message, Spin } from 'antd'
 import type { addModalProps } from '@/services/types'
 import MultiTreeDataSelect from '@/components/ComSelect/multiTreeSelect'
 import { addRole, roleDetail, getRoleMenu } from '@/services'
@@ -125,7 +125,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
             <Input maxLength={50} />
           </Form.Item>
 
-          <Form.Item
+          {/* <Form.Item
             label={intl.formatMessage({
               id: 'sys.menu.orderNum',
             })}
@@ -142,7 +142,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
             ]}
           >
             <InputNumber style={{ width: '100%' }} min={1} max={30} />
-          </Form.Item>
+          </Form.Item> */}
 
           <Form.Item
             label={intl.formatMessage({

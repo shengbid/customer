@@ -69,7 +69,7 @@ const EditCompany: React.FC<compnayProps> = ({ info, modalVisible, handleCancel 
         <Row gutter={24}>
           <Col span={12}>
             <Form.Item
-              label="企业编号"
+              label="企业编号（注册编号\社会信用代码）"
               name="enterpriseNumber"
               rules={[
                 {

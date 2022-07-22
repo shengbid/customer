@@ -119,7 +119,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
                     accountReg,
                   ]}
                 >
-                  <Input maxLength={50} />
+                  <Input maxLength={18} />
                 </Form.Item>
               </Col>
               <Col span={12}>
