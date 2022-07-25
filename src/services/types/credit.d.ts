@@ -76,3 +76,10 @@ export interface relateCompanyProps {
   registerDetails: string
   remark: string
 }
+// 尽调报告文件
+export interface reportFileProps {
+  id: number | string
+  fileType: string
+  typeName?: string
+  fileList: fileListOptionProps[]
+}

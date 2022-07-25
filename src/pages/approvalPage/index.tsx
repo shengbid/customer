@@ -11,6 +11,7 @@ import { approvalSave, getProcessIds } from '@/services'
 import CreditApproval from './businessDetail/creditApproval'
 import CreditDetail from './businessDetail/creditDetail'
 import RelatedDetail from './businessDetail/creditDetail/relatedForm'
+import SurveyReport from './businessDetail/creditDetail/surveyReport'
 
 const { Panel } = ComCollapse
 
@@ -43,7 +44,7 @@ const ApprovalPage: React.FC = (props: any) => {
     ),
     credit2: (
       <ComCard title="审核信息">
-        <></>
+        <SurveyReport />
       </ComCard>
     ),
   }

@@ -38,7 +38,7 @@ const RelatedDetail: React.FC = () => {
 
   const columns: ProColumns<shareholderProps>[] = [
     {
-      title: '股东姓名',
+      title: <RequiredTilte label="股东姓名" />,
       dataIndex: 'name',
       width: '20%',
       formItemProps: {
