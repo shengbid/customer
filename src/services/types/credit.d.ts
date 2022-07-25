@@ -56,3 +56,23 @@ export interface companyBusinessProps {
   businessVolume?: string
   businessVolume2?: string
 }
+// 关联股东信息
+export interface shareholderProps {
+  id: number | string
+  name: string
+  identityType: string
+  identityNumber: string
+  rate: string
+}
+// 关联企业
+export interface relateCompanyProps {
+  id: number | string
+  fullName: string
+  registerAddr: string
+  enterpriseNumber: string
+  name: string
+  identityType: string
+  identityNumber: string
+  registerDetails: string
+  remark: string
+}
