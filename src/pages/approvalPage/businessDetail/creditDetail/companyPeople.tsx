@@ -31,24 +31,27 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp, isDetail = fal
   useEffect(() => {
     if (infoData.id && infoData.ryList) {
       const ryList = infoData.ryList
-      const qyfr = ryList.qyfr
-      if (qyfr.backFileName) {
-        qyfr.idReverse = [
+      if (ryList.qyfr) {
+        // 如果实控人为法人,不展示法人信息
+        const qyfr = ryList.qyfr
+        if (qyfr.backFileName) {
+          qyfr.idReverse = [
+            {
+              fileName: qyfr.backFileName,
+              fileUrl: qyfr.backFileUrl,
+              pictureDomain: qyfr.pictureDomain,
+            },
+          ]
+        }
+        qyfr.idFront = [
           {
-            fileName: qyfr.backFileName,
-            fileUrl: qyfr.backFileUrl,
+            fileName: qyfr.frontFileName,
+            fileUrl: qyfr.frontFileUrl,
             pictureDomain: qyfr.pictureDomain,
           },
         ]
+        setLegalData(qyfr)
       }
-      qyfr.idFront = [
-        {
-          fileName: qyfr.frontFileName,
-          fileUrl: qyfr.frontFileUrl,
-          pictureDomain: qyfr.pictureDomain,
-        },
-      ]
-      setLegalData(qyfr)
       // 实控人
       const skr = ryList.skr
       if (skr.backFileName) {
@@ -132,36 +135,38 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp, isDetail = fal
 
   return (
     <>
-      <Descriptions
-        title="企业法人信息"
-        extra={
-          isDetail && (
-            <Button type="primary" onClick={() => handleEdit(1)}>
-              编辑
-            </Button>
-          )
-        }
-      >
-        <DescriptionsItem label="法人/董事姓名">{legalData.name}</DescriptionsItem>
-        <DescriptionsItem label="身份证件类型">
-          <DictShow dictValue={legalData.identityType} dictkey="cus_sfzlx" />
-        </DescriptionsItem>
-        <DescriptionsItem label="证件号码">{legalData.identityNumber}</DescriptionsItem>
-        <DescriptionsItem label="证件正面">
-          <ComUpload isDetail value={legalData.idFront} />
-        </DescriptionsItem>
-        <DescriptionsItem label="证件反面">
-          <ComUpload isDetail value={legalData.idReverse} />
-        </DescriptionsItem>
-        <DescriptionsItem label="手机号码">
-          <DictShow dictValue={legalData.phoneArea} dictkey="phone_code" />
-          {legalData.phoneNumber}
-        </DescriptionsItem>
-        <DescriptionsItem label="婚姻情况">
-          <DictShow dictValue={legalData.marriageStatus} dictkey="hyqk" />
-        </DescriptionsItem>
-        <DescriptionsItem label="住房地址">{legalData.houseAddr}</DescriptionsItem>
-      </Descriptions>
+      {realData.legalFlag === 'no' ? (
+        <Descriptions
+          title="企业法人信息"
+          extra={
+            isDetail && (
+              <Button type="primary" onClick={() => handleEdit(1)}>
+                编辑
+              </Button>
+            )
+          }
+        >
+          <DescriptionsItem label="法人/董事姓名">{legalData.name}</DescriptionsItem>
+          <DescriptionsItem label="身份证件类型">
+            <DictShow dictValue={legalData.identityType} dictkey="cus_sfzlx" />
+          </DescriptionsItem>
+          <DescriptionsItem label="证件号码">{legalData.identityNumber}</DescriptionsItem>
+          <DescriptionsItem label="证件正面">
+            <ComUpload isDetail value={legalData.idFront} />
+          </DescriptionsItem>
+          <DescriptionsItem label="证件反面">
+            <ComUpload isDetail value={legalData.idReverse} />
+          </DescriptionsItem>
+          <DescriptionsItem label="手机号码">
+            <DictShow dictValue={legalData.phoneArea} dictkey="phone_code" />
+            {legalData.phoneNumber}
+          </DescriptionsItem>
+          <DescriptionsItem label="婚姻情况">
+            <DictShow dictValue={legalData.marriageStatus} dictkey="hyqk" />
+          </DescriptionsItem>
+          <DescriptionsItem label="住房地址">{legalData.houseAddr}</DescriptionsItem>
+        </Descriptions>
+      ) : null}
 
       <Descriptions
         title="实控人信息"
@@ -173,6 +178,9 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp, isDetail = fal
           )
         }
       >
+        <DescriptionsItem label="是否同时为法人" span={2}>
+          {realData.legalFlag === 'no' ? '否' : '是'}
+        </DescriptionsItem>
         <DescriptionsItem label="实控人姓名">{realData.name}</DescriptionsItem>
         <DescriptionsItem label="身份证件类型">
           <DictShow dictValue={realData.identityType} dictkey="cus_sfzlx" />
