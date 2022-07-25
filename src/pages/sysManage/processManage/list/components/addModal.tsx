@@ -19,9 +19,9 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
         await addProcessFile(formData)
       } else {
         message.error('请选择需要部署的流程文件！')
+        setConfirmLoading(false)
         return
       }
-      setConfirmLoading(false)
     } catch (error) {
       setConfirmLoading(false)
       return
@@ -35,7 +35,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
   }
 
   const changeFile = (value: any) => {
-    console.log(value)
+    // console.log(value)
     setUploadFile(value)
   }
 

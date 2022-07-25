@@ -20,6 +20,10 @@ const UploadAndDrop: React.FC<dropProps> = ({ onChange, accept }) => {
       onChange([file])
       return false
     },
+    onRemove: () => {
+      setFile([])
+      onChange([])
+    },
     fileList: upFile,
   }
 
