@@ -10,6 +10,7 @@ import ViewBpmn from '@/components/Bpmn/ViewBpmn'
 import { approvalSave, getProcessIds } from '@/services'
 import CreditApproval from './businessDetail/creditApproval'
 import CreditDetail from './businessDetail/creditDetail'
+import RelatedDetail from './businessDetail/creditDetail/relatedForm'
 
 const { Panel } = ComCollapse
 
@@ -20,16 +21,31 @@ const ApprovalPage: React.FC = (props: any) => {
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
   const [higLigthData, setHigLigthData] = useState<any>([])
   const title = '香港吉祥公司--授信申请'
-  const formName = 'credit'
+  const formName = 'credit2'
 
   const { query } = props.location
   const { id, businessKey, taskNodeName, instanceId } = query
-
-  const DetailDom = {
-    credit: <CreditApproval id={businessKey} />,
-  }
+  // 审核历史
+  const DetailDom = <CreditApproval formName={formName} id={id} businessKey={businessKey} />
+  // 审核详情
   const approvalDom = {
-    credit: <CreditDetail id={id} />,
+    credit: (
+      <>
+        <ComCollapse>
+          <Panel header="授信基础信息" key="1">
+            <CreditDetail id={id} />
+          </Panel>
+        </ComCollapse>
+        <ComCard style={{ marginTop: 12 }} title="关联信息">
+          <RelatedDetail />
+        </ComCard>
+      </>
+    ),
+    credit2: (
+      <ComCard title="审核信息">
+        <></>
+      </ComCard>
+    ),
   }
 
   useEffect(() => {
@@ -76,8 +92,10 @@ const ApprovalPage: React.FC = (props: any) => {
           <DescriptionsItem label="任务编号">{infoData.typeNo}</DescriptionsItem>
         </ComDescriptions>
       </div>
-      <ComCard title="详情信息">{DetailDom[formName]}</ComCard>
-      <ComCard title="审核信息">{approvalDom[formName]}</ComCard>
+      <ComCard title="详情信息">{DetailDom}</ComCard>
+
+      {approvalDom[formName]}
+
       {/* 审核表单 */}
       <ApprovalForm confirmLoading={confirmLoading} handleSubmit={approval} BpmnInfo={{ id }} />
       {/* 流程图 */}

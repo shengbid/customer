@@ -6,8 +6,9 @@ import CompanyPeople from './companyPeople'
 
 interface creditprops {
   id: string
+  isDetail?: boolean
 }
-const CreditDetail: React.FC<creditprops> = () => {
+const CreditDetail: React.FC<creditprops> = ({ isDetail = false }) => {
   const [infoData, setInfoData] = useState({})
   const [spinning, setSpinning] = useState(true)
   // 获取授信详情
@@ -23,8 +24,8 @@ const CreditDetail: React.FC<creditprops> = () => {
 
   return (
     <Spin spinning={spinning}>
-      <CompanyInfo handleUpdate={getCredit} infoData={infoData} />
-      <CompanyPeople handleUp={getCredit} infoData={infoData} />
+      <CompanyInfo handleUpdate={getCredit} isDetail={isDetail} infoData={infoData} />
+      <CompanyPeople handleUp={getCredit} isDetail={isDetail} infoData={infoData} />
     </Spin>
   )
 }
