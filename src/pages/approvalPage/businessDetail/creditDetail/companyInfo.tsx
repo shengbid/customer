@@ -16,9 +16,10 @@ const { DescriptionsItem } = Descriptions
 interface infoProps {
   infoData: any
   handleUpdate: () => void
+  isDetail?: boolean
 }
 // 企业基础信息
-const CompanyInfo: React.FC<infoProps> = ({ infoData, handleUpdate }) => {
+const CompanyInfo: React.FC<infoProps> = ({ infoData, handleUpdate, isDetail = false }) => {
   const [infoVisible, setInfoVisible] = useState<boolean>(false)
   const [companyVisible, setComapnyVisible] = useState<boolean>(false)
   const [fileVisible, setFileVisible] = useState<boolean>(false)
@@ -123,9 +124,11 @@ const CompanyInfo: React.FC<infoProps> = ({ infoData, handleUpdate }) => {
       <Descriptions
         title="企业基础信息"
         extra={
-          <Button type="primary" onClick={() => setComapnyVisible(true)}>
-            编辑
-          </Button>
+          isDetail && (
+            <Button type="primary" onClick={() => setComapnyVisible(true)}>
+              编辑
+            </Button>
+          )
         }
       >
         <DescriptionsItem label="企业名称">{companyData.fullName}</DescriptionsItem>
@@ -143,9 +146,11 @@ const CompanyInfo: React.FC<infoProps> = ({ infoData, handleUpdate }) => {
         style={style}
         title="企业经营信息"
         extra={
-          <Button type="primary" onClick={() => setInfoVisible(true)}>
-            编辑
-          </Button>
+          isDetail && (
+            <Button type="primary" onClick={() => setInfoVisible(true)}>
+              编辑
+            </Button>
+          )
         }
       >
         <DescriptionsItem label="主营业务">
@@ -166,9 +171,11 @@ const CompanyInfo: React.FC<infoProps> = ({ infoData, handleUpdate }) => {
         title="企业资料附件清单"
         style={{ marginTop: 30 }}
         extra={
-          <Button type="primary" onClick={() => setFileVisible(true)}>
-            编辑
-          </Button>
+          isDetail && (
+            <Button type="primary" onClick={() => setFileVisible(true)}>
+              编辑
+            </Button>
+          )
         }
       >
         <SimpleProtable key="id" columns={columns2} isPagination={false} dataSource={tableData} />

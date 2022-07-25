@@ -14,10 +14,11 @@ const { DescriptionsItem } = Descriptions
 interface infoProps {
   infoData: any
   handleUp: () => void
+  isDetail?: boolean
 }
 
 // 企业法人信息
-const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp }) => {
+const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp, isDetail = false }) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [type, setType] = useState<number>(1) // 编辑的类型
   const [title, setTitle] = useState<string>('') // 编辑的类型
@@ -134,9 +135,11 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp }) => {
       <Descriptions
         title="企业法人信息"
         extra={
-          <Button type="primary" onClick={() => handleEdit(1)}>
-            编辑
-          </Button>
+          isDetail && (
+            <Button type="primary" onClick={() => handleEdit(1)}>
+              编辑
+            </Button>
+          )
         }
       >
         <DescriptionsItem label="法人/董事姓名">{legalData.name}</DescriptionsItem>
@@ -163,9 +166,11 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp }) => {
       <Descriptions
         title="实控人信息"
         extra={
-          <Button type="primary" onClick={() => handleEdit(2)}>
-            编辑
-          </Button>
+          isDetail && (
+            <Button type="primary" onClick={() => handleEdit(2)}>
+              编辑
+            </Button>
+          )
         }
       >
         <DescriptionsItem label="实控人姓名">{realData.name}</DescriptionsItem>
@@ -206,9 +211,11 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp }) => {
         <Descriptions
           title="实控人配偶信息"
           extra={
-            <Button type="primary" onClick={() => handleEdit(3)}>
-              编辑
-            </Button>
+            isDetail && (
+              <Button type="primary" onClick={() => handleEdit(3)}>
+                编辑
+              </Button>
+            )
           }
         >
           <DescriptionsItem label="实控人配偶姓名">{metalData.name}</DescriptionsItem>
@@ -235,9 +242,11 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp }) => {
       <Descriptions
         title="主要负责人信息"
         extra={
-          <Button type="primary" onClick={() => handleEdit(4)}>
-            编辑
-          </Button>
+          isDetail && (
+            <Button type="primary" onClick={() => handleEdit(4)}>
+              编辑
+            </Button>
+          )
         }
       >
         <DescriptionsItem label="主要负责人姓名">{mianData.name}</DescriptionsItem>
@@ -251,9 +260,11 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp }) => {
       <Descriptions
         title="财务负责人信息"
         extra={
-          <Button type="primary" onClick={() => handleEdit(5)}>
-            编辑
-          </Button>
+          isDetail && (
+            <Button type="primary" onClick={() => handleEdit(5)}>
+              编辑
+            </Button>
+          )
         }
       >
         <DescriptionsItem label="财务负责人姓名">{financeData.name}</DescriptionsItem>
