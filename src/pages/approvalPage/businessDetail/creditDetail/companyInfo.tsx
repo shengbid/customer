@@ -124,7 +124,7 @@ const CompanyInfo: React.FC<infoProps> = ({ infoData, handleUpdate, isDetail = f
       <Descriptions
         title="企业基础信息"
         extra={
-          isDetail && (
+          !isDetail && (
             <Button type="primary" onClick={() => setComapnyVisible(true)}>
               编辑
             </Button>
@@ -146,7 +146,7 @@ const CompanyInfo: React.FC<infoProps> = ({ infoData, handleUpdate, isDetail = f
         style={style}
         title="企业经营信息"
         extra={
-          isDetail && (
+          !isDetail && (
             <Button type="primary" onClick={() => setInfoVisible(true)}>
               编辑
             </Button>
@@ -171,7 +171,7 @@ const CompanyInfo: React.FC<infoProps> = ({ infoData, handleUpdate, isDetail = f
         title="企业资料附件清单"
         style={{ marginTop: 30 }}
         extra={
-          isDetail && (
+          !isDetail && (
             <Button type="primary" onClick={() => setFileVisible(true)}>
               编辑
             </Button>

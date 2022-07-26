@@ -139,7 +139,7 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp, isDetail = fal
         <Descriptions
           title="企业法人信息"
           extra={
-            isDetail && (
+            !isDetail && (
               <Button type="primary" onClick={() => handleEdit(1)}>
                 编辑
               </Button>
@@ -171,7 +171,7 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp, isDetail = fal
       <Descriptions
         title="实控人信息"
         extra={
-          isDetail && (
+          !isDetail && (
             <Button type="primary" onClick={() => handleEdit(2)}>
               编辑
             </Button>
@@ -219,7 +219,7 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp, isDetail = fal
         <Descriptions
           title="实控人配偶信息"
           extra={
-            isDetail && (
+            !isDetail && (
               <Button type="primary" onClick={() => handleEdit(3)}>
                 编辑
               </Button>
@@ -250,7 +250,7 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp, isDetail = fal
       <Descriptions
         title="主要负责人信息"
         extra={
-          isDetail && (
+          !isDetail && (
             <Button type="primary" onClick={() => handleEdit(4)}>
               编辑
             </Button>
@@ -268,7 +268,7 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp, isDetail = fal
       <Descriptions
         title="财务负责人信息"
         extra={
-          isDetail && (
+          !isDetail && (
             <Button type="primary" onClick={() => handleEdit(5)}>
               编辑
             </Button>
