@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useImperativeHandle, forwardRef, useState } from 'react'
 import CardTitle from '@/components/ComPage/CardTitle'
 import ComEditTable from '@/components/ComProtable/ComEditTable'
 import type { reportFileProps } from '@/services/types'
@@ -8,7 +8,7 @@ import RequiredTilte from '@/components/RequiredLabel'
 import DictSelect from '@/components/ComSelect'
 import ComUpload from '@/components/ComUpload'
 
-const SurveyReport: React.FC = () => {
+const SurveyReport = ({}, ref: any) => {
   const [dataSource, setDataSource] = useState<reportFileProps[]>([
     {
       id: 1,
@@ -18,6 +18,20 @@ const SurveyReport: React.FC = () => {
   ])
   const [editableKeys, setEditableRowKeys] = useState<any[]>([1])
   const [mpForm] = Form.useForm()
+
+  useImperativeHandle(ref, () => ({
+    // 暴露给父组件的方法
+    getBusinessData: async () => {
+      try {
+        await mpForm.validateFields()
+        const businessData = dataSource
+        return { businessData }
+      } catch (error) {
+        return ''
+      }
+    },
+  }))
+
   const columns: ProColumns<reportFileProps>[] = [
     {
       title: '附件类型',
@@ -79,4 +93,4 @@ const SurveyReport: React.FC = () => {
   )
 }
 
-export default SurveyReport
+export default forwardRef(SurveyReport)

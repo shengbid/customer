@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef, MutableRefObject } from 'react'
 import { Button, message } from 'antd'
 import styles from './index.less'
 import ComDescriptions from '@/components/ComPage/Descriptions'
@@ -9,10 +9,7 @@ import ComCollapse from '@/components/ComPage/ComCollapse'
 import ViewBpmn from '@/components/Bpmn/ViewBpmn'
 import { approvalSave, getProcessIds } from '@/services'
 import CreditApproval from './businessDetail/creditApproval'
-import CreditDetail from './businessDetail/creditDetail'
-import RelatedDetail from './businessDetail/creditDetail/relatedForm'
-import SurveyReport from './businessDetail/creditDetail/surveyReport'
-import SurveyReportDetail from './businessDetail/creditDetail/surveyReport/detail'
+import ApprovalDom from './components/approvalDom'
 
 const { Panel } = ComCollapse
 
@@ -24,36 +21,12 @@ const ApprovalPage: React.FC = (props: any) => {
   const [higLigthData, setHigLigthData] = useState<any>([])
   const title = '香港吉祥公司--授信申请'
   const formName = 'credit2'
+  const approvalDomRef: MutableRefObject<any> = useRef({})
 
   const { query } = props.location
   const { id, businessKey, taskNodeName, instanceId } = query
   // 审核历史
   const DetailDom = <CreditApproval formName={formName} id={id} businessKey={businessKey} />
-  // 审核详情
-  const approvalDom = {
-    credit: (
-      <>
-        <ComCollapse>
-          <Panel header="授信基础信息" key="1">
-            <CreditDetail id={id} />
-          </Panel>
-        </ComCollapse>
-        <ComCard style={{ marginTop: 12 }} title="关联信息">
-          <RelatedDetail />
-        </ComCard>
-      </>
-    ),
-    credit2: (
-      <ComCard title="审核信息">
-        <SurveyReport />
-      </ComCard>
-    ),
-    credit3: (
-      <ComCard title="审核信息">
-        <SurveyReportDetail />
-      </ComCard>
-    ),
-  }
 
   useEffect(() => {
     setInfoData({
@@ -75,7 +48,18 @@ const ApprovalPage: React.FC = (props: any) => {
 
   // 点击审批
   const approval = async (values: any) => {
-    console.log(values)
+    console.log(values, approvalDomRef?.current)
+    let businessData
+    if (approvalDomRef?.current && approvalDomRef?.current.getBusinessData) {
+      const data = await approvalDomRef?.current?.getBusinessData()
+      if (!data) {
+        message.warning('请填写完成表单信息!')
+        return
+      }
+      businessData = data.businessData
+      console.log(businessData)
+    }
+
     setConfirmLoading(true)
     await approvalSave(id, { ...values, businessKey, taskNodeName })
     setConfirmLoading(false)
@@ -101,9 +85,10 @@ const ApprovalPage: React.FC = (props: any) => {
       </div>
       <ComCard title="详情信息">{DetailDom}</ComCard>
 
-      {approvalDom[formName]}
+      {/* 审核业务表单 */}
+      <ApprovalDom id={id} formName={formName} approvalDomRef={approvalDomRef} />
 
-      {/* 审核表单 */}
+      {/* 审核通用表单 */}
       <ApprovalForm confirmLoading={confirmLoading} handleSubmit={approval} BpmnInfo={{ id }} />
       {/* 流程图 */}
       <ComCollapse>
