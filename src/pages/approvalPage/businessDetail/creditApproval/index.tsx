@@ -3,6 +3,7 @@ import { Tabs } from 'antd'
 import ApprovalHistory from '../../components/approvalHistroy'
 import CreditDetail from '../creditDetail'
 import RealteDetail from '../creditDetail/relatedForm/detail'
+import ReportDetail from '../creditDetail/surveyReport/detail'
 
 const { TabPane } = Tabs
 
@@ -12,19 +13,21 @@ const CreditApproval: React.FC<{ businessKey: string; id: string; formName: stri
   id,
   formName,
 }) => {
+  const reports = ['credit1', 'credit2', 'credit3']
+  // const contracts = ['credit1', 'credit2', 'credit3', 'credit4', 'credit5']
   return (
     <Tabs type="card">
-      {formName === 'credit2' && (
+      {formName !== 'credit1' && (
         <TabPane tab="授信申请信息" key="1">
           <CreditDetail id={id} isDetail={true} />
           <RealteDetail />
         </TabPane>
       )}
-      {formName === 'credit3' && (
+      {!reports.includes(formName) ? (
         <TabPane tab="尽调报告和授信方案" key="2">
-          Content of Tab Pane 2
+          <ReportDetail />
         </TabPane>
-      )}
+      ) : null}
       <TabPane tab="审核记录" key="3">
         <ApprovalHistory id={businessKey} />
       </TabPane>
