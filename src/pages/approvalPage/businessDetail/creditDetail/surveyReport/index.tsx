@@ -35,7 +35,7 @@ const SurveyReport: React.FC = () => {
     },
     {
       title: <RequiredTilte label="附件" />,
-      dataIndex: 'identityType',
+      dataIndex: 'fileList',
       ellipsis: true,
       renderFormItem: () => <ComUpload />,
       formItemProps: {
