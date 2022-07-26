@@ -31,7 +31,6 @@ const DictShow: React.FC<dictprops> = ({ dictValue, dictkey, dictData }) => {
         }
       })
       setWord(text)
-      console.log(text, arr)
     }
   }
 
