@@ -3,7 +3,10 @@ import CardTitle from '@/components/ComPage/CardTitle'
 import { Form } from 'antd'
 import ComUpload from '@/components/ComUpload'
 
-const Contract = ({}, ref: any) => {
+interface contractprops {
+  title: string
+}
+const Contract = ({ title }: contractprops, ref: any) => {
   const [form] = Form.useForm()
 
   useImperativeHandle(ref, () => ({
@@ -24,11 +27,11 @@ const Contract = ({}, ref: any) => {
       <Form name="basic" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }} form={form}>
         <Form.Item
           name="creditReport"
-          label="授信准备合同"
+          label={title}
           rules={[
             {
               required: true,
-              message: `请上传授信准备合同`,
+              message: `请上传${title}`,
             },
           ]}
         >

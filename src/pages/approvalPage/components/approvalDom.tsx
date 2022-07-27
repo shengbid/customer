@@ -6,6 +6,7 @@ import RelatedDetail from '../businessDetail/creditDetail/relatedForm'
 import SurveyReport from '../businessDetail/creditDetail/surveyReport'
 import SurveyReportDetail from '../businessDetail/creditDetail/surveyReport/detail'
 import Contract from '../businessDetail/creditDetail/contract'
+import ContractDetail from '../businessDetail/creditDetail/contract/detail'
 
 const { Panel } = ComCollapse
 
@@ -40,7 +41,13 @@ const ApprovalDom: React.FC<approvalDomProps> = ({ formName, id, approvalDomRef 
     ),
     credit4: (
       <ComCard title="审核信息">
-        <Contract ref={approvalDomRef} />
+        <Contract title="授信准备合同" ref={approvalDomRef} />
+      </ComCard>
+    ),
+    credit5: <ContractDetail />,
+    credit6: (
+      <ComCard title="审核信息">
+        <Contract title="签署现场拍摄视频" ref={approvalDomRef} />
       </ComCard>
     ),
   }
