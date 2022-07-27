@@ -83,3 +83,13 @@ export interface reportFileProps {
   typeName?: string
   fileList: fileListOptionProps[]
 }
+// 合同文件
+export interface signContractProps {
+  id: number | string
+  name: string
+  number?: string
+  fileType: string
+  typeName?: string
+  time: string
+  fileList: fileListOptionProps[]
+}
