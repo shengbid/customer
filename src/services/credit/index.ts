@@ -1,5 +1,6 @@
 import { request } from 'umi'
 import type { creditListProps, creditListParamProps } from '@/services/types'
+import { paramsToPageParams } from '@/utils/base'
 
 const Url = '/system/credit'
 const url = '/system'
@@ -7,7 +8,7 @@ const url = '/system'
 /** 获取授信列表 */
 export async function getCeditList(params: creditListParamProps) {
   return request<{ rows: creditListProps[]; total: number }>(`${Url}/list`, {
-    params,
+    params: paramsToPageParams(params),
   })
 }
 /** 修改授信额度状态 */

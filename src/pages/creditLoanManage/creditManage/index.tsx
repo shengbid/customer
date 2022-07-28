@@ -33,9 +33,9 @@ const CreditManage: React.FC = () => {
 
   const columns: ProColumns<creditListProps>[] = [
     {
-      title: '授信企业名称名称',
+      title: '授信企业名称',
       dataIndex: 'enterpriseCreditName',
-      width: '30%',
+      width: '27%',
     },
     {
       title: '授信生效日/授信到期日',
