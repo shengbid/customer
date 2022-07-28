@@ -13,11 +13,11 @@ const CreditApproval: React.FC<{ businessKey: string; id: string; formName: stri
   id,
   formName,
 }) => {
-  const reports = ['credit1', 'credit2', 'credit3']
+  const reports = ['credit', 'credit1', 'credit2', 'credit3']
   // const contracts = ['credit1', 'credit2', 'credit3', 'credit4', 'credit5']
   return (
     <Tabs type="card">
-      {formName !== 'credit1' && (
+      {formName !== 'credit' && (
         <TabPane tab="授信申请信息" key="1">
           <CreditDetail id={id} isDetail={true} />
           <RealteDetail />

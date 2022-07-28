@@ -20,7 +20,7 @@ const ApprovalPage: React.FC = (props: any) => {
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
   const [higLigthData, setHigLigthData] = useState<any>([])
   const title = '香港吉祥公司--授信申请'
-  const formName = 'credit2'
+  const formName = 'credit'
   const approvalDomRef: MutableRefObject<any> = useRef({})
 
   const { query } = props.location
