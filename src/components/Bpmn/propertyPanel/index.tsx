@@ -233,6 +233,31 @@ const PropertyPanel: React.FC<{ bpmnModeler: any }> = ({ bpmnModeler }) => {
     return obj
   }
 
+  // 多实例配置处理
+  const setMultiInstance = (businessObject: any) => {
+    const loopCharacteristics: any = businessObject?.loopCharacteristics || {}
+
+    const selectedMultiInstance: any = {
+      isSequential: '', // 多实例类型
+      loopCardinality: '', // 循环基数
+      collection: '', // 集合
+      elementVariable: '', // 元素变量
+      completionCondition: '', // 完成条件
+    }
+    if (loopCharacteristics?.$type === 'bpmn:MultiInstanceLoopCharacteristics') {
+      selectedMultiInstance.isSequential = loopCharacteristics.isSequential
+        ? 'Sequential'
+        : 'Parallel' // 类型
+      selectedMultiInstance.loopCardinality = loopCharacteristics.loopCardinality?.body // 循环基数
+      selectedMultiInstance.collection = loopCharacteristics?.collection // 集合
+      selectedMultiInstance.elementVariable = loopCharacteristics?.elementVariable // 元素变量
+    }
+    if (loopCharacteristics.completionCondition) {
+      selectedMultiInstance.completionCondition = loopCharacteristics.completionCondition.body // 完成条件
+    }
+    return selectedMultiInstance
+  }
+
   // 设置节点值
   const setDefaultProperties = (currentElement: any) => {
     console.log(1, currentElement)
@@ -246,10 +271,12 @@ const PropertyPanel: React.FC<{ bpmnModeler: any }> = ({ bpmnModeler }) => {
       const { extensionElements, executionListener, taskListener, busNodeType } = handleBtns(
         businessObject.extensionElements,
       )
+      const multiInstance = setMultiInstance(businessObject)
 
       setForm({
         ...businessObject,
         ...businessObject?.$attrs,
+        ...multiInstance,
         // targetNamespace: businessObject?.$parent?.targetNamespace, // 命名空间
         conditionExpression: businessObject?.conditionExpression?.body, // 流转条件的表达式
         name: businessObject?.name,
@@ -511,6 +538,89 @@ const PropertyPanel: React.FC<{ bpmnModeler: any }> = ({ bpmnModeler }) => {
     })
     executeCommand(command)
   }
+  // 多实例类型变化
+  const handleMultiInstance = (val: string) => {
+    if (!element) return
+    const { businessObject } = element
+    let loopCharacteristics = businessObject.get('loopCharacteristics')
+    if (val === '') {
+      loopCharacteristics = undefined
+    } else {
+      if (!loopCharacteristics) {
+        const moddle = bpmnModeler.get('moddle')
+        loopCharacteristics = moddle.create('bpmn:MultiInstanceLoopCharacteristics')
+      }
+      if (val === 'Sequential') {
+        loopCharacteristics.isSequential = true
+      } else {
+        delete loopCharacteristics.isSequential
+      }
+    }
+    updateProperties({
+      loopCharacteristics,
+    })
+    if (userTask.assigneeType === '3') {
+      let candidateUsers
+      if (!loopCharacteristics) {
+        candidateUsers = `\${_OPTIONAL_EXECUTOR_${businessObject.get('id')}}`
+      } else {
+        candidateUsers = `\${_OPTIONAL_EXECUTOR_SIGNER}`
+      }
+      setUserTaskArr({ ...userTask, candidateUsers })
+      updateProperties({ candidateUsers })
+    }
+  }
+  // 多实例属性修改
+  const updateFormalExpression = (propertyName: string, newValue: string) => {
+    const bpmnFactory = bpmnModeler.get('bpmnFactory')
+    const currentElement = element || rootElement
+    const bo = currentElement.businessObject
+    const { loopCharacteristics } = bo
+
+    const expressionProps = {}
+    const props = {}
+    props[propertyName] = newValue
+    if (!newValue) {
+      // remove formal expression
+      expressionProps[propertyName] = undefined
+      executeCommand(
+        cmdHelper.updateBusinessObject(currentElement, loopCharacteristics, expressionProps),
+      )
+      return
+    }
+    const existingExpression = loopCharacteristics.get(propertyName)
+    if (!existingExpression) {
+      // add formal expression
+      expressionProps[propertyName] = elementHelper.createElement(
+        'bpmn:FormalExpression',
+        { body: newValue },
+        bo,
+        bpmnFactory,
+      )
+      executeCommand(
+        cmdHelper.updateBusinessObject(currentElement, loopCharacteristics, expressionProps),
+      )
+      return
+    }
+
+    // edit existing formal expression
+    executeCommand(
+      cmdHelper.updateBusinessObject(currentElement, existingExpression, {
+        body: newValue,
+      }),
+    )
+  }
+  // 多实例属性修改
+  const updateMultiInstanceProperty = (propertyName: string, value: string) => {
+    const type = `activiti:${propertyName}`
+    const bo = element.businessObject
+    const { loopCharacteristics } = bo
+    const pros = {}
+    pros[type] = value || undefined
+    executeCommand(cmdHelper.updateBusinessObject(element, loopCharacteristics, pros))
+    const props = {}
+    props[propertyName] = value
+  }
 
   // form表单值变化
   const changeFormValue = (changedValues: any) => {
@@ -549,11 +659,16 @@ const PropertyPanel: React.FC<{ bpmnModeler: any }> = ({ bpmnModeler }) => {
       } else if (item === 'assigneeType') {
         // 处理人类型
         // handleChangeAssignee(changedValues[item])
+      } else if (item === 'isSequential') {
+        // 多实例类型
+        handleMultiInstance(changedValues[item])
       } else if (item === 'optionalExecutor') {
         // 是否指定下节点处理人
         // setOptionalExecutor(changedValues[item])
       } else if (item === 'loopCardinality' || item === 'completionCondition') {
-        // updateFormalExpression(item, changedValues[item])
+        updateFormalExpression(item, changedValues[item])
+      } else if (item === 'collection' || item === 'elementVariable') {
+        updateMultiInstanceProperty(item, changedValues[item])
       } else if (item === 'conditionExpression') {
         //  条件分支设置
         updateConditionExpression(changedValues[item])
@@ -721,17 +836,17 @@ const PropertyPanel: React.FC<{ bpmnModeler: any }> = ({ bpmnModeler }) => {
                   />
                 )}
               </Panel>
-              {/* <Panel header="多实例配置" key="5">
+              <Panel header="多实例配置" key="5">
                 <Form.Item label="类型" name="isSequential">
                   <Select
                     placeholder="请选择多实例类型"
                     options={[
                       {
-                        label: '顺序多重事件',
+                        label: '多人顺序',
                         value: 'Parallel',
                       },
                       {
-                        label: '时序多重事件',
+                        label: '多人并行',
                         value: 'Sequential',
                       },
                     ]}
@@ -784,7 +899,7 @@ const PropertyPanel: React.FC<{ bpmnModeler: any }> = ({ bpmnModeler }) => {
                     ) : null
                   }}
                 </Form.Item>
-              </Panel> */}
+              </Panel>
             </>
           )}
 
