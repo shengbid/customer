@@ -50,7 +50,8 @@ const ApprovalHistory: React.FC<{ id: string }> = ({ id }) => {
       dataIndex: 'fileList',
       width: '25%',
       ellipsis: true,
-      render: () => <ComUpload isDetail />,
+      render: (_, recored) =>
+        recored.fileList ? <ComUpload isDetail value={JSON.parse(recored.fileList)} /> : <>-</>,
     },
   ]
 
