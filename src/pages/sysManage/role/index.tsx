@@ -62,7 +62,12 @@ const RoleManage: React.FC = () => {
           label: (
             <a
               onClick={() => {
-                history.push(`/sys/role/user`)
+                history.push({
+                  pathname: `/sys/role/user`,
+                  query: {
+                    roleId: String(recored.roleId),
+                  },
+                })
               }}
             >
               <UserOutlined style={{ marginRight: 3 }} />
