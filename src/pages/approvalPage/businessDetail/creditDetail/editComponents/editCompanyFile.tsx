@@ -39,8 +39,8 @@ const EditCompanyFile: React.FC<compnayProps> = ({
         rules: [
           {
             required: true,
-            validator: ({ field }: any) => {
-              if (field.indexOf('qt') < 0) {
+            validator: ({ field }: any, value: any) => {
+              if (field.indexOf('qt') < 0 && (!value || !value.length)) {
                 return Promise.reject(new Error('此项是必填项'))
               }
               return Promise.resolve()

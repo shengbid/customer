@@ -56,14 +56,14 @@ const SurveyReport = ({}, ref: any) => {
       formItemProps: {
         rules: [
           {
-            validator: ({ field }: any) => {
+            validator: ({ field }: any, value: any) => {
               // 获取当前行数据
               const id = field.split('.')[0]
-              if (Number(id) === 3) {
+              if (Number(id) !== 3 && (!value || !value.length)) {
                 // 如果是其他,不必填
-                return Promise.resolve()
+                return Promise.reject(new Error('此项是必填项'))
               }
-              return Promise.reject(new Error('此项是必填项'))
+              return Promise.resolve()
             },
           },
         ],
