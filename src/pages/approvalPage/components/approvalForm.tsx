@@ -42,6 +42,9 @@ const ApprovalForm: React.FC<approvalProps> = ({ confirmLoading, handleSubmit, B
   }, [])
 
   const handleOk = (values: any) => {
+    if (values.fileList && values.fileList.length) {
+      values.fileList = JSON.stringify(values.fileList)
+    }
     handleSubmit(values)
   }
 
@@ -94,7 +97,7 @@ const ApprovalForm: React.FC<approvalProps> = ({ confirmLoading, handleSubmit, B
 
           <Form.Item
             label="上传附件"
-            name="file"
+            name="fileList"
             rules={[
               {
                 required: false,
