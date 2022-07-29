@@ -18,11 +18,6 @@ interface approvalDomProps {
 }
 const ApprovalDom: React.FC<approvalDomProps> = ({ formName, id, approvalDomRef }) => {
   const approvalDom = {
-    credit: (
-      <ComCard title="审核信息">
-        <CreditDetail id={id} />
-      </ComCard>
-    ),
     credit1: (
       <>
         <ComCollapse>

@@ -68,9 +68,9 @@ export async function processApprovalDetail(instanceId: string) {
   })
 }
 
-export async function addCredit(params: any) {
+export async function addCredit(data: any) {
   return request<{ data: any[] }>(`/activiti/sxsp/startProcessRuntime`, {
     method: 'post',
-    params,
+    data,
   })
 }

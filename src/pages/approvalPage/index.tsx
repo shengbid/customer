@@ -20,13 +20,12 @@ const ApprovalPage: React.FC = (props: any) => {
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
   const [higLigthData, setHigLigthData] = useState<any>([])
   const title = '香港吉祥公司--授信申请'
-  const formName = 'credit'
   const approvalDomRef: MutableRefObject<any> = useRef({})
 
   const { query } = props.location
-  const { id, businessKey, taskNodeName, instanceId } = query
+  const { id, businessKey, taskNodeName, instanceId, formKey = 'credit1' } = query
   // 审核历史
-  const DetailDom = <CreditApproval formName={formName} id={id} businessKey={businessKey} />
+  const DetailDom = <CreditApproval formName={formKey} id={id} businessKey={businessKey} />
 
   useEffect(() => {
     setInfoData({
@@ -86,7 +85,7 @@ const ApprovalPage: React.FC = (props: any) => {
       <ComCard title="详情信息">{DetailDom}</ComCard>
 
       {/* 审核业务表单 */}
-      <ApprovalDom id={id} formName={formName} approvalDomRef={approvalDomRef} />
+      <ApprovalDom id={id} formName={formKey} approvalDomRef={approvalDomRef} />
 
       {/* 审核通用表单 */}
       <ApprovalForm confirmLoading={confirmLoading} handleSubmit={approval} BpmnInfo={{ id }} />
