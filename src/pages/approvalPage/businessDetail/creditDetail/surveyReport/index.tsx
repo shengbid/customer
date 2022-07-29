@@ -1,11 +1,10 @@
 import { useImperativeHandle, forwardRef, useState } from 'react'
 import CardTitle from '@/components/ComPage/CardTitle'
-import ComEditTable from '@/components/ComProtable/ComEditTable'
+import { EditableProTable } from '@ant-design/pro-table'
 import type { reportFileProps } from '@/services/types'
 import { Form } from 'antd'
 import type { ProColumns } from '@ant-design/pro-table'
 import RequiredTilte from '@/components/RequiredLabel'
-import DictSelect from '@/components/ComSelect'
 import ComUpload from '@/components/ComUpload'
 
 const SurveyReport = ({}, ref: any) => {
@@ -15,8 +14,18 @@ const SurveyReport = ({}, ref: any) => {
       fileType: '尽调报告',
       fileList: [],
     },
+    {
+      id: 2,
+      fileType: '审贷会审批表',
+      fileList: [],
+    },
+    {
+      id: 3,
+      fileType: '其他',
+      fileList: [],
+    },
   ])
-  const [editableKeys, setEditableRowKeys] = useState<any[]>([1])
+  const [editableKeys, setEditableRowKeys] = useState<any[]>([1, 2, 3])
   const [mpForm] = Form.useForm()
 
   useImperativeHandle(ref, () => ({
@@ -37,15 +46,7 @@ const SurveyReport = ({}, ref: any) => {
       title: '附件类型',
       dataIndex: 'fileType',
       width: '30%',
-      formItemProps: {
-        rules: [
-          {
-            required: true,
-            message: '此项是必填项',
-          },
-        ],
-      },
-      renderFormItem: () => <DictSelect authorword="cus_sfzlx" />,
+      editable: false,
     },
     {
       title: <RequiredTilte label="附件" />,
@@ -55,8 +56,15 @@ const SurveyReport = ({}, ref: any) => {
       formItemProps: {
         rules: [
           {
-            required: true,
-            message: '此项是必填项',
+            validator: ({ field }: any) => {
+              // 获取当前行数据
+              const id = field.split('.')[0]
+              if (Number(id) === 3) {
+                // 如果是其他,不必填
+                return Promise.resolve()
+              }
+              return Promise.reject(new Error('此项是必填项'))
+            },
           },
         ],
       },
@@ -65,27 +73,18 @@ const SurveyReport = ({}, ref: any) => {
   return (
     <>
       <CardTitle title="尽调报告和审贷会审批表">
-        <ComEditTable<reportFileProps>
+        <EditableProTable<reportFileProps>
           columns={columns}
           rowKey="id"
           value={dataSource}
-          recordCreatorProps={{
-            newRecordType: 'dataSource',
-            record: () => ({
-              id: Date.now(),
-            }),
-          }}
+          recordCreatorProps={false}
           editable={{
-            type: 'multiple',
             form: mpForm,
             editableKeys,
             onValuesChange: (record: any, recordList: any) => {
               setDataSource(recordList)
             },
-            onChange: (editableKeyss: any, editableRows: reportFileProps[]) => {
-              setEditableRowKeys(editableKeyss)
-              setDataSource(editableRows)
-            },
+            onChange: setEditableRowKeys,
           }}
         />
       </CardTitle>
