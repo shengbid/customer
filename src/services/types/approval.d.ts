@@ -11,5 +11,5 @@ export interface approvalHistoryProps {
   createBy: string
   approvalComments: string
   radioValue: string
-  fileList?: fileListProps[]
+  fileList?: string
 }
