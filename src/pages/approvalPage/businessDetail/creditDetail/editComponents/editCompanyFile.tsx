@@ -23,6 +23,7 @@ const EditCompanyFile: React.FC<compnayProps> = ({
   const [spining, setSpining] = useState<boolean>(true)
   const [tableForm] = Form.useForm()
 
+  const limitTypes = ['gysqd', 'xykhqd', 'jyrsm']
   const columns = [
     {
       title: '附件类型',
@@ -47,14 +48,18 @@ const EditCompanyFile: React.FC<compnayProps> = ({
           },
         ],
       },
-      renderFormItem: () => <ComUpload limit={10} />,
+      renderFormItem: (_, { recordKey }: any) => (
+        <ComUpload limit={limitTypes.includes(recordKey) ? 1 : 10} />
+      ),
     },
   ]
 
   // 获取详情
   const getDetail = () => {
     if (infoData && infoData.length) {
-      infoData.push({ fileType: 'qt', typeName: '其他', fileList: [] })
+      if (!infoData.filter((item) => item.fileType === 'qt').length) {
+        infoData.push({ fileType: 'qt', typeName: '其他', fileList: [] })
+      }
       setDataSource(infoData)
       setEditableRowKeys(infoData.map((item: any) => item.fileType))
     }
