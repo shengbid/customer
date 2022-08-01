@@ -135,39 +135,6 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp, isDetail = fal
 
   return (
     <>
-      {realData.legalFlag === 'no' ? (
-        <Descriptions
-          title="企业法人信息"
-          extra={
-            !isDetail && (
-              <Button type="primary" onClick={() => handleEdit(1)}>
-                编辑
-              </Button>
-            )
-          }
-        >
-          <DescriptionsItem label="法人/董事姓名">{legalData.name}</DescriptionsItem>
-          <DescriptionsItem label="身份证件类型">
-            <DictShow dictValue={legalData.identityType} dictkey="cus_sfzlx" />
-          </DescriptionsItem>
-          <DescriptionsItem label="证件号码">{legalData.identityNumber}</DescriptionsItem>
-          <DescriptionsItem label="证件正面">
-            <ComUpload isDetail value={legalData.idFront} />
-          </DescriptionsItem>
-          <DescriptionsItem label="证件反面">
-            <ComUpload isDetail value={legalData.idReverse} />
-          </DescriptionsItem>
-          <DescriptionsItem label="手机号码">
-            <DictShow dictValue={legalData.phoneArea} dictkey="phone_code" />
-            {legalData.phoneNumber}
-          </DescriptionsItem>
-          <DescriptionsItem label="婚姻情况">
-            <DictShow dictValue={legalData.marriageStatus} dictkey="hyqk" />
-          </DescriptionsItem>
-          <DescriptionsItem label="住房地址">{legalData.houseAddr}</DescriptionsItem>
-        </Descriptions>
-      ) : null}
-
       <Descriptions
         title="实控人信息"
         extra={
@@ -214,6 +181,39 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp, isDetail = fal
           <ComUpload isDetail value={realData.driveLicense} />
         </DescriptionsItem>
       </Descriptions>
+
+      {realData.legalFlag === 'no' ? (
+        <Descriptions
+          title="企业法人信息"
+          extra={
+            !isDetail && (
+              <Button type="primary" onClick={() => handleEdit(1)}>
+                编辑
+              </Button>
+            )
+          }
+        >
+          <DescriptionsItem label="法人/董事姓名">{legalData.name}</DescriptionsItem>
+          <DescriptionsItem label="身份证件类型">
+            <DictShow dictValue={legalData.identityType} dictkey="cus_sfzlx" />
+          </DescriptionsItem>
+          <DescriptionsItem label="证件号码">{legalData.identityNumber}</DescriptionsItem>
+          <DescriptionsItem label="证件正面">
+            <ComUpload isDetail value={legalData.idFront} />
+          </DescriptionsItem>
+          <DescriptionsItem label="证件反面">
+            <ComUpload isDetail value={legalData.idReverse} />
+          </DescriptionsItem>
+          <DescriptionsItem label="手机号码">
+            <DictShow dictValue={legalData.phoneArea} dictkey="phone_code" />
+            {legalData.phoneNumber}
+          </DescriptionsItem>
+          <DescriptionsItem label="婚姻情况">
+            <DictShow dictValue={legalData.marriageStatus} dictkey="hyqk" />
+          </DescriptionsItem>
+          <DescriptionsItem label="住房地址">{legalData.houseAddr}</DescriptionsItem>
+        </Descriptions>
+      ) : null}
 
       {metalData.name ? (
         <Descriptions
