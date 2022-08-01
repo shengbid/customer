@@ -7,7 +7,7 @@ import ComCard from '@/components/ComPage/ComCard'
 import ApprovalForm from './components/approvalForm'
 import ComCollapse from '@/components/ComPage/ComCollapse'
 import ViewBpmn from '@/components/Bpmn/ViewBpmn'
-import { approvalSave, getProcessIds, /*addSurveyReport,*/ getCreditDetail } from '@/services'
+import { approvalSave, getProcessIds, getCreditDetail } from '@/services'
 import CreditApproval from './businessDetail/creditApproval'
 import ApprovalDom from './components/approvalDom'
 import type { surveyParamProps } from '@/services/types'
@@ -25,7 +25,7 @@ const ApprovalPage: React.FC = (props: any) => {
   const approvalDomRef: MutableRefObject<any> = useRef({})
 
   const { query } = props.location
-  const { id, businessKey, taskNodeName, instanceId, formKey = 'credit2' } = query
+  const { id, businessKey, taskNodeName, instanceId, formKey = 'credit3' } = query
   // 审核历史
   const DetailDom = <CreditApproval formName={formKey} id={id} businessKey={businessKey} />
 
@@ -60,20 +60,20 @@ const ApprovalPage: React.FC = (props: any) => {
   // 点击审批
   const approval = async (values: any) => {
     console.log(values, approvalDomRef?.current)
-    let businessData
+    let attatchmentDatas
     if (approvalDomRef?.current && approvalDomRef?.current.getBusinessData) {
       const data = await approvalDomRef?.current?.getBusinessData()
       if (!data) {
         message.warning('请填写完成表单信息!')
         return
       }
-      businessData = data.businessData
-      console.log(businessData)
+      attatchmentDatas = data.businessData
+      console.log(attatchmentDatas)
       // await addSurveyReport(businessData)
     }
 
     setConfirmLoading(true)
-    await approvalSave(id, { ...values, businessKey, taskNodeName })
+    await approvalSave(id, { ...values, formKey, businessKey, taskNodeName, attatchmentDatas })
     setConfirmLoading(false)
     message.success('审批成功')
     history.goBack()
