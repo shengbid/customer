@@ -7,9 +7,10 @@ import ComCard from '@/components/ComPage/ComCard'
 import ApprovalForm from './components/approvalForm'
 import ComCollapse from '@/components/ComPage/ComCollapse'
 import ViewBpmn from '@/components/Bpmn/ViewBpmn'
-import { approvalSave, getProcessIds } from '@/services'
+import { approvalSave, getProcessIds, /*addSurveyReport,*/ getCreditDetail } from '@/services'
 import CreditApproval from './businessDetail/creditApproval'
 import ApprovalDom from './components/approvalDom'
+import type { surveyParamProps } from '@/services/types'
 
 const { Panel } = ComCollapse
 
@@ -17,13 +18,14 @@ const { DescriptionsItem } = ComDescriptions
 
 const ApprovalPage: React.FC = (props: any) => {
   const [infoData, setInfoData] = useState<any>({})
+  const [creditParams, setCreditParams] = useState<surveyParamProps>()
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
   const [higLigthData, setHigLigthData] = useState<any>([])
   const title = '香港吉祥公司--授信申请'
   const approvalDomRef: MutableRefObject<any> = useRef({})
 
   const { query } = props.location
-  const { id, businessKey, taskNodeName, instanceId, formKey = 'credit1' } = query
+  const { id, businessKey, taskNodeName, instanceId, formKey = 'credit2' } = query
   // 审核历史
   const DetailDom = <CreditApproval formName={formKey} id={id} businessKey={businessKey} />
 
@@ -35,6 +37,15 @@ const ApprovalPage: React.FC = (props: any) => {
     })
   }, [])
 
+  // 获取授信id和企业id
+  const getCredit = async () => {
+    const { data } = await getCreditDetail('11112222')
+    setCreditParams({
+      infoId: data.id,
+      enterpriseId: data.enterpriseId,
+    })
+  }
+
   // 获取流程信息
   const getProcess = async () => {
     const { data } = await getProcessIds(instanceId)
@@ -42,6 +53,7 @@ const ApprovalPage: React.FC = (props: any) => {
   }
 
   useEffect(() => {
+    getCredit()
     getProcess()
   }, [])
 
@@ -57,6 +69,7 @@ const ApprovalPage: React.FC = (props: any) => {
       }
       businessData = data.businessData
       console.log(businessData)
+      // await addSurveyReport(businessData)
     }
 
     setConfirmLoading(true)
@@ -85,7 +98,12 @@ const ApprovalPage: React.FC = (props: any) => {
       <ComCard title="详情信息">{DetailDom}</ComCard>
 
       {/* 审核业务表单 */}
-      <ApprovalDom id={id} formName={formKey} approvalDomRef={approvalDomRef} />
+      <ApprovalDom
+        id={id}
+        formName={formKey}
+        creditParams={creditParams}
+        approvalDomRef={approvalDomRef}
+      />
 
       {/* 审核通用表单 */}
       <ApprovalForm confirmLoading={confirmLoading} handleSubmit={approval} BpmnInfo={{ id }} />

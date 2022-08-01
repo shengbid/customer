@@ -93,3 +93,8 @@ export interface signContractProps {
   time: string
   fileList: fileListOptionProps[]
 }
+// 获取尽调报告参数
+export interface surveyParamProps {
+  infoId: number | string
+  enterpriseId: number | string
+}

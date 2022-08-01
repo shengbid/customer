@@ -7,7 +7,7 @@ import type { ProColumns } from '@ant-design/pro-table'
 import RequiredTilte from '@/components/RequiredLabel'
 import ComUpload from '@/components/ComUpload'
 
-const SurveyReport = ({}, ref: any) => {
+const SurveyReport = ({ creditParams }: any, ref: any) => {
   const [dataSource, setDataSource] = useState<reportFileProps[]>([
     {
       id: 1,
@@ -21,7 +21,7 @@ const SurveyReport = ({}, ref: any) => {
     },
     {
       id: 3,
-      fileType: '其他',
+      fileType: '其他附件',
       fileList: [],
     },
   ])
@@ -33,7 +33,12 @@ const SurveyReport = ({}, ref: any) => {
     getBusinessData: async () => {
       try {
         await mpForm.validateFields()
-        const businessData = dataSource
+        const businessData = dataSource.map((item) => {
+          return {
+            ...item,
+            ...creditParams,
+          }
+        })
         return { businessData }
       } catch (error) {
         return ''

@@ -1,5 +1,5 @@
 import { request } from 'umi'
-import type { creditListProps, creditListParamProps } from '@/services/types'
+import type { creditListProps, creditListParamProps, surveyReportProps } from '@/services/types'
 import { paramsToPageParams } from '@/utils/base'
 
 const Url = '/system/credit'
@@ -59,5 +59,19 @@ export async function editCompanyPeople(data: any) {
   return request<{ data: any }>(`${Url}/edit/person`, {
     method: 'post',
     data,
+  })
+}
+// 尽调合同文件
+export async function addSurveyReport(data: any) {
+  return request<{ data: any }>(`${url}/cus/cusCreditAuditFile/add`, {
+    method: 'post',
+    data,
+  })
+}
+// 尽调合同文件详情
+export async function surveyReportDetail(params: surveyReportProps) {
+  return request<{ data: any }>(`${url}/credit/cusCreditAuditFile/get/list`, {
+    method: 'get',
+    params,
   })
 }
