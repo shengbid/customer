@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useIntl } from 'umi'
 import DictSelect from '@/components/ComSelect'
-import { phoneReg, idCardReg } from '@/utils/reg'
+import { phoneReg, idReg } from '@/utils/reg'
 import RequiredLabel from '@/components/RequiredLabel'
 import { Form, Input, Row, Col, Button, message } from 'antd'
 import ComUpload from '@/components/ComUpload'
@@ -95,10 +95,10 @@ const MetalPersonInfo: React.FC<reralProps> = ({ handleCancel, info }) => {
                   id: 'credit.apply.idNo',
                 })}`,
               },
-              idCardReg,
+              idReg[idType],
             ]}
           >
-            <Input maxLength={50} />
+            <Input maxLength={18} />
           </Form.Item>
         </Col>
       </Row>
