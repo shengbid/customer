@@ -26,7 +26,7 @@ export type comuploadProps = {
 
 const ComUpload: React.FC<comuploadProps> = ({
   value = [],
-  limit = 10,
+  limit = 200,
   onChange,
   isDetail = false,
   multiple = true,
@@ -199,7 +199,9 @@ const ComUpload: React.FC<comuploadProps> = ({
       beforeUpload={checkFileSize}
       className={isDetail ? 'detailupload' : ''}
     >
-      {!isDetail ? <Button icon={<UploadOutlined />} type="text" /> : null}
+      {limit > files.length && !isDetail && limit > (value ? value.length : 0) ? (
+        <Button icon={<UploadOutlined />} type="text" />
+      ) : null}
     </Upload>
   )
 }
