@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useIntl } from 'umi'
-import DictSelect from '@/components/ComSelect'
-import { phoneReg } from '@/utils/reg'
-import RequiredLabel from '@/components/RequiredLabel'
+import PhoneInput from '@/components/Input/phoneInput'
 import { Form, Input, Button, message } from 'antd'
 import { editCompanyPeople } from '@/services'
 
@@ -83,39 +81,8 @@ const MetalPersonInfo: React.FC<reralProps> = ({ handleCancel, info }) => {
         <Input maxLength={50} />
       </Form.Item>
 
-      <Form.Item
-        label={
-          <RequiredLabel
-            label={intl.formatMessage({
-              id: 'credit.apply.phone',
-            })}
-          />
-        }
-      >
-        <Form.Item
-          name="phoneArea"
-          style={{ display: 'inline-block', marginBottom: 0, width: '30%' }}
-        >
-          <DictSelect authorword="phone_code" allowClear={false} />
-        </Form.Item>
-        <Form.Item
-          name="phoneNumber"
-          style={{ display: 'inline-block', marginBottom: 0, width: '70%' }}
-          rules={[
-            {
-              required: true,
-              message: `${intl.formatMessage({
-                id: 'pages.form.input',
-              })}${intl.formatMessage({
-                id: 'credit.apply.phone',
-              })}`,
-            },
-            phoneReg,
-          ]}
-        >
-          <Input maxLength={50} />
-        </Form.Item>
-      </Form.Item>
+      <PhoneInput />
+
       <div className="modal-btns">
         <Button type="primary" htmlType="submit" loading={confirmLoading}>
           {intl.formatMessage({

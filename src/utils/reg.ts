@@ -32,12 +32,12 @@ export const REGS = {
   // 身份证校验
   ID_CARD_REG:
     /^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/,
-  // 账号验证 (字母或数字.字母开头)
-  ACCOUNT_REG: /(^[a-zA-Z])([0-9A-Za-z]{5,17}$)/,
   // 香港身份证
-  ID_HONGKONG: /^[0-9A-Za-z]{8}$/,
+  ID_HONGKONG: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8}$/,
   // 护照
-  ID_PASSPORT: /^[0-9A-Za-z]{9}$/,
+  ID_PASSPORT: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{9}$/,
+  // 账号验证 (字母或数字.字母开头)
+  ACCOUNT_REG: /(^[a-zA-Z])([0-9A-Za-z]{5,18}$)/,
 }
 
 // 身份证正则的验证
@@ -63,6 +63,11 @@ export const integerReg = {
 export const phoneReg = {
   message: RegText.phone,
   pattern: REGS.TELEPHONE_REG,
+}
+// 香港电话号码验证
+export const phoneHKReg = {
+  message: RegText.phone,
+  pattern: REGS.TELEPHONE_HK_REG,
 }
 
 // 邮箱验证
@@ -101,8 +106,16 @@ export const passportReg = {
 // 身份证类型的不同判断
 export const idReg = {
   xgsfz: idHongKongReg,
+  amsfz: idHongKongReg,
   dlsfz: idCardReg,
   hz: passportReg,
+}
+// 电话区号不同判断
+export const phoneCodeReg = {
+  1: phoneReg,
+  2: phoneHKReg,
+  3: phoneHKReg,
+  4: phoneHKReg,
 }
 
 // 金额千分位展示正则

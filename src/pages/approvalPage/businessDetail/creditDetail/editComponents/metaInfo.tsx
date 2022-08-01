@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useIntl } from 'umi'
 import DictSelect from '@/components/ComSelect'
-import { phoneReg, idReg } from '@/utils/reg'
-import RequiredLabel from '@/components/RequiredLabel'
+import { idReg } from '@/utils/reg'
 import { Form, Input, Row, Col, Button, message } from 'antd'
 import ComUpload from '@/components/ComUpload'
 import UploadImage from '@/components/ComUpload/uploadImage'
 import { editCompanyPeople } from '@/services'
 import { isEmpty } from 'lodash'
+import PhoneInput from '@/components/Input/phoneInput'
 
 interface reralProps {
   handleCancel: () => void
@@ -170,39 +170,7 @@ const MetalPersonInfo: React.FC<reralProps> = ({ handleCancel, info }) => {
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item
-            label={
-              <RequiredLabel
-                label={intl.formatMessage({
-                  id: 'credit.apply.phone',
-                })}
-              />
-            }
-          >
-            <Form.Item
-              name="phoneArea"
-              style={{ display: 'inline-block', marginBottom: 0, width: '30%' }}
-            >
-              <DictSelect authorword="phone_code" allowClear={false} />
-            </Form.Item>
-            <Form.Item
-              name="phoneNumber"
-              style={{ display: 'inline-block', marginBottom: 0, width: '70%' }}
-              rules={[
-                {
-                  required: true,
-                  message: `${intl.formatMessage({
-                    id: 'pages.form.input',
-                  })}${intl.formatMessage({
-                    id: 'credit.apply.phone',
-                  })}`,
-                },
-                phoneReg,
-              ]}
-            >
-              <Input maxLength={50} />
-            </Form.Item>
-          </Form.Item>
+          <PhoneInput />
         </Col>
       </Row>
 
