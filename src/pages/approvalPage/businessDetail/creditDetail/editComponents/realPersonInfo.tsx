@@ -23,6 +23,7 @@ const RealPersonInfo: React.FC<reralProps> = ({ handleCancel, info }) => {
   useEffect(() => {
     console.log(info)
     form.setFieldsValue(info)
+    setIdTyp(info.identityType)
   }, [])
 
   // 修改
@@ -126,7 +127,7 @@ const RealPersonInfo: React.FC<reralProps> = ({ handleCancel, info }) => {
 
       <Row gutter={gutter}>
         <Col span={8}>
-          <PhoneInput />
+          <PhoneInput initType={info.phoneArea} />
         </Col>
         <Col span={8}>
           <Form.Item
@@ -190,7 +191,7 @@ const RealPersonInfo: React.FC<reralProps> = ({ handleCancel, info }) => {
               },
             ]}
           >
-            <DictSelect authorword="hyqk" />
+            <DictSelect disabled authorword="hyqk" />
           </Form.Item>
         </Col>
         <Col span={8}>

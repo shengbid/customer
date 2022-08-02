@@ -145,7 +145,7 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp, isDetail = fal
           )
         }
       >
-        <DescriptionsItem label="是否同时为法人" span={2}>
+        <DescriptionsItem label="是否同时为法人">
           {realData.legalFlag === 'no' ? '否' : '是'}
         </DescriptionsItem>
         <DescriptionsItem label="实控人姓名">{realData.name}</DescriptionsItem>

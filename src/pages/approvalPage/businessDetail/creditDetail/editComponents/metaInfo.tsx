@@ -24,6 +24,7 @@ const MetalPersonInfo: React.FC<reralProps> = ({ handleCancel, info }) => {
 
   useEffect(() => {
     form.setFieldsValue(info)
+    setIdTyp(info.identityType)
   }, [])
 
   // 修改
@@ -170,7 +171,7 @@ const MetalPersonInfo: React.FC<reralProps> = ({ handleCancel, info }) => {
           </Form.Item>
         </Col>
         <Col span={12}>
-          <PhoneInput />
+          <PhoneInput initType={info.phoneArea} />
         </Col>
       </Row>
 

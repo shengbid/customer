@@ -18,7 +18,10 @@ const { DescriptionsItem } = ComDescriptions
 
 const ApprovalPage: React.FC = (props: any) => {
   const [infoData, setInfoData] = useState<any>({})
-  const [creditParams, setCreditParams] = useState<surveyParamProps>()
+  const [creditParams, setCreditParams] = useState<surveyParamProps>({
+    infoId: '',
+    enterpriseId: '',
+  })
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
   const [higLigthData, setHigLigthData] = useState<any>([])
   const title = '香港吉祥公司--授信申请'
@@ -27,7 +30,14 @@ const ApprovalPage: React.FC = (props: any) => {
   const { query } = props.location
   const { id, businessKey, taskNodeName, instanceId, formKey = 'credit3' } = query
   // 审核历史
-  const DetailDom = <CreditApproval formName={formKey} id={id} businessKey={businessKey} />
+  const DetailDom = (
+    <CreditApproval
+      creditParams={creditParams}
+      formName={formKey}
+      id={id}
+      businessKey={businessKey}
+    />
+  )
 
   useEffect(() => {
     setInfoData({
@@ -39,6 +49,7 @@ const ApprovalPage: React.FC = (props: any) => {
 
   // 获取授信id和企业id
   const getCredit = async () => {
+    // const { data } = await getCreditDetail(instanceId)
     const { data } = await getCreditDetail('11112222')
     setCreditParams({
       infoId: data.id,

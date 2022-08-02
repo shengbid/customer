@@ -81,7 +81,7 @@ const MetalPersonInfo: React.FC<reralProps> = ({ handleCancel, info }) => {
         <Input maxLength={50} />
       </Form.Item>
 
-      <PhoneInput />
+      <PhoneInput initType={info.phoneArea} />
 
       <div className="modal-btns">
         <Button type="primary" htmlType="submit" loading={confirmLoading}>

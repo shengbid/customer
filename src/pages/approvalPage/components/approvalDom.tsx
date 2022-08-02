@@ -16,7 +16,7 @@ interface approvalDomProps {
   formName: string
   id: string
   approvalDomRef: any
-  creditParams?: surveyParamProps
+  creditParams: surveyParamProps
 }
 const ApprovalDom: React.FC<approvalDomProps> = ({
   formName,
