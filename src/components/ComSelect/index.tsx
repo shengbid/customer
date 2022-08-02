@@ -4,6 +4,7 @@ import type { dictListProps } from '@/services/types'
 import { getDictSelectList } from '@/services'
 import { useIntl } from 'umi'
 import { handleOptionData } from '@/utils/base'
+import type { SizeType } from 'antd/lib/config-provider/SizeContext'
 
 const { Option } = Select
 
@@ -17,6 +18,7 @@ export interface iconSelectProps {
   labelInValue?: boolean
   allowClear?: boolean
   disabled?: boolean
+  size?: SizeType
 }
 // 数据字典
 const DictSelect: React.FC<iconSelectProps> = (props) => {
@@ -34,6 +36,7 @@ const DictSelect: React.FC<iconSelectProps> = (props) => {
     labelInValue = false,
     allowClear = true,
     disabled = false,
+    size,
   } = props
 
   const getList = async () => {
@@ -98,6 +101,7 @@ const DictSelect: React.FC<iconSelectProps> = (props) => {
       labelInValue={labelInValue}
       value={value}
       onChange={onChange}
+      size={size}
       style={{ width: '100%' }}
     >
       {dictList.map((item) => {
