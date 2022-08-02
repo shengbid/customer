@@ -15,7 +15,7 @@ const Contract = ({ title }: contractprops, ref: any) => {
       try {
         await form.validateFields()
         const businessData = form.getFieldsValue()
-        return { businessData }
+        return { businessData: businessData.fileList }
       } catch (error) {
         return ''
       }
@@ -26,7 +26,7 @@ const Contract = ({ title }: contractprops, ref: any) => {
     <CardTitle title="合同信息">
       <Form name="basic" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }} form={form}>
         <Form.Item
-          name="creditReport"
+          name="fileList"
           label={title}
           rules={[
             {

@@ -96,7 +96,7 @@ const ApprovalPage: React.FC = (props: any) => {
         <ComDescriptions
           title={title}
           extra={
-            <Button type="primary" onClick={() => history.goBack()}>
+            <Button type="primary" onClick={() => history.push('/leaderPage/undone')}>
               返回
             </Button>
           }
@@ -112,7 +112,7 @@ const ApprovalPage: React.FC = (props: any) => {
       <ApprovalDom
         id={id}
         formName={formKey}
-        creditParams={creditParams}
+        creditParams={{ ...creditParams, taskID: id, businessKey }}
         approvalDomRef={approvalDomRef}
       />
 
