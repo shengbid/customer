@@ -85,7 +85,10 @@ const ApprovalPage: React.FC = (props: any) => {
 
     setConfirmLoading(true)
     await approvalSave(id, {
-      formData: { ...values, formKey, businessKey, taskNodeName },
+      ...values,
+      formKey,
+      businessKey,
+      taskNodeName,
       attatchmentDatas,
     })
     setConfirmLoading(false)
