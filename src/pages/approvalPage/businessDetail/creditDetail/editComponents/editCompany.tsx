@@ -34,7 +34,7 @@ const EditCompany: React.FC<compnayProps> = ({ info, modalVisible, handleCancel 
 
   return (
     <Modal
-      title={'修改企业信息1'}
+      title={'修改企业信息'}
       maskClosable={false}
       destroyOnClose
       width={800}

@@ -9,15 +9,15 @@ import ComUpload from '@/components/ComUpload'
 const RealteDetail: React.FC<{ creditParams: surveyParamProps }> = ({ creditParams }) => {
   const [dataSource, setDataSource] = useState<reportFileProps[]>([])
 
-  useEffect(() => {
-    setDataSource([
-      {
-        id: 1,
-        fileType: '尽调报告',
-        fileList: [],
-      },
-    ])
-  }, [])
+  // useEffect(() => {
+  //   setDataSource([
+  //     {
+  //       id: 1,
+  //       fileType: '尽调报告',
+  //       fileList: [],
+  //     },
+  //   ])
+  // }, [])
 
   const getDetail = async () => {
     const { data } = await surveyReportDetail(creditParams)
