@@ -1,4 +1,4 @@
-import { LockOutlined, MobileOutlined, UserOutlined, SecurityScanOutlined } from '@ant-design/icons'
+import { LockOutlined, UserOutlined, SecurityScanOutlined } from '@ant-design/icons'
 import { Alert, message, Tabs, Row, Col, Modal, Input, Form } from 'antd'
 import React, { useState, useEffect } from 'react'
 import { ProFormCaptcha, ProFormText, LoginForm } from '@ant-design/pro-form'
@@ -9,7 +9,7 @@ import type { loginProps, LoginResult } from '@/services/types'
 import Cookies from 'js-cookie'
 import logo from '@/assets/home/logo.jpg'
 import { handleMenuData } from '@/utils/base'
-import { phoneReg } from '@/utils/reg'
+import PhoneInput from '@/components/Input/phoneInput'
 
 import styles from './index.less'
 
@@ -244,28 +244,8 @@ const Login: React.FC = () => {
           )}
           {type === 'phone' && (
             <>
-              <ProFormText
-                fieldProps={{
-                  size: 'large',
-                  autoComplete: 'off',
-                  prefix: <MobileOutlined className={styles.prefixIcon} />,
-                }}
-                name="phone"
-                placeholder={intl.formatMessage({
-                  id: 'pages.login.phone',
-                })}
-                rules={[
-                  {
-                    required: true,
-                    message: `${intl.formatMessage({
-                      id: 'pages.form.input',
-                    })}${intl.formatMessage({
-                      id: 'pages.login.phone',
-                    })}`,
-                  },
-                  phoneReg,
-                ]}
-              />
+              <PhoneInput icon />
+
               <ProFormCaptcha
                 fieldProps={{
                   size: 'large',
