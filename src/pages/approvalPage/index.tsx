@@ -84,7 +84,10 @@ const ApprovalPage: React.FC = (props: any) => {
     }
 
     setConfirmLoading(true)
-    await approvalSave(id, { ...values, formKey, businessKey, taskNodeName, attatchmentDatas })
+    await approvalSave(id, {
+      formData: { ...values, formKey, businessKey, taskNodeName },
+      attatchmentDatas,
+    })
     setConfirmLoading(false)
     message.success('审批成功')
     history.goBack()
