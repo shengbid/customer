@@ -71,7 +71,7 @@ const ApprovalPage: React.FC = (props: any) => {
   // 点击审批
   const approval = async (values: any) => {
     console.log(values, approvalDomRef?.current)
-    let attatchmentDatas
+    let attatchmentDatas = null
     if (approvalDomRef?.current && approvalDomRef?.current.getBusinessData) {
       const data = await approvalDomRef?.current?.getBusinessData()
       if (!data) {
