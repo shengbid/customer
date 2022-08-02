@@ -4,7 +4,8 @@ import type { addModalProps } from '@/services/types'
 import { addLoanCustomer } from '@/services'
 import DictSelect from '@/components/ComSelect'
 import { useIntl } from 'umi'
-import { REGS, accountReg } from '@/utils/reg'
+import { accountReg } from '@/utils/reg'
+import PhoneInput from '@/components/Input/phoneInput'
 
 const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleCancel, info }) => {
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
@@ -181,50 +182,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item
-                label={intl.formatMessage({
-                  id: 'customer.loan.phone',
-                })}
-              >
-                <Input.Group compact>
-                  <Form.Item name="phoneArea" style={{ width: '30%' }}>
-                    <DictSelect authorword="phone_code" allowClear={false} />
-                  </Form.Item>
-                  <Form.Item
-                    name="phoneNumber"
-                    style={{ width: '70%' }}
-                    rules={[
-                      {
-                        required: true,
-                        message: `${intl.formatMessage({
-                          id: 'pages.form.input',
-                        })}${intl.formatMessage({
-                          id: 'customer.loan.phone',
-                        })}`,
-                      },
-                      ({ getFieldValue }) => ({
-                        validator(_, value) {
-                          if (Number(getFieldValue('phoneArea')) === 1) {
-                            if (REGS.TELEPHONE_REG.test(value)) {
-                              return Promise.resolve()
-                            } else {
-                              return Promise.reject(new Error('手机号格式为11位数字'))
-                            }
-                          } else {
-                            if (REGS.TELEPHONE_HK_REG.test(value)) {
-                              return Promise.resolve()
-                            } else {
-                              return Promise.reject(new Error('手机号格式为8位数字'))
-                            }
-                          }
-                        },
-                      }),
-                    ]}
-                  >
-                    <Input maxLength={50} />
-                  </Form.Item>
-                </Input.Group>
-              </Form.Item>
+              <PhoneInput />
             </Col>
           </Row>
 
