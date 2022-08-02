@@ -28,7 +28,7 @@ const ApprovalPage: React.FC = (props: any) => {
   const approvalDomRef: MutableRefObject<any> = useRef({})
 
   const { query } = props.location
-  const { id, businessKey, taskNodeName, instanceId, formKey = 'credit3' } = query
+  const { id, businessKey, taskNodeName, instanceId, formKey = 'credit1' } = query
   // 审核历史
   const DetailDom = (
     <CreditApproval

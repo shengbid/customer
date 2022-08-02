@@ -77,7 +77,7 @@ export async function surveyReportDetail(params: surveyParamProps) {
 }
 // 获取合同附件详情
 export async function creditContractDetail(params: any) {
-  return request<{ data: any }>(`activiti/task/getAttatchment`, {
+  return request<{ data: any }>(`/activiti/task/getAttatchment`, {
     method: 'get',
     params,
   })
