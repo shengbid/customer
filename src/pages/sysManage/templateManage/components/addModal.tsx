@@ -44,11 +44,11 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
     setConfirmLoading(true)
     try {
       const files = values.fileList.length ? values.fileList[0] : {}
-      files.templateId = files.fileId
       if (values.id) {
-        await editTemplate({ ...values, ...files })
+        await editTemplate({ ...files, ...values })
       } else {
-        await addTemplate({ ...values, ...files })
+        files.templateId = files.fileId
+        await addTemplate({ ...files, ...values })
       }
       setConfirmLoading(false)
     } catch (error) {
