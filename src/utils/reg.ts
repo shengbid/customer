@@ -30,7 +30,7 @@ export const REGS = {
   // 邮箱正则表达式
   EMAIL_REG: /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/,
   // 密码验证 (数字大小写, 8-16位)
-  PASS_WORD: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/,
+  PASS_WORD: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,20}$/,
   // 身份证校验
   ID_CARD_REG:
     /^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[X])$)$/,
@@ -46,6 +46,15 @@ export const REGS = {
 export const idCardReg = {
   message: RegText.idCard,
   pattern: REGS.ID_CARD_REG,
+}
+
+export const idTestReg = (value: string) => {
+  return {
+    dlsfz: REGS.ID_CARD_REG.test(value),
+    amsfz: REGS.ID_HONGKONG.test(value),
+    xgsfz: REGS.ID_HONGKONG.test(value),
+    hz: REGS.ID_PASSPORT.test(value),
+  }
 }
 
 // 数字正则的验证
@@ -112,9 +121,9 @@ export const passportReg = {
 
 // 身份证类型的不同判断
 export const idReg = {
+  dlsfz: idCardReg,
   xgsfz: idHongKongReg,
   amsfz: idHongKongReg,
-  dlsfz: idCardReg,
   hz: passportReg,
 }
 // 电话区号不同判断

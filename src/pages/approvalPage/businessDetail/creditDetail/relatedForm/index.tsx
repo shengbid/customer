@@ -6,6 +6,7 @@ import { Form, InputNumber } from 'antd'
 import type { ProColumns } from '@ant-design/pro-table'
 import RequiredTilte from '@/components/RequiredLabel'
 import DictSelect from '@/components/ComSelect'
+import { idTestReg } from '@/utils/reg'
 
 // 关联信息
 const RelatedDetail: React.FC = () => {
@@ -72,7 +73,18 @@ const RelatedDetail: React.FC = () => {
         rules: [
           {
             required: true,
-            message: '此项是必填项',
+            validator: ({ field }: any, value: any) => {
+              // 获取当前行数据
+              const current = mpForm.getFieldValue(`${field.split('.')[0]}`) || {}
+              const idType = current.identityType ? current.identityType : 'xgsfz'
+
+              if (!value) {
+                return Promise.reject(new Error('此项是必填项'))
+              } else if (!idTestReg(value)[idType]) {
+                return Promise.reject(new Error('证件号码格式不正确'))
+              }
+              return Promise.resolve()
+            },
           },
         ],
       },
@@ -171,7 +183,18 @@ const RelatedDetail: React.FC = () => {
         rules: [
           {
             required: true,
-            message: '此项是必填项',
+            validator: ({ field }: any, value: any) => {
+              // 获取当前行数据
+              const current = mpForm.getFieldValue(`${field.split('.')[0]}`) || {}
+              const idType = current.identityType ? current.identityType : 'xgsfz'
+
+              if (!value) {
+                return Promise.reject(new Error('此项是必填项'))
+              } else if (!idTestReg(value)[idType]) {
+                return Promise.reject(new Error('证件号码格式不正确'))
+              }
+              return Promise.resolve()
+            },
           },
         ],
       },
