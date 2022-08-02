@@ -215,7 +215,7 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp, isDetail = fal
         </Descriptions>
       ) : null}
 
-      {metalData.name ? (
+      {legalData.marriageStatus === 'yh' ? (
         <Descriptions
           title="实控人配偶信息"
           extra={

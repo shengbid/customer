@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useIntl } from 'umi'
 import DictSelect from '@/components/ComSelect'
 import { idReg, numToThousandReg, thousandToNumReg } from '@/utils/reg'
-import { Form, Input, Row, Col, Button, message, InputNumber } from 'antd'
+import { Form, Input, Row, Col, Button, message, InputNumber, Radio } from 'antd'
 import ComUpload from '@/components/ComUpload'
 import UploadImage from '@/components/ComUpload/uploadImage'
 import { editCompanyPeople } from '@/services'
@@ -61,6 +61,39 @@ const RealPersonInfo: React.FC<reralProps> = ({ handleCancel, info }) => {
       <Form.Item label="id" name="id" style={{ display: 'none' }}>
         <Input />
       </Form.Item>
+      <Row gutter={gutter}>
+        <Col span={12}>
+          <Form.Item
+            name="legalFlag"
+            label={intl.formatMessage({
+              id: 'credit.apply.legalFlag',
+            })}
+            rules={[
+              {
+                required: true,
+                message: `${intl.formatMessage({
+                  id: 'pages.form.select',
+                })}${intl.formatMessage({
+                  id: 'credit.apply.legalFlag',
+                })}`,
+              },
+            ]}
+          >
+            <Radio.Group>
+              <Radio value={'yes'}>
+                {intl.formatMessage({
+                  id: 'pages.form.yes',
+                })}
+              </Radio>
+              <Radio value={'no'}>
+                {intl.formatMessage({
+                  id: 'pages.form.no',
+                })}
+              </Radio>
+            </Radio.Group>
+          </Form.Item>
+        </Col>
+      </Row>
       <Row gutter={gutter}>
         <Col span={8}>
           <Form.Item
@@ -191,7 +224,7 @@ const RealPersonInfo: React.FC<reralProps> = ({ handleCancel, info }) => {
               },
             ]}
           >
-            <DictSelect disabled authorword="hyqk" />
+            <DictSelect authorword="hyqk" />
           </Form.Item>
         </Col>
         <Col span={8}>
