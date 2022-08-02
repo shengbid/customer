@@ -296,17 +296,17 @@ const Login: React.FC = () => {
               />
             </>
           )}
-          <div
+          {/* <div
             style={{
               marginBottom: 24,
               height: 10,
             }}
           >
-            {/* <ProFormCheckbox noStyle name="autoLogin">
+            <ProFormCheckbox noStyle name="autoLogin">
               {intl.formatMessage({
                 id: 'pages.login.autoLogin',
               })}
-            </ProFormCheckbox> */}
+            </ProFormCheckbox>
             <a
               style={{
                 float: 'right',
@@ -316,7 +316,7 @@ const Login: React.FC = () => {
                 id: 'pages.login.forgetPass',
               })}
             </a>
-          </div>
+          </div> */}
         </LoginForm>
       </div>
       <Footer />
