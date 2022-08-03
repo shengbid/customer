@@ -53,6 +53,10 @@ const Login: React.FC = () => {
 
   // 提交手机超次数验证码
   const handleOk = async () => {
+    if (!phoneCode) {
+      message.warning('请先填写验证码!')
+      return
+    }
     await getPhoneCaptcha({
       code: phoneCode,
       uuid: captchaUid,
@@ -225,6 +229,12 @@ const Login: React.FC = () => {
                     placeholder={intl.formatMessage({
                       id: 'pages.login.code',
                     })}
+                    rules={[
+                      {
+                        required: true,
+                        message: '请输入验证码',
+                      },
+                    ]}
                   />
                 </Col>
                 <Col span={8}>
