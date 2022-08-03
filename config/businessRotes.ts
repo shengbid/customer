@@ -44,4 +44,56 @@ export default [
       },
     ],
   },
+  {
+    path: '/basicManage',
+    name: '基础管理',
+    access: 'hasMenu',
+    icon: 'DesktopOutlined',
+    routes: [
+      {
+        path: '/basicManage',
+        redirect: '/basicManage/productManage',
+      },
+      {
+        path: '/basicManage/productManage',
+        name: '商品管理',
+        access: 'hasMenu',
+        routes: [
+          {
+            path: '/basicManage/productManage',
+            redirect: '/basicManage/productManage/product',
+          },
+          {
+            path: '/basicManage/productManage/product',
+            name: '商品管理',
+            access: 'hasMenu',
+            component: './basicManage/productManage/product',
+          },
+        ],
+      },
+      {
+        path: '/basicManage/contractManage',
+        name: '合同管理',
+        access: 'hasMenu',
+        routes: [
+          {
+            path: '/basicManage/contractManage',
+            redirect: '/basicManage/contractManage/agreement',
+          },
+          {
+            path: '/basicManage/contractManage/agreement',
+            name: '合同协议列表',
+            access: 'hasMenu',
+            component: './basicManage/contractManage/agreement',
+          },
+          {
+            path: '/basicManage/contractManage/templates',
+            name: '合同模板管理',
+            access: 'hasMenu',
+            component: './basicManage/contractManage/templates',
+          },
+        ],
+      },
+    ],
+  },
 ]

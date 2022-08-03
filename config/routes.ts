@@ -27,13 +27,7 @@ export default [
     routes: [
       {
         path: '/',
-        redirect: '/welcome',
-      },
-      {
-        path: '/welcome',
-        name: 'home',
-        icon: 'HomeOutlined',
-        component: './Welcome',
+        redirect: '/leaderPage',
       },
       {
         path: '/leaderPage',
@@ -43,7 +37,13 @@ export default [
         routes: [
           {
             path: '/leaderPage',
-            redirect: '/leaderPage/undone',
+            redirect: '/leaderPage/welcome',
+          },
+          {
+            path: '/leaderPage/welcome',
+            name: 'home',
+            access: 'hasMenu',
+            component: './Welcome',
           },
           {
             path: '/leaderPage/undone',
