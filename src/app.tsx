@@ -94,9 +94,9 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
         history.push(loginPath)
       }
     },
-    menuDataRender: (menu) => {
-      const staticRoutes = menu.filter((item) => ['/welcome'].includes(item.path as string))
-      return [...staticRoutes, ...(initialState?.menus || [])]
+    menuDataRender: () => {
+      // const staticRoutes = menu.filter((item) => ['/welcome'].includes(item.path as string))
+      return [...(initialState?.menus || [])]
     },
     // 增加一个 loading 的状态
     childrenRender: (children) => {
