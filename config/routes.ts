@@ -31,7 +31,7 @@ export default [
       },
       {
         path: '/leaderPage',
-        name: '工作台',
+        name: '首页',
         access: 'hasMenu',
         icon: 'DesktopOutlined',
         routes: [
@@ -41,13 +41,13 @@ export default [
           },
           {
             path: '/leaderPage/welcome',
-            name: 'home',
+            name: '首页',
             access: 'hasMenu',
             component: './Welcome',
           },
           {
             path: '/leaderPage/undone',
-            name: '我的待办',
+            name: '工作台',
             access: 'hasMenu',
             component: './leaderPage/undone',
           },
