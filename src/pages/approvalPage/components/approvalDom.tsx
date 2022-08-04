@@ -32,7 +32,7 @@ const ApprovalDom: React.FC<approvalDomProps> = ({
           </Panel>
         </ComCollapse>
         <ComCard style={{ marginTop: 12 }} title="关联信息">
-          <RelatedDetail />
+          <RelatedDetail ref={approvalDomRef} creditParams={creditParams} />
         </ComCard>
       </>
     ),

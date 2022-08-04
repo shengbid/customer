@@ -25,13 +25,13 @@ const RealteDetail: React.FC = () => {
     setDataSource2([
       {
         id: 1,
-        name: '张三',
+        frName: '张三',
         identityType: 'dlsfz',
         identityNumber: '365896188801252356',
-        fullName: '吉祥科创',
-        registerAddr: '1',
-        enterpriseNumber: '33333',
-        registerDetails: '深圳',
+        enterpriseName: '吉祥科创',
+        companyRegister: '1',
+        enterpriseCode: '33333',
+        registrationAddress: '深圳',
         remark: '备注',
       },
     ])
@@ -76,24 +76,24 @@ const RealteDetail: React.FC = () => {
   const columns2: ProColumns<relateCompanyProps>[] = [
     {
       title: '企业名称',
-      key: 'fullName',
-      dataIndex: 'fullName',
+      key: 'enterpriseName',
+      dataIndex: 'enterpriseName',
     },
     {
       title: '企业注册所在地区',
-      key: 'registerAddr',
-      dataIndex: 'registerAddr',
-      render: (_, record) => <DictShow dictValue={record.registerAddr} dictData={dictList2} />,
+      key: 'companyRegister',
+      dataIndex: 'companyRegister',
+      render: (_, record) => <DictShow dictValue={record.companyRegister} dictData={dictList2} />,
     },
     {
       title: '企业编号（注册编号社会信用代码）',
-      key: 'enterpriseNumber',
-      dataIndex: 'enterpriseNumber',
+      key: 'enterpriseCode',
+      dataIndex: 'enterpriseCode',
     },
     {
       title: '法人姓名',
-      key: 'name',
-      dataIndex: 'name',
+      key: 'frName',
+      dataIndex: 'frName',
     },
     {
       title: '身份证件类型',
@@ -103,8 +103,8 @@ const RealteDetail: React.FC = () => {
     },
     {
       title: '地址',
-      key: 'registerDetails',
-      dataIndex: 'registerDetails',
+      key: 'registrationAddress',
+      dataIndex: 'registrationAddress',
     },
     {
       title: '备注',

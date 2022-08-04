@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useImperativeHandle, forwardRef, useState } from 'react'
 import CardTitle from '@/components/ComPage/CardTitle'
 import ComEditTable from '@/components/ComProtable/ComEditTable'
 import type { shareholderProps, relateCompanyProps } from '@/services/types'
@@ -9,7 +9,7 @@ import DictSelect from '@/components/ComSelect'
 import { idTestReg } from '@/utils/reg'
 
 // 关联信息
-const RelatedDetail: React.FC = () => {
+const RelatedDetail = ({ creditParams }: any, ref: any) => {
   const [dataSource, setDataSource] = useState<shareholderProps[]>([
     {
       id: 1,
@@ -24,18 +24,36 @@ const RelatedDetail: React.FC = () => {
   const [dataSource2, setDataSource2] = useState<relateCompanyProps[]>([
     {
       id: 1,
-      name: '',
-      identityType: '',
-      identityNumber: '',
-      fullName: '',
-      registerAddr: '',
-      enterpriseNumber: '',
-      registerDetails: '',
-      remark: '',
+      frName: '张三',
+      identityType: 'dlsfz',
+      identityNumber: '365896188801252356',
+      enterpriseName: '吉祥科创',
+      companyRegister: '1',
+      enterpriseCode: '33333',
+      registrationAddress: '深圳',
+      remark: '备注',
     },
   ])
   const [mpForm] = Form.useForm()
   const [cpForm] = Form.useForm()
+
+  useImperativeHandle(ref, () => ({
+    // 暴露给父组件的方法
+    getBusinessData: async () => {
+      try {
+        await mpForm.validateFields()
+        const businessData = dataSource.map((item) => {
+          return {
+            ...item,
+            associatedEnterpriseId: creditParams.enterpriseId,
+          }
+        })
+        return { businessData }
+      } catch (error) {
+        return ''
+      }
+    },
+  }))
 
   const columns: ProColumns<shareholderProps>[] = [
     {
@@ -110,7 +128,7 @@ const RelatedDetail: React.FC = () => {
   const columns2: ProColumns<relateCompanyProps>[] = [
     {
       title: <RequiredTilte label="企业名称" />,
-      dataIndex: 'fullName',
+      dataIndex: 'enterpriseName',
       width: '15%',
       formItemProps: {
         rules: [
@@ -123,7 +141,7 @@ const RelatedDetail: React.FC = () => {
     },
     {
       title: <RequiredTilte label="注册所在地区" />,
-      dataIndex: 'registerAddr',
+      dataIndex: 'companyRegister',
       width: '9%',
       renderFormItem: () => <DictSelect authorword="company_register" />,
       formItemProps: {
@@ -137,7 +155,7 @@ const RelatedDetail: React.FC = () => {
     },
     {
       title: <RequiredTilte label="企业编号（注册编号\社会信用代码）" />,
-      dataIndex: 'enterpriseNumber',
+      dataIndex: 'enterpriseCode',
       width: '15%',
       formItemProps: {
         rules: [
@@ -150,7 +168,7 @@ const RelatedDetail: React.FC = () => {
     },
     {
       title: <RequiredTilte label="法人姓名" />,
-      dataIndex: 'name',
+      dataIndex: 'frName',
       width: '12%',
       formItemProps: {
         rules: [
@@ -201,7 +219,7 @@ const RelatedDetail: React.FC = () => {
     },
     {
       title: <RequiredTilte label="注册地址" />,
-      dataIndex: 'registerDetails',
+      dataIndex: 'registrationAddress',
       width: '13%',
       formItemProps: {
         rules: [
@@ -286,4 +304,4 @@ const RelatedDetail: React.FC = () => {
   )
 }
 
-export default RelatedDetail
+export default forwardRef(RelatedDetail)

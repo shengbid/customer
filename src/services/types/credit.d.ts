@@ -67,13 +67,13 @@ export interface shareholderProps {
 // 关联企业
 export interface relateCompanyProps {
   id: number | string
-  fullName: string
-  registerAddr: string
-  enterpriseNumber: string
-  name: string
+  enterpriseName: string
+  companyRegister: string
+  enterpriseCode: string
+  frName: string
   identityType: string
   identityNumber: string
-  registerDetails: string
+  registrationAddress: string
   remark: string
 }
 // 尽调报告文件
