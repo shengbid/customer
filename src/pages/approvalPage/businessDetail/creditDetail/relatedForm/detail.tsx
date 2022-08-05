@@ -7,6 +7,7 @@ import type { ProColumns } from '@ant-design/pro-table'
 import DictShow from '@/components/ComSelect/dictShow'
 import { getDictSelectList, getRelateCompany } from '@/services'
 import EditRelatedCompany from './components/EditRelatedCompany'
+import EditRelatedSharelod from './components/EditRelatedSharelod'
 
 interface relateProps {
   isEdit?: boolean
@@ -23,8 +24,8 @@ const RealteDetail: React.FC<relateProps> = ({ isEdit = false, creditParams }) =
 
   // 获取关联企业
   const getRlist = async () => {
-    const { data } = await getRelateCompany(creditParams.enterpriseId)
-    setDataSource2(data)
+    const { rows } = await getRelateCompany(creditParams.enterpriseId)
+    setDataSource2(rows)
   }
 
   useEffect(() => {
@@ -146,11 +147,11 @@ const RealteDetail: React.FC<relateProps> = ({ isEdit = false, creditParams }) =
       </CardTitle>
 
       {/* 修改关联股东信息 */}
-      <EditRelatedCompany
+      <EditRelatedSharelod
         modalVisible={shareholdVisible}
         infoData={dataSource}
         handleCancel={(val: any) => {
-          setCompanyVisible(false)
+          setShareholdVisible(false)
           if (val === 1) {
             getRlist()
           }

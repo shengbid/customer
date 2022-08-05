@@ -4,7 +4,7 @@ const url = '/cus'
 
 // 获取关联企业列表
 export async function getRelateCompany(associatedEnterpriseId: number) {
-  return request<{ data: any }>(`${url}/assoEnterprise/list`, {
+  return request<{ rows: any }>(`${url}/assoEnterprise/list`, {
     params: { associatedEnterpriseId },
   })
 }

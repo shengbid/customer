@@ -48,7 +48,7 @@ const RelatedDetail = ({ creditParams }: any, ref: any) => {
             associatedEnterpriseId: creditParams.enterpriseId,
           }
         })
-        return { businessData: { AssoEnterpriseList: businessData } }
+        return { businessData: { cusAssoEnterpriseReqList: businessData } }
       } catch (error) {
         return ''
       }

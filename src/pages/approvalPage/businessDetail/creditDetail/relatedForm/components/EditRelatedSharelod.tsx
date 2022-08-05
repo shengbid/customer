@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import type { relateCompanyProps } from '@/services/types'
+import type { shareholderProps } from '@/services/types'
 import ComEditTable from '@/components/ComProtable/ComEditTable'
 import type { ProColumns } from '@ant-design/pro-table'
 import RequiredTilte from '@/components/RequiredLabel'
 import DictSelect from '@/components/ComSelect'
 import { idTestReg } from '@/utils/reg'
-import { Modal, Form, Button } from 'antd'
+import { Modal, Form, Button, InputNumber } from 'antd'
 import { editRelateCompany } from '@/services'
 
 interface editProps {
@@ -15,7 +15,7 @@ interface editProps {
 }
 const EditRelatedCompany: React.FC<editProps> = ({ modalVisible, handleCancel, infoData }) => {
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([])
-  const [dataSource, setDataSource] = useState<relateCompanyProps[]>()
+  const [dataSource, setDataSource] = useState<shareholderProps[]>()
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
 
   const [tableForm] = Form.useForm()
@@ -43,51 +43,11 @@ const EditRelatedCompany: React.FC<editProps> = ({ modalVisible, handleCancel, i
     handleCancel(1)
   }
 
-  const columns: ProColumns<relateCompanyProps>[] = [
+  const columns: ProColumns<shareholderProps>[] = [
     {
-      title: <RequiredTilte label="企业名称" />,
-      dataIndex: 'enterpriseName',
-      width: '15%',
-      formItemProps: {
-        rules: [
-          {
-            required: true,
-            message: '此项是必填项',
-          },
-        ],
-      },
-    },
-    {
-      title: <RequiredTilte label="注册所在地区" />,
-      dataIndex: 'companyRegister',
-      width: '9%',
-      renderFormItem: () => <DictSelect authorword="company_register" />,
-      formItemProps: {
-        rules: [
-          {
-            required: true,
-            message: '此项是必填项',
-          },
-        ],
-      },
-    },
-    {
-      title: <RequiredTilte label="企业编号（注册编号/社会信用代码）" />,
-      dataIndex: 'enterpriseCode',
-      width: '15%',
-      formItemProps: {
-        rules: [
-          {
-            required: true,
-            message: '此项是必填项',
-          },
-        ],
-      },
-    },
-    {
-      title: <RequiredTilte label="法人姓名" />,
-      dataIndex: 'frName',
-      width: '12%',
+      title: <RequiredTilte label="股东姓名" />,
+      dataIndex: 'shareholderName',
+      width: '20%',
       formItemProps: {
         rules: [
           {
@@ -100,7 +60,7 @@ const EditRelatedCompany: React.FC<editProps> = ({ modalVisible, handleCancel, i
     {
       title: <RequiredTilte label="身份证件类型" />,
       dataIndex: 'identityType',
-      width: '11%',
+      width: '18%',
       renderFormItem: () => <DictSelect authorword="cus_sfzlx" />,
       formItemProps: {
         rules: [
@@ -114,7 +74,7 @@ const EditRelatedCompany: React.FC<editProps> = ({ modalVisible, handleCancel, i
     {
       title: <RequiredTilte label="证件号码" />,
       dataIndex: 'identityNumber',
-      width: '14%',
+      width: '26%',
       formItemProps: {
         rules: [
           {
@@ -136,9 +96,9 @@ const EditRelatedCompany: React.FC<editProps> = ({ modalVisible, handleCancel, i
       },
     },
     {
-      title: <RequiredTilte label="注册地址" />,
-      dataIndex: 'registrationAddress',
-      width: '13%',
+      title: <RequiredTilte label="占股比例(%)" />,
+      dataIndex: 'shareProportion',
+      width: '140px',
       formItemProps: {
         rules: [
           {
@@ -147,25 +107,15 @@ const EditRelatedCompany: React.FC<editProps> = ({ modalVisible, handleCancel, i
           },
         ],
       },
-    },
-    {
-      title: <RequiredTilte label="备注" />,
-      dataIndex: 'remark',
-      width: '15%',
-      // formItemProps: {
-      //   rules: [
-      //     {
-      //       required: true,
-      //       message: '此项是必填项',
-      //     },
-      //   ],
-      // },
+      renderFormItem: () => {
+        return <InputNumber style={{ width: '100%' }} placeholder="请输入数字" />
+      },
     },
   ]
 
   return (
     <Modal
-      title={'修改关联企业信息'}
+      title={'修改关联股东信息'}
       maskClosable={false}
       destroyOnClose
       width={1000}
@@ -173,7 +123,7 @@ const EditRelatedCompany: React.FC<editProps> = ({ modalVisible, handleCancel, i
       footer={false}
       onCancel={handleCancel}
     >
-      <ComEditTable<relateCompanyProps>
+      <ComEditTable<shareholderProps>
         rowKey="key"
         scroll={{
           x: 1260,
@@ -192,7 +142,7 @@ const EditRelatedCompany: React.FC<editProps> = ({ modalVisible, handleCancel, i
           onValuesChange: (record: any, recordList: any) => {
             setDataSource(recordList)
           },
-          onChange: (editableKeyss: any, editableRows: relateCompanyProps[]) => {
+          onChange: (editableKeyss: any, editableRows: shareholderProps[]) => {
             setEditableRowKeys(editableKeyss)
             setDataSource(editableRows)
           },
