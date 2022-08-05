@@ -9,7 +9,7 @@ import { getDictSelectList, getRelateCompany } from '@/services'
 import EditRelatedCompany from './components/EditRelatedCompany'
 
 interface relateProps {
-  isEdit: boolean
+  isEdit?: boolean
   creditParams: any
 }
 

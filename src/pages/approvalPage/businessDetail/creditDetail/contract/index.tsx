@@ -15,7 +15,7 @@ const Contract = ({ title }: contractprops, ref: any) => {
       try {
         await form.validateFields()
         const businessData = form.getFieldsValue()
-        return { businessData: businessData.fileList }
+        return { attatchmentDatas: businessData.fileList }
       } catch (error) {
         return ''
       }

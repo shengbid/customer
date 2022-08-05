@@ -72,17 +72,22 @@ const ApprovalPage: React.FC = (props: any) => {
   const approval = async (values: any) => {
     console.log(values, approvalDomRef?.current)
     let attatchmentDatas = null
+    let businessData = null
     if (approvalDomRef?.current && approvalDomRef?.current.getBusinessData) {
       const data = await approvalDomRef?.current?.getBusinessData()
       if (!data) {
         message.warning('请填写完成表单信息!')
         return
       }
-      attatchmentDatas = data.businessData
-      console.log(attatchmentDatas)
+      if (data.attatchmentDatas) {
+        attatchmentDatas = data.attatchmentDatas
+      } else if (data.businessData) {
+        businessData = data.businessData
+      }
+      console.log(attatchmentDatas, businessData)
       // await addSurveyReport(businessData)
     }
-
+    // return
     setConfirmLoading(true)
     await approvalSave(id, {
       ...values,
@@ -90,6 +95,7 @@ const ApprovalPage: React.FC = (props: any) => {
       businessKey,
       taskNodeName,
       attatchmentDatas,
+      businessData,
     })
     setConfirmLoading(false)
     message.success('审批成功')

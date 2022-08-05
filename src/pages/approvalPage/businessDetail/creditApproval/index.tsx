@@ -22,14 +22,14 @@ const CreditApproval: React.FC<creditApprovalprops> = ({
   formName,
   creditParams,
 }) => {
-  const reports = ['credit1', 'credit2', 'credit3']
+  const reports = ['credit1', 'credit2', 'credit3', 'credit8']
   // const contracts = ['credit1', 'credit2', 'credit3', 'credit4', 'credit5']
   return (
     <Tabs type="card">
       {formName !== 'credit1' && formName !== 'credit8' && (
         <TabPane tab="授信申请信息" key="1">
           <CreditDetail id={id} isDetail={true} />
-          <RealteDetail />
+          <RealteDetail creditParams={creditParams} />
         </TabPane>
       )}
       {!reports.includes(formName) ? (

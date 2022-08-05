@@ -13,10 +13,10 @@ const RelatedDetail = ({ creditParams }: any, ref: any) => {
   const [dataSource, setDataSource] = useState<shareholderProps[]>([
     {
       id: 1,
-      name: '',
-      identityType: '',
-      identityNumber: '',
-      rate: '',
+      name: '测试人员',
+      identityType: 'dlsfz',
+      identityNumber: '365896188801252356',
+      rate: '10',
     },
   ])
   const [editableKeys, setEditableRowKeys] = useState<any[]>([1])
@@ -48,7 +48,7 @@ const RelatedDetail = ({ creditParams }: any, ref: any) => {
             associatedEnterpriseId: creditParams.enterpriseId,
           }
         })
-        return { businessData }
+        return { businessData: { AssoEnterpriseList: businessData } }
       } catch (error) {
         return ''
       }
@@ -234,14 +234,14 @@ const RelatedDetail = ({ creditParams }: any, ref: any) => {
       title: <RequiredTilte label="备注" />,
       dataIndex: 'remark',
       width: '15%',
-      formItemProps: {
-        rules: [
-          {
-            required: true,
-            message: '此项是必填项',
-          },
-        ],
-      },
+      // formItemProps: {
+      //   rules: [
+      //     {
+      //       required: true,
+      //       message: '此项是必填项',
+      //     },
+      //   ],
+      // },
     },
   ]
 

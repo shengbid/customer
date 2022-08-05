@@ -39,7 +39,7 @@ const SurveyReport = ({ creditParams }: any, ref: any) => {
             ...creditParams,
           }
         })
-        return { businessData }
+        return { businessData: { cusCreditAuditReqList: businessData } }
       } catch (error) {
         return ''
       }
