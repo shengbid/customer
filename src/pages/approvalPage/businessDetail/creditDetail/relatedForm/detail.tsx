@@ -5,7 +5,7 @@ import SimpleProtable from '@/components/ComProtable/SimpleProTable'
 import type { dictListProps, shareholderProps, relateCompanyProps } from '@/services/types'
 import type { ProColumns } from '@ant-design/pro-table'
 import DictShow from '@/components/ComSelect/dictShow'
-import { getDictSelectList, getRelateCompany } from '@/services'
+import { getDictSelectList, getRelateCompany, getRelateShareholder } from '@/services'
 import EditRelatedCompany from './components/EditRelatedCompany'
 import EditRelatedSharelod from './components/EditRelatedSharelod'
 
@@ -27,18 +27,15 @@ const RealteDetail: React.FC<relateProps> = ({ isEdit = false, creditParams }) =
     const { rows } = await getRelateCompany(creditParams.enterpriseId)
     setDataSource2(rows)
   }
+  // 获取关联股东
+  const getShareloaderList = async () => {
+    const { rows } = await getRelateShareholder(creditParams.enterpriseId)
+    setDataSource(rows)
+  }
 
   useEffect(() => {
     if (creditParams.enterpriseId) {
-      setDataSource([
-        {
-          id: 1,
-          shareholderName: '张三',
-          identityType: 'dlsfz',
-          identityNumber: '365896188801252356',
-          shareProportion: '20',
-        },
-      ])
+      getShareloaderList()
       getRlist()
     }
   }, [creditParams])
@@ -150,10 +147,11 @@ const RealteDetail: React.FC<relateProps> = ({ isEdit = false, creditParams }) =
       <EditRelatedSharelod
         modalVisible={shareholdVisible}
         infoData={dataSource}
+        creditParams={creditParams}
         handleCancel={(val: any) => {
           setShareholdVisible(false)
           if (val === 1) {
-            getRlist()
+            getShareloaderList()
           }
         }}
       />
@@ -161,6 +159,7 @@ const RealteDetail: React.FC<relateProps> = ({ isEdit = false, creditParams }) =
       <EditRelatedCompany
         modalVisible={companyVisible}
         infoData={dataSource2}
+        creditParams={creditParams}
         handleCancel={(val: any) => {
           setCompanyVisible(false)
           if (val === 1) {

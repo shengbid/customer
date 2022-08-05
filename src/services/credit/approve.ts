@@ -10,8 +10,23 @@ export async function getRelateCompany(associatedEnterpriseId: number) {
 }
 
 // 修改关联企业
-export async function editRelateCompany(data: any) {
-  return request<{ data: any }>(`${url}/assoEnterprise/edit`, {
+export async function editRelateCompany(associatedEnterpriseId: any, data: any) {
+  return request<{ data: any }>(`${url}/assoEnterprise/editlist/${associatedEnterpriseId}`, {
+    method: 'put',
+    data,
+  })
+}
+
+// 获取关联股东列表
+export async function getRelateShareholder(associatedEnterpriseId: number) {
+  return request<{ rows: any }>(`${url}/shareholder/list`, {
+    params: { associatedEnterpriseId },
+  })
+}
+
+// 修改关联股东
+export async function editRelateShareholder(associatedEnterpriseId: any, data: any) {
+  return request<{ data: any }>(`${url}/shareholder/editlist/${associatedEnterpriseId}`, {
     method: 'put',
     data,
   })

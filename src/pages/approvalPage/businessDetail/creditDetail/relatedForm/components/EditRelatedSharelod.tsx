@@ -6,14 +6,20 @@ import RequiredTilte from '@/components/RequiredLabel'
 import DictSelect from '@/components/ComSelect'
 import { idTestReg } from '@/utils/reg'
 import { Modal, Form, Button, InputNumber } from 'antd'
-import { editRelateCompany } from '@/services'
+import { editRelateShareholder } from '@/services'
 
 interface editProps {
   modalVisible: boolean
   handleCancel: (val?: any) => void
   infoData: any
+  creditParams: any
 }
-const EditRelatedCompany: React.FC<editProps> = ({ modalVisible, handleCancel, infoData }) => {
+const EditRelatedCompany: React.FC<editProps> = ({
+  modalVisible,
+  creditParams,
+  handleCancel,
+  infoData,
+}) => {
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([])
   const [dataSource, setDataSource] = useState<shareholderProps[]>()
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
@@ -34,7 +40,7 @@ const EditRelatedCompany: React.FC<editProps> = ({ modalVisible, handleCancel, i
   const onSubmit = async () => {
     setConfirmLoading(true)
     try {
-      await editRelateCompany(dataSource)
+      await editRelateShareholder(creditParams.enterpriseId, dataSource)
     } catch (error) {
       setConfirmLoading(false)
       return

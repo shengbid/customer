@@ -42,13 +42,24 @@ const RelatedDetail = ({ creditParams }: any, ref: any) => {
     getBusinessData: async () => {
       try {
         await mpForm.validateFields()
+        const cusRelatedShareholderReqList = dataSource.map((item) => {
+          return {
+            ...item,
+            associatedEnterpriseId: creditParams.enterpriseId,
+          }
+        })
         const businessData = dataSource2.map((item) => {
           return {
             ...item,
             associatedEnterpriseId: creditParams.enterpriseId,
           }
         })
-        return { businessData: { cusAssoEnterpriseReqList: businessData } }
+        return {
+          businessData: {
+            cusAssoEnterpriseReqList: businessData,
+            cusRelatedShareholderReqList,
+          },
+        }
       } catch (error) {
         return ''
       }
@@ -231,7 +242,7 @@ const RelatedDetail = ({ creditParams }: any, ref: any) => {
       },
     },
     {
-      title: <RequiredTilte label="备注" />,
+      title: '备注',
       dataIndex: 'remark',
       width: '15%',
       // formItemProps: {

@@ -12,8 +12,14 @@ interface editProps {
   modalVisible: boolean
   handleCancel: (val?: any) => void
   infoData: any
+  creditParams: any
 }
-const EditRelatedCompany: React.FC<editProps> = ({ modalVisible, handleCancel, infoData }) => {
+const EditRelatedCompany: React.FC<editProps> = ({
+  modalVisible,
+  handleCancel,
+  creditParams,
+  infoData,
+}) => {
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([])
   const [dataSource, setDataSource] = useState<relateCompanyProps[]>()
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
@@ -34,7 +40,7 @@ const EditRelatedCompany: React.FC<editProps> = ({ modalVisible, handleCancel, i
   const onSubmit = async () => {
     setConfirmLoading(true)
     try {
-      await editRelateCompany(dataSource)
+      await editRelateCompany(creditParams.enterpriseId, dataSource)
     } catch (error) {
       setConfirmLoading(false)
       return
@@ -149,7 +155,7 @@ const EditRelatedCompany: React.FC<editProps> = ({ modalVisible, handleCancel, i
       },
     },
     {
-      title: <RequiredTilte label="备注" />,
+      title: '备注',
       dataIndex: 'remark',
       width: '15%',
       // formItemProps: {
