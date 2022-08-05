@@ -139,6 +139,7 @@ const EditRelatedCompany: React.FC<editProps> = ({ modalVisible, handleCancel, i
         editable={{
           form: tableForm,
           editableKeys,
+          type: 'multiple',
           onValuesChange: (record: any, recordList: any) => {
             setDataSource(recordList)
           },
