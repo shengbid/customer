@@ -40,7 +40,15 @@ const EditRelatedCompany: React.FC<editProps> = ({
   const onSubmit = async () => {
     setConfirmLoading(true)
     try {
-      await editRelateCompany(creditParams.enterpriseId, dataSource)
+      await editRelateCompany(
+        creditParams.enterpriseId,
+        dataSource?.map((item: any) => {
+          return {
+            ...item,
+            associatedEnterpriseId: creditParams.enterpriseId,
+          }
+        }),
+      )
     } catch (error) {
       setConfirmLoading(false)
       return

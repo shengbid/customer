@@ -40,7 +40,15 @@ const EditRelatedCompany: React.FC<editProps> = ({
   const onSubmit = async () => {
     setConfirmLoading(true)
     try {
-      await editRelateShareholder(creditParams.enterpriseId, dataSource)
+      await editRelateShareholder(
+        creditParams.enterpriseId,
+        dataSource?.map((item: any) => {
+          return {
+            ...item,
+            associatedEnterpriseId: creditParams.enterpriseId,
+          }
+        }),
+      )
     } catch (error) {
       setConfirmLoading(false)
       return
@@ -132,7 +140,7 @@ const EditRelatedCompany: React.FC<editProps> = ({
       <ComEditTable<shareholderProps>
         rowKey="key"
         scroll={{
-          x: 1260,
+          x: 750,
         }}
         columns={columns}
         value={dataSource}
