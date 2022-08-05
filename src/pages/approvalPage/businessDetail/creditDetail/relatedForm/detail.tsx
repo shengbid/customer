@@ -1,41 +1,46 @@
 import React, { useState, useEffect } from 'react'
 import CardTitle from '@/components/ComPage/CardTitle'
+import { Button } from 'antd'
 import SimpleProtable from '@/components/ComProtable/SimpleProTable'
 import type { dictListProps, shareholderProps, relateCompanyProps } from '@/services/types'
 import type { ProColumns } from '@ant-design/pro-table'
 import DictShow from '@/components/ComSelect/dictShow'
-import { getDictSelectList } from '@/services'
+import { getDictSelectList, getRelateCompany } from '@/services'
+import EditRelatedCompany from './components/EditRelatedCompany'
 
-const RealteDetail: React.FC = () => {
+interface relateProps {
+  isEdit: boolean
+  creditParams: any
+}
+
+const RealteDetail: React.FC<relateProps> = ({ isEdit = false, creditParams }) => {
   const [dataSource, setDataSource] = useState<shareholderProps[]>([])
   const [dataSource2, setDataSource2] = useState<relateCompanyProps[]>([])
   const [dictList, setDictList] = useState<dictListProps[]>([])
   const [dictList2, setDictList2] = useState<dictListProps[]>([])
+  const [shareholdVisible, setShareholdVisible] = useState<boolean>(false)
+  const [companyVisible, setCompanyVisible] = useState<boolean>(false)
+
+  // 获取关联企业
+  const getRlist = async () => {
+    const { data } = await getRelateCompany(creditParams.enterpriseId)
+    setDataSource2(data)
+  }
 
   useEffect(() => {
-    setDataSource([
-      {
-        id: 1,
-        name: '张三',
-        identityType: 'dlsfz',
-        identityNumber: '365896188801252356',
-        rate: '20',
-      },
-    ])
-    setDataSource2([
-      {
-        id: 1,
-        frName: '张三',
-        identityType: 'dlsfz',
-        identityNumber: '365896188801252356',
-        enterpriseName: '吉祥科创',
-        companyRegister: '1',
-        enterpriseCode: '33333',
-        registrationAddress: '深圳',
-        remark: '备注',
-      },
-    ])
-  }, [])
+    if (creditParams.enterpriseId) {
+      setDataSource([
+        {
+          id: 1,
+          name: '张三',
+          identityType: 'dlsfz',
+          identityNumber: '365896188801252356',
+          rate: '20',
+        },
+      ])
+      getRlist()
+    }
+  }, [creditParams])
 
   const getDictData = async () => {
     const { data } = await getDictSelectList('cus_sfzlx')
@@ -115,12 +120,53 @@ const RealteDetail: React.FC = () => {
 
   return (
     <>
-      <CardTitle title="关联股东信息">
+      <CardTitle
+        title="关联股东信息"
+        extra={
+          isEdit ? (
+            <Button type="primary" onClick={() => setShareholdVisible(true)}>
+              编辑
+            </Button>
+          ) : null
+        }
+      >
         <SimpleProtable key="id" columns={columns} dataSource={dataSource || []} />
       </CardTitle>
-      <CardTitle title="关联企业">
+      <CardTitle
+        title="关联企业"
+        extra={
+          isEdit ? (
+            <Button type="primary" onClick={() => setCompanyVisible(true)}>
+              编辑
+            </Button>
+          ) : null
+        }
+      >
         <SimpleProtable key="id" columns={columns2} dataSource={dataSource2 || []} />
       </CardTitle>
+
+      {/* 修改关联股东信息 */}
+      <EditRelatedCompany
+        modalVisible={shareholdVisible}
+        infoData={dataSource}
+        handleCancel={(val: any) => {
+          setCompanyVisible(false)
+          if (val === 1) {
+            getRlist()
+          }
+        }}
+      />
+      {/* 修改关联企业信息 */}
+      <EditRelatedCompany
+        modalVisible={companyVisible}
+        infoData={dataSource2}
+        handleCancel={(val: any) => {
+          setCompanyVisible(false)
+          if (val === 1) {
+            getRlist()
+          }
+        }}
+      />
     </>
   )
 }

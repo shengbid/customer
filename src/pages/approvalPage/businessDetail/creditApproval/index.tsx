@@ -26,7 +26,7 @@ const CreditApproval: React.FC<creditApprovalprops> = ({
   // const contracts = ['credit1', 'credit2', 'credit3', 'credit4', 'credit5']
   return (
     <Tabs type="card">
-      {formName !== 'credit1' && (
+      {formName !== 'credit1' && formName !== 'credit8' && (
         <TabPane tab="授信申请信息" key="1">
           <CreditDetail id={id} isDetail={true} />
           <RealteDetail />

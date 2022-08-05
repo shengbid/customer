@@ -8,6 +8,7 @@ import SurveyReportDetail from '../businessDetail/creditDetail/surveyReport/deta
 import Contract from '../businessDetail/creditDetail/contract'
 import ContractDetail from '../businessDetail/creditDetail/contract/detail'
 import SignContract from '../businessDetail/creditDetail/signContract'
+import RealteDetail from '../businessDetail/creditDetail/relatedForm/detail'
 
 const { Panel } = ComCollapse
 
@@ -33,6 +34,18 @@ const ApprovalDom: React.FC<approvalDomProps> = ({
         </ComCollapse>
         <ComCard style={{ marginTop: 12 }} title="关联信息">
           <RelatedDetail ref={approvalDomRef} creditParams={creditParams} />
+        </ComCard>
+      </>
+    ),
+    credit8: (
+      <>
+        <ComCollapse>
+          <Panel header="授信基础信息" key="1">
+            <CreditDetail id={id} />
+          </Panel>
+        </ComCollapse>
+        <ComCard style={{ marginTop: 12 }} title="关联信息">
+          <RealteDetail isEdit creditParams={creditParams} />
         </ComCard>
       </>
     ),
