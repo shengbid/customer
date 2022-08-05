@@ -31,38 +31,51 @@ const Undone: React.FC = () => {
 
   const columns: ProColumns<undoneListProps>[] = [
     {
-      title: '流程名称',
+      title: '任务编号',
       dataIndex: 'instanceName',
     },
     {
-      title: '任务节点名称',
+      title: '任务类型',
+      dataIndex: 'instanceName',
+      hideInSearch: true,
+    },
+    {
+      title: '任务名称',
       dataIndex: 'name',
       hideInSearch: true,
     },
     {
-      title: '任务状态',
+      title: '任务类型',
       key: 'status',
       dataIndex: 'status',
-      hideInSearch: true,
+      hideInTable: true,
     },
     {
-      title: '办理人',
+      title: '发起人',
       key: 'deploymentTime',
       dataIndex: 'deploymentTime',
       hideInSearch: true,
     },
     {
-      title: '创建时间',
+      title: '接受时间',
       key: 'createdDate',
-      width: 180,
+      width: 160,
       dataIndex: 'createdDate',
       hideInSearch: true,
+    },
+    {
+      title: '完成时间',
+      key: 'createdDate',
+      width: 160,
+      dataIndex: 'createdDate',
+      hideInSearch: true,
+      hideInTable: activeKey !== 'tab3',
     },
     {
       title: intl.formatMessage({
         id: 'pages.table.option',
       }),
-      width: 120,
+      width: 100,
       key: 'option',
       valueType: 'option',
       render: (_, recored) => [
