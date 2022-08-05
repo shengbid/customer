@@ -32,10 +32,10 @@ const RealteDetail: React.FC<relateProps> = ({ isEdit = false, creditParams }) =
       setDataSource([
         {
           id: 1,
-          name: '张三',
+          shareholderName: '张三',
           identityType: 'dlsfz',
           identityNumber: '365896188801252356',
-          rate: '20',
+          shareProportion: '20',
         },
       ])
       getRlist()
@@ -58,8 +58,8 @@ const RealteDetail: React.FC<relateProps> = ({ isEdit = false, creditParams }) =
   const columns: ProColumns<shareholderProps>[] = [
     {
       title: '股东姓名',
-      key: 'name',
-      dataIndex: 'name',
+      key: 'shareholderName',
+      dataIndex: 'shareholderName',
     },
     {
       title: '身份证件类型',
@@ -74,8 +74,8 @@ const RealteDetail: React.FC<relateProps> = ({ isEdit = false, creditParams }) =
     },
     {
       title: '占股比例(%)',
-      key: 'rate',
-      dataIndex: 'rate',
+      key: 'shareProportion',
+      dataIndex: 'shareProportion',
     },
   ]
   const columns2: ProColumns<relateCompanyProps>[] = [
@@ -91,7 +91,7 @@ const RealteDetail: React.FC<relateProps> = ({ isEdit = false, creditParams }) =
       render: (_, record) => <DictShow dictValue={record.companyRegister} dictData={dictList2} />,
     },
     {
-      title: '企业编号（注册编号社会信用代码）',
+      title: '企业编号（注册编号/社会信用代码）',
       key: 'enterpriseCode',
       dataIndex: 'enterpriseCode',
     },

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import type { relateCompanyProps } from '@/services/types'
-import { EditableProTable } from '@ant-design/pro-table'
+import ComEditTable from '@/components/ComProtable/ComEditTable'
 import type { ProColumns } from '@ant-design/pro-table'
 import RequiredTilte from '@/components/RequiredLabel'
 import DictSelect from '@/components/ComSelect'
@@ -23,7 +23,7 @@ const EditRelatedCompany: React.FC<editProps> = ({ modalVisible, handleCancel, i
   useEffect(() => {
     if (infoData && infoData.length) {
       setDataSource(infoData)
-      setEditableRowKeys(infoData.map((item: any) => item.id))
+      setEditableRowKeys(infoData.map((item: any) => item.key))
     }
   }, [])
 
@@ -68,7 +68,7 @@ const EditRelatedCompany: React.FC<editProps> = ({ modalVisible, handleCancel, i
       },
     },
     {
-      title: <RequiredTilte label="企业编号（注册编号\社会信用代码）" />,
+      title: <RequiredTilte label="企业编号（注册编号/社会信用代码）" />,
       dataIndex: 'enterpriseCode',
       width: '15%',
       formItemProps: {
@@ -148,14 +148,14 @@ const EditRelatedCompany: React.FC<editProps> = ({ modalVisible, handleCancel, i
       title: <RequiredTilte label="备注" />,
       dataIndex: 'remark',
       width: '15%',
-      formItemProps: {
-        rules: [
-          {
-            required: true,
-            message: '此项是必填项',
-          },
-        ],
-      },
+      // formItemProps: {
+      //   rules: [
+      //     {
+      //       required: true,
+      //       message: '此项是必填项',
+      //     },
+      //   ],
+      // },
     },
   ]
 
@@ -164,29 +164,34 @@ const EditRelatedCompany: React.FC<editProps> = ({ modalVisible, handleCancel, i
       title={'修改企业信息'}
       maskClosable={false}
       destroyOnClose
-      width={800}
+      width={1000}
       visible={modalVisible}
       footer={false}
       onCancel={handleCancel}
     >
-      <EditableProTable<relateCompanyProps>
-        rowKey="id"
+      <ComEditTable<relateCompanyProps>
+        rowKey="key"
         scroll={{
-          x: 860,
+          x: 1260,
         }}
-        maxLength={5}
-        // 关闭默认的新建按钮
-        recordCreatorProps={false}
         columns={columns}
         value={dataSource}
-        onChange={setDataSource}
+        recordCreatorProps={{
+          newRecordType: 'dataSource',
+          record: () => ({
+            key: Date.now(),
+          }),
+        }}
         editable={{
           form: tableForm,
           editableKeys,
-          onValuesChange: (record, recordList) => {
+          onValuesChange: (record: any, recordList: any) => {
             setDataSource(recordList)
           },
-          onChange: setEditableRowKeys,
+          onChange: (editableKeyss: any, editableRows: relateCompanyProps[]) => {
+            setEditableRowKeys(editableKeyss)
+            setDataSource(editableRows)
+          },
         }}
       />
       <div className="modal-btns">

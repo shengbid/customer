@@ -59,10 +59,10 @@ export interface companyBusinessProps {
 // 关联股东信息
 export interface shareholderProps {
   id: number | string
-  name: string
+  shareholderName: string
   identityType: string
   identityNumber: string
-  rate: string
+  shareProportion: string
 }
 // 关联企业
 export interface relateCompanyProps {

@@ -13,10 +13,10 @@ const RelatedDetail = ({ creditParams }: any, ref: any) => {
   const [dataSource, setDataSource] = useState<shareholderProps[]>([
     {
       id: 1,
-      name: '测试人员',
+      shareholderName: '测试人员',
       identityType: 'dlsfz',
       identityNumber: '365896188801252356',
-      rate: '10',
+      shareProportion: '10',
     },
   ])
   const [editableKeys, setEditableRowKeys] = useState<any[]>([1])
@@ -58,7 +58,7 @@ const RelatedDetail = ({ creditParams }: any, ref: any) => {
   const columns: ProColumns<shareholderProps>[] = [
     {
       title: <RequiredTilte label="股东姓名" />,
-      dataIndex: 'name',
+      dataIndex: 'shareholderName',
       width: '20%',
       formItemProps: {
         rules: [
@@ -109,7 +109,7 @@ const RelatedDetail = ({ creditParams }: any, ref: any) => {
     },
     {
       title: <RequiredTilte label="占股比例(%)" />,
-      dataIndex: 'rate',
+      dataIndex: 'shareProportion',
       width: '140px',
       formItemProps: {
         rules: [
@@ -154,7 +154,7 @@ const RelatedDetail = ({ creditParams }: any, ref: any) => {
       },
     },
     {
-      title: <RequiredTilte label="企业编号（注册编号\社会信用代码）" />,
+      title: <RequiredTilte label="企业编号（注册编号/社会信用代码）" />,
       dataIndex: 'enterpriseCode',
       width: '15%',
       formItemProps: {

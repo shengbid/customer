@@ -12,7 +12,7 @@ export async function getRelateCompany(associatedEnterpriseId: number) {
 // 修改关联企业
 export async function editRelateCompany(data: any) {
   return request<{ data: any }>(`${url}/assoEnterprise/edit`, {
-    method: 'post',
+    method: 'put',
     data,
   })
 }
