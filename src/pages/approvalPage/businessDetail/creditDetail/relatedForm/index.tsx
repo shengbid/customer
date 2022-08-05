@@ -42,7 +42,7 @@ const RelatedDetail = ({ creditParams }: any, ref: any) => {
     getBusinessData: async () => {
       try {
         await mpForm.validateFields()
-        const businessData = dataSource.map((item) => {
+        const businessData = dataSource2.map((item) => {
           return {
             ...item,
             associatedEnterpriseId: creditParams.enterpriseId,
