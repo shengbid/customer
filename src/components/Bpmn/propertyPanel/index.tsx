@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Collapse, Button, Table, Space, Form, Input, Select, message } from 'antd'
 import HandleUser from './components/handleUser'
+import HandleRecepient from './components/handleRecepients'
 import AddUserModal from '@/components/AddUserModal'
 import type { userProps } from '@/services/types'
 import AddBtnForm from './components/addBtnForm'
@@ -49,6 +50,15 @@ const PropertyPanel: React.FC<{ bpmnModeler: any }> = ({ bpmnModeler }) => {
     candidateUsersSelectedArr: [], // 处理人组对象数组
     candidateGroups: [], // 处理角色
     formKey: '',
+  } as any)
+  const [recipientTask, setRecipientTaskArr] = useState({
+    recipientType: '1', // 抄送人类型
+    recipientSelectedArr: [], // 抄送人对象数组
+
+    recipientUsersName: '', //  抄送人组名称
+    recipientUsers: '', // 抄送人组Id
+    recipientUsersSelectedArr: [], // 抄送人组对象数组
+    recipientGroups: [], // 抄送角色
   } as any)
   const [panelValue, setForm] = useState({
     id: '1231321321', // 定义key
@@ -127,12 +137,16 @@ const PropertyPanel: React.FC<{ bpmnModeler: any }> = ({ bpmnModeler }) => {
     if (bpmnModeler) initFn()
   }, [bpmnModeler])
 
-  // 流程处理人数据处理
+  // 流程处理人/抄送人数据处理
   const setUserTask = async (businessObject: any) => {
     // console.log(businessObject)
+    const attrs = businessObject.$attrs ? businessObject.$attrs : {}
+    let recipientGroups = attrs.recipientGroups ? attrs.recipientGroups : []
     let candidateGroups = businessObject?.candidateGroups ? businessObject?.candidateGroups : []
+
     const oldSaveProperties = { ...saveProperties }
     const newUserTask: any = {}
+    const newRecipientTask: any = {}
     oldSaveProperties[businessObject.id] = saveProperties[businessObject.id] || {}
     const objValues = oldSaveProperties[businessObject.id]
 
@@ -140,13 +154,14 @@ const PropertyPanel: React.FC<{ bpmnModeler: any }> = ({ bpmnModeler }) => {
       ? objValues.candidateUsersName
       : undefined
 
+    const { rows } = await getUserList({ pageNum: 1, pageSize: 200 })
+
     if (newUserTask.candidateUsersName === undefined && businessObject.candidateUsers) {
       newUserTask.candidateUsersName = ''
       newUserTask.candidateUsers = businessObject.candidateUsers
       const newArr = businessObject.candidateUsers.split(',')
       newUserTask.candidateUsersSelectedArr = []
 
-      const { rows } = await getUserList({ pageNum: 1, pageSize: 200 })
       rows.forEach((item: userProps) => {
         if (newArr.includes(String(item.userId))) {
           newUserTask.candidateUsersName += item.userName
@@ -160,15 +175,44 @@ const PropertyPanel: React.FC<{ bpmnModeler: any }> = ({ bpmnModeler }) => {
         }
       })
     }
+
+    newRecipientTask.recipientUsersName = ''
+    if (attrs.recipientUsers) {
+      newRecipientTask.recipientUsers = attrs.recipientUsers
+      const newArr = attrs.recipientUsers.split(',')
+      newRecipientTask.recipientUsersSelectedArr = []
+
+      rows.forEach((item: userProps) => {
+        if (newArr.includes(String(item.userId))) {
+          newRecipientTask.recipientUsersName += item.userName
+          newRecipientTask.recipientUsersSelectedArr.push({
+            userId: item.userId,
+            userName: item.userName,
+          })
+          if (newRecipientTask.recipientUsersSelectedArr.length < newArr.length) {
+            newRecipientTask.recipientUsersName += ','
+          }
+        }
+      })
+    }
     if (businessObject?.candidateGroups && !isArray(businessObject?.candidateGroups)) {
-      // 角色
+      // 用户角色
       candidateGroups = businessObject?.candidateGroups.split(',')
+    }
+    if (attrs?.recipientGroups && !isArray(attrs?.recipientGroups)) {
+      // 抄送人角色
+      recipientGroups = businessObject?.recipientGroups.split(',')
     }
 
     setUserTaskArr({
       formKey: businessObject?.formKey,
       candidateGroups,
       ...newUserTask,
+    })
+
+    setRecipientTaskArr({
+      recipientGroups,
+      ...newRecipientTask,
     })
   }
   // 按钮数据处理
@@ -307,8 +351,9 @@ const PropertyPanel: React.FC<{ bpmnModeler: any }> = ({ bpmnModeler }) => {
   }, [element, rootElement])
 
   useEffect(() => {
-    form?.setFieldsValue({ ...panelValue, ...userTask })
-  }, [panelValue, userTask, form])
+    // console.log(666, recipientTask)
+    form?.setFieldsValue({ ...panelValue, ...userTask, ...recipientTask })
+  }, [panelValue, userTask, recipientTask, form])
 
   // 选择处理人
   const selectAgent = (maxSelectedNum: number, name: string) => {
@@ -316,7 +361,10 @@ const PropertyPanel: React.FC<{ bpmnModeler: any }> = ({ bpmnModeler }) => {
       visible: true,
       maxSelectedNum,
       typeName: name,
-      initSelectUser: userTask.candidateUsersSelectedArr,
+      initSelectUser:
+        name === 'candidateUsers'
+          ? userTask.candidateUsersSelectedArr
+          : recipientTask.recipientUsersSelectedArr,
     })
   }
 
@@ -325,6 +373,7 @@ const PropertyPanel: React.FC<{ bpmnModeler: any }> = ({ bpmnModeler }) => {
     console.log(1, select)
   }
   const updateProperties = (properties: any) => {
+    // console.log(21, properties)
     try {
       const modeling = bpmnModeler.get('modeling')
       modeling.updateProperties(element || rootElement, { ...properties })
@@ -334,7 +383,7 @@ const PropertyPanel: React.FC<{ bpmnModeler: any }> = ({ bpmnModeler }) => {
   }
   // 选择用户组
   const setCandidateUsers = (select: userProps[]) => {
-    console.log(2, select)
+    // console.log(2, select)
     const newUserTask = { ...userTask }
     const oldsaveProperties = { ...saveProperties }
     const users = []
@@ -358,10 +407,34 @@ const PropertyPanel: React.FC<{ bpmnModeler: any }> = ({ bpmnModeler }) => {
     oldsaveProperties[element.id || rootElement.id] = newUserTask
     setSaveProperties(oldsaveProperties)
   }
+  // 选择抄送组
+  const setRecipientUsers = (select: userProps[]) => {
+    const newUserTask = { ...recipientTask }
+    const users = []
+    const usersName = []
+    const recipientUsersSelectedArr = []
+    for (let i = 0; i < select.length; i += 1) {
+      recipientUsersSelectedArr.push({
+        [userKey]: select[i][userKey],
+        userName: select[i].userName,
+      })
+      users.push(select[i][userKey])
+      usersName.push(select[i].userName)
+    }
+    newUserTask.recipientUsersSelectedArr = recipientUsersSelectedArr
+    newUserTask.recipientUsers = users.join(',')
+    newUserTask.recipientUsersName = usersName.join(',')
+    updateProperties({
+      recipientUsers: newUserTask.recipientUsers,
+    })
+    setRecipientTaskArr(newUserTask)
+  }
   // 选择用户
   const onUserFinish = (select: userProps[], name: string) => {
     if (name === 'assignee') {
       setAssignee(select)
+    } else if (name === 'recipientUsers') {
+      setRecipientUsers(select)
     } else {
       setCandidateUsers(select)
     }
@@ -635,7 +708,8 @@ const PropertyPanel: React.FC<{ bpmnModeler: any }> = ({ bpmnModeler }) => {
         item === 'jobPriority' ||
         item === 'historyTimeToLive' ||
         item === 'candidateGroups' ||
-        item === 'formKey'
+        item === 'formKey' ||
+        item === 'recipientGroups'
       ) {
         if (item === 'id' && !changedValues[item]) {
           return false
@@ -701,6 +775,9 @@ const PropertyPanel: React.FC<{ bpmnModeler: any }> = ({ bpmnModeler }) => {
       }
       if (item === 'candidateGroups' || item === 'formKey') {
         setUserTask({ ...userTask, [item]: changedValues[item] })
+      }
+      if (item === 'recipientGroups') {
+        setRecipientTaskArr({ ...recipientTask, [item]: changedValues[item] })
       } else {
         setForm({ ...panelValue, [item]: changedValues[item] })
       }
@@ -715,7 +792,7 @@ const PropertyPanel: React.FC<{ bpmnModeler: any }> = ({ bpmnModeler }) => {
         layout="horizontal"
         labelCol={{ span: 6 }}
         wrapperCol={{ span: 16 }}
-        initialValues={{ ...panelValue, ...userTask }}
+        initialValues={{ ...panelValue, ...userTask, ...recipientTask }}
         onValuesChange={changeFormValue}
         style={{ height: '100%' }}
       >
@@ -792,6 +869,12 @@ const PropertyPanel: React.FC<{ bpmnModeler: any }> = ({ bpmnModeler }) => {
           {isUserTask && (
             <Panel header="处理人设置" key="2">
               <HandleUser handleAssignee={selectAgent} />
+            </Panel>
+          )}
+          {/* 抄送人设置 */}
+          {isUserTask && (
+            <Panel header="抄送人设置" key="10">
+              <HandleRecepient handleAssignee={selectAgent} />
             </Panel>
           )}
 
