@@ -17,19 +17,21 @@ interface approvalDomProps {
   id: string
   approvalDomRef: any
   creditParams: any
+  detail?: string
 }
 const ApprovalDom: React.FC<approvalDomProps> = ({
   formName,
   id,
   approvalDomRef,
   creditParams,
+  detail,
 }) => {
   const approvalDom = {
     credit1: (
       <>
         <ComCollapse>
           <Panel header="授信基础信息" key="1">
-            <CreditDetail id={id} />
+            <CreditDetail id={id} isDetail={!!detail} />
           </Panel>
         </ComCollapse>
         <ComCard style={{ marginTop: 12 }} title="关联信息">
@@ -41,11 +43,11 @@ const ApprovalDom: React.FC<approvalDomProps> = ({
       <>
         <ComCollapse>
           <Panel header="授信基础信息" key="1">
-            <CreditDetail id={id} />
+            <CreditDetail id={id} isDetail={!!detail} />
           </Panel>
         </ComCollapse>
         <ComCard style={{ marginTop: 12 }} title="关联信息">
-          <RealteDetail isEdit creditParams={creditParams} />
+          <RealteDetail isEdit={!detail} creditParams={creditParams} />
         </ComCard>
       </>
     ),

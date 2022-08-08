@@ -28,7 +28,7 @@ const ApprovalPage: React.FC = (props: any) => {
   const approvalDomRef: MutableRefObject<any> = useRef({})
 
   const { query } = props.location
-  const { id, businessKey, taskNodeName, instanceId, formKey = 'credit1' } = query
+  const { id, businessKey, taskNodeName, instanceId, formKey = 'credit1', detail } = query
   // 审核历史
   const DetailDom = (
     <CreditApproval
@@ -124,12 +124,15 @@ const ApprovalPage: React.FC = (props: any) => {
       <ApprovalDom
         id={id}
         formName={formKey}
+        detail={detail}
         creditParams={{ ...creditParams, taskID: id, businessKey }}
         approvalDomRef={approvalDomRef}
       />
 
       {/* 审核通用表单 */}
-      <ApprovalForm confirmLoading={confirmLoading} handleSubmit={approval} BpmnInfo={{ id }} />
+      {detail ? null : (
+        <ApprovalForm confirmLoading={confirmLoading} handleSubmit={approval} BpmnInfo={{ id }} />
+      )}
       {/* 流程图 */}
       <ComCollapse>
         <Panel header="流程图" key="1">

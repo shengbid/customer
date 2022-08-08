@@ -1,19 +1,19 @@
 import MenuProTable from '@/components/ComProtable/MenuProTable'
-import type { undoneListProps, undoneListParamProps } from '@/services/types'
+import type { undoneListProps, undoneListParamProps, doneListProps } from '@/services/types'
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
-import { Typography } from 'antd'
-import { getUndoneList } from '@/services'
+import { Typography, Tabs } from 'antd'
+import { getUndoneList, getdoneList } from '@/services'
 import React, { useState, useRef } from 'react'
 // import { StatisticCard } from '@ant-design/pro-card'
 import { useIntl, history } from 'umi'
 import AddModal from './components/addModal'
 // import { FileImageOutlined } from '@ant-design/icons'
-
+const { TabPane } = Tabs
 // const { Divider } = StatisticCard
 const { Link } = Typography
 
 const Undone: React.FC = () => {
-  const [activeKey, setActiveKey] = useState<React.Key | undefined>('tab1')
+  const [setActiveKey] = useState<React.Key | undefined>('tab1')
   const intl = useIntl()
   const actionRef = useRef<ActionType>()
   const [modalVisible, setModalVisible] = useState<boolean>(false)
@@ -28,11 +28,21 @@ const Undone: React.FC = () => {
       total,
     }
   }
+  // 获取已办列表
+  const getdoList = async (param: undoneListParamProps) => {
+    // console.log(param)
+    const { rows, total } = await getdoneList(param)
+
+    return {
+      data: rows,
+      total,
+    }
+  }
 
   const columns: ProColumns<undoneListProps>[] = [
     {
       title: '任务编号',
-      dataIndex: 'instanceName',
+      dataIndex: 'id',
     },
     {
       title: '任务类型',
@@ -62,14 +72,7 @@ const Undone: React.FC = () => {
       width: 160,
       dataIndex: 'createdDate',
       hideInSearch: true,
-    },
-    {
-      title: '完成时间',
-      key: 'createdDate',
-      width: 160,
-      dataIndex: 'createdDate',
-      hideInSearch: true,
-      hideInTable: activeKey !== 'tab3',
+      valueType: 'dateTime',
     },
     {
       title: intl.formatMessage({
@@ -98,6 +101,86 @@ const Undone: React.FC = () => {
         >
           {/* <FileImageOutlined style={{ marginRight: 3 }} /> */}
           处理
+        </Link>,
+      ],
+    },
+  ]
+
+  const columns2: ProColumns<doneListProps>[] = [
+    {
+      title: '任务编号',
+      dataIndex: 'taskId',
+    },
+    {
+      title: '任务类型',
+      dataIndex: 'processDefinitionName',
+      hideInSearch: true,
+    },
+    {
+      title: '任务名称',
+      dataIndex: 'name',
+      render: (_, recored) => (
+        <span>
+          {recored.processDefinitionName}-{recored.taskNodeName}
+        </span>
+      ),
+    },
+    {
+      title: '任务类型',
+      key: 'processDefinitionName',
+      dataIndex: 'processDefinitionName',
+      hideInTable: true,
+    },
+    {
+      title: '发起人',
+      key: 'createBy',
+      dataIndex: 'createBy',
+      hideInSearch: true,
+    },
+    {
+      title: '接受时间',
+      key: 'startTime',
+      width: 160,
+      dataIndex: 'startTime',
+      hideInSearch: true,
+      valueType: 'dateTime',
+    },
+    {
+      title: '完成时间',
+      key: 'endTime',
+      width: 160,
+      dataIndex: 'endTime',
+      hideInSearch: true,
+      valueType: 'dateTime',
+    },
+    {
+      title: intl.formatMessage({
+        id: 'pages.table.option',
+      }),
+      width: 90,
+      key: 'option',
+      valueType: 'option',
+      render: (_, recored) => [
+        <Link
+          key="picture"
+          onClick={async () => {
+            setInfo(recored)
+            // setModalVisible(true)
+            history.push({
+              pathname: '/leaderPage/undone/approval',
+              query: {
+                detial: 'detail',
+                id: recored.id,
+                businessKey: recored.businessKey,
+                taskNodeName: recored.taskNodeName,
+                instanceId: recored.instanceId,
+                formKey: recored.formKey,
+              },
+            })
+          }}
+        >
+          {/* <FileImageOutlined style={{ marginRight: 3 }} /> */}
+          详情
         </Link>,
       ],
     },
@@ -135,40 +218,22 @@ const Undone: React.FC = () => {
           }}
         />
       </StatisticCard.Group> */}
-      <MenuProTable<any>
-        rowKey="id"
-        request={getList}
-        columns={columns}
-        actionRef={actionRef}
-        search={false}
-        toolbar={{
-          menu: {
-            activeKey,
-            items: [
-              {
-                key: 'tab1',
-                label: <span>我的待办</span>,
-              },
-              {
-                key: 'tab2',
-                label: <span>抄送给我</span>,
-              },
-              {
-                key: 'tab3',
-                label: <span>我的已办</span>,
-              },
-            ],
-            onChange(key) {
-              setActiveKey(key)
-            },
-          },
-          search: {
-            onSearch: (value: string) => {
-              alert(value)
-            },
-          },
-        }}
-      />
+      <Tabs onChange={setActiveKey} type="card">
+        <TabPane tab="我的待办" key="tab1">
+          <MenuProTable<any>
+            rowKey="id"
+            request={getList}
+            columns={columns}
+            actionRef={actionRef}
+          />
+        </TabPane>
+        <TabPane tab="抄送给我" key="tab2">
+          <MenuProTable<any> rowKey="id" request={getdoList} columns={columns} />
+        </TabPane>
+        <TabPane tab="我的已办" key="tab3">
+          <MenuProTable<any> rowKey="taskId" request={getdoList} columns={columns2} />
+        </TabPane>
+      </Tabs>
 
       <AddModal
         modalVisible={modalVisible}

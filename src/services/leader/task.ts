@@ -16,6 +16,12 @@ export async function getUndoneList(params: undoneListParamProps) {
     params: paramsToPageParams(params),
   })
 }
+/** 获取已办列表 */
+export async function getdoneList(params: undoneListParamProps) {
+  return request<{ rows: undoneListProps[]; total: number }>(`${url}/ybList`, {
+    params: paramsToPageParams(params),
+  })
+}
 
 /** 获取请假列表 */
 export async function getLeaveList(params: leaveListParamProps) {
