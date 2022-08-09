@@ -39,14 +39,6 @@ const ApprovalPage: React.FC = (props: any) => {
     />
   )
 
-  useEffect(() => {
-    setInfoData({
-      time: '2022-07-14 13:13:13',
-      name: '吉祥',
-      typeNo: '33333333',
-    })
-  }, [])
-
   // 获取授信id和企业id
   const getCredit = async () => {
     // const { data } = await getCreditDetail(instanceId)
@@ -55,6 +47,7 @@ const ApprovalPage: React.FC = (props: any) => {
       infoId: data.id,
       enterpriseId: data.enterpriseId,
     })
+    setInfoData(data)
   }
 
   // 获取流程信息
@@ -113,9 +106,9 @@ const ApprovalPage: React.FC = (props: any) => {
             </Button>
           }
         >
-          <DescriptionsItem label="创建任务时间">{infoData.time}</DescriptionsItem>
-          <DescriptionsItem label="发起人">{infoData.name}</DescriptionsItem>
-          <DescriptionsItem label="任务编号">{infoData.typeNo}</DescriptionsItem>
+          <DescriptionsItem label="创建任务时间">{infoData.updateTime}</DescriptionsItem>
+          <DescriptionsItem label="发起人">{infoData.updateBy}</DescriptionsItem>
+          <DescriptionsItem label="任务编号">{id}</DescriptionsItem>
         </ComDescriptions>
       </div>
       <ComCard title="详情信息">{DetailDom}</ComCard>

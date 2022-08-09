@@ -6,6 +6,7 @@ import { Typography, message } from 'antd'
 import { history } from 'umi'
 import { editCeditQutoStatus, getCeditList } from '@/services'
 import DictSelect from '@/components/ComSelect'
+import { formatEmpty } from '@/utils/base'
 
 const { Link } = Typography
 
@@ -43,7 +44,8 @@ const CreditManage: React.FC = () => {
       hideInSearch: true,
       render: (_, recored) => (
         <>
-          {recored.creditBecomDate}/{recored.creditExpireDate}
+          {formatEmpty(recored.creditBecomDate)}
+          {recored.creditExpireDate ? `/${recored.creditExpireDate}` : ''}
         </>
       ),
     },
@@ -117,6 +119,7 @@ const CreditManage: React.FC = () => {
       render: (_, recored) => [
         <Link
           key="approval"
+          disabled={Number(recored.auditStatus) !== 2}
           onClick={() => {
             history.push({
               pathname: '/leaderPage/undone/approval',
@@ -132,9 +135,10 @@ const CreditManage: React.FC = () => {
           key="detail"
           onClick={() => {
             history.push({
-              pathname: '/leaderPage/undone/approval',
+              pathname: '/creditLoanManage/creditManage/detail',
               query: {
-                id: String(recored.id),
+                cusEnterpriseCredit: String(recored.id),
+                enterpriseId: String(recored.enterpriseId),
               },
             })
           }}

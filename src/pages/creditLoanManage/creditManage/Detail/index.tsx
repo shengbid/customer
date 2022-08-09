@@ -1,13 +1,15 @@
 import React from 'react'
-import { Tabs } from 'antd'
+import { Tabs, Typography } from 'antd'
 import CardTitle from '@/components/ComPage/CardTitle'
 import SimpleProtable from '@/components/ComProtable/SimpleProTable'
 import { getCreditHistory } from '@/services'
 import type { ProColumns } from '@ant-design/pro-table'
 import DictShow from '@/components/ComSelect/dictShow'
 import styles from './index.less'
+import { history } from 'umi'
 
 const { TabPane } = Tabs
+const { Link } = Typography
 
 const Detail: React.FC = (props: any) => {
   const { enterpriseId, cusEnterpriseCredit } = props.location.query
@@ -36,6 +38,28 @@ const Detail: React.FC = (props: any) => {
       key: 'updateTime',
       dataIndex: 'updateTime',
       valueType: 'dateTime',
+    },
+    {
+      title: '操作',
+      width: 170,
+      key: 'option',
+      valueType: 'option',
+      render: (_, recored) => [
+        <Link
+          key="approval"
+          onClick={() => {
+            history.push({
+              pathname: '/leaderPage/undone/approval',
+              query: {
+                id: String(recored.id),
+                detail: 'detail',
+              },
+            })
+          }}
+        >
+          详情
+        </Link>,
+      ],
     },
   ]
 
