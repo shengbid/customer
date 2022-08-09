@@ -31,3 +31,10 @@ export async function editRelateShareholder(associatedEnterpriseId: any, data: a
     data,
   })
 }
+
+// 获取授信审批记录
+export async function getCreditHistory(enterpriseId: string, cusEnterpriseCredit: string) {
+  return request<{ rows: any }>(`${url}/credit/shjlList`, {
+    params: { enterpriseId, cusEnterpriseCredit },
+  })
+}

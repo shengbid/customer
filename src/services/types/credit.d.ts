@@ -10,6 +10,7 @@ export interface creditListParamProps extends pageLimitProps {
 // 授信列表
 export interface creditListProps {
   id: number
+  enterpriseId: number
   enterpriseCreditName: string
   auditStatus: string
   quotaStatus: string
