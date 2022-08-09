@@ -53,6 +53,11 @@ const Undone: React.FC = () => {
       title: '任务名称',
       dataIndex: 'name',
       hideInSearch: true,
+      render: (_, recored) => (
+        <span>
+          {recored.instanceName}-{recored.name}
+        </span>
+      ),
     },
     {
       title: '任务类型',
@@ -78,7 +83,7 @@ const Undone: React.FC = () => {
       title: intl.formatMessage({
         id: 'pages.table.option',
       }),
-      width: 100,
+      width: 80,
       key: 'option',
       valueType: 'option',
       render: (_, recored) => [
@@ -158,7 +163,7 @@ const Undone: React.FC = () => {
       title: intl.formatMessage({
         id: 'pages.table.option',
       }),
-      width: 90,
+      width: 80,
       key: 'option',
       valueType: 'option',
       render: (_, recored) => [

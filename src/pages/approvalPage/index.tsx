@@ -43,8 +43,8 @@ const ApprovalPage: React.FC = (props: any) => {
 
   // 获取授信id和企业id
   const getCredit = async () => {
-    // const { data } = await getCreditDetail(instanceId)
-    const { data } = await getCreditDetail('11112222')
+    const { data } = await getCreditDetail(instanceId)
+    // const { data } = await getCreditDetail('11112222')
     setCreditParams({
       infoId: data.id,
       enterpriseId: data.enterpriseId,
@@ -84,14 +84,20 @@ const ApprovalPage: React.FC = (props: any) => {
     }
     // return
     setConfirmLoading(true)
-    await approvalSave(id, {
-      ...values,
-      formKey,
-      businessKey,
-      taskNodeName,
-      attatchmentDatas,
-      businessData,
-    })
+    try {
+      await approvalSave(id, {
+        ...values,
+        formKey,
+        businessKey,
+        taskNodeName,
+        attatchmentDatas,
+        businessData,
+      })
+    } catch (error) {
+      setConfirmLoading(false)
+      return
+    }
+
     setConfirmLoading(false)
     message.success('审批成功')
     history.goBack()
