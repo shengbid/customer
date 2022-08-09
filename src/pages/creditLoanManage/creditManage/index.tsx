@@ -121,7 +121,7 @@ const CreditManage: React.FC = () => {
           key="approval"
           disabled={Number(recored.auditStatus) !== 2}
           onClick={async () => {
-            const { data } = await getActivityParams(String(recored.id))
+            const { data } = await getActivityParams(recored.taskNumber)
             history.push({
               pathname: '/leaderPage/undone/approval',
               query: {

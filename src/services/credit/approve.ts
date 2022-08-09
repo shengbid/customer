@@ -2,6 +2,13 @@ import { request } from 'umi'
 
 const url = '/cus'
 
+// 根据列表id获取流程参数
+export async function getActivityParams(instanceId: string) {
+  return request<{ data: any }>(`/activiti/task/selectActInfo`, {
+    params: { instanceId },
+  })
+}
+
 // 获取关联企业列表
 export async function getRelateCompany(associatedEnterpriseId: number) {
   return request<{ rows: any }>(`${url}/assoEnterprise/list`, {

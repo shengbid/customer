@@ -8,12 +8,12 @@ interface creditprops {
   id: string
   isDetail?: boolean
 }
-const CreditDetail: React.FC<creditprops> = ({ isDetail = false }) => {
+const CreditDetail: React.FC<creditprops> = ({ id, isDetail = false }) => {
   const [infoData, setInfoData] = useState({})
   const [spinning, setSpinning] = useState(true)
   // 获取授信详情
   const getCredit = async () => {
-    const { data } = await getCreditDetail('11112222')
+    const { data } = await getCreditDetail(id)
     setSpinning(false)
     setInfoData(data)
   }

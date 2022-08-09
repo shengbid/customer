@@ -1,17 +1,18 @@
-import React from 'react'
-import { Tabs, Typography, Button } from 'antd'
-import CardTitle from '@/components/ComPage/CardTitle'
+import React, { useState } from 'react'
+import { Typography, Button } from 'antd'
+import ComCard from '@/components/ComPage/ComCard'
 import SimpleProtable from '@/components/ComProtable/SimpleProTable'
-import { getCreditHistory } from '@/services'
+import { getCreditHistory, getActivityParams } from '@/services'
 import type { ProColumns } from '@ant-design/pro-table'
 import DictShow from '@/components/ComSelect/dictShow'
 import styles from './index.less'
 import { history } from 'umi'
+import ComPageContanier from '@/components/ComPage/ComPagContanier'
 
-const { TabPane } = Tabs
 const { Link } = Typography
 
 const Detail: React.FC = (props: any) => {
+  const [activeKey, setActiveKey] = useState<string>('1')
   const { enterpriseId, cusEnterpriseCredit, companyName } = props.location.query
 
   const getDetail = async () => {
@@ -47,11 +48,12 @@ const Detail: React.FC = (props: any) => {
       render: (_, recored) => [
         <Link
           key="approval"
-          onClick={() => {
+          onClick={async () => {
+            const { data } = await getActivityParams(recored.taskNumber)
             history.push({
               pathname: '/leaderPage/undone/approval',
               query: {
-                id: String(recored.id),
+                id: data.id,
                 detail: 'detail',
               },
             })
@@ -64,10 +66,20 @@ const Detail: React.FC = (props: any) => {
     },
   ]
 
+  const tabList = [
+    {
+      tab: '授信信息',
+      key: '1',
+    },
+    {
+      tab: '授信审核记录',
+      key: '2',
+    },
+  ]
   return (
-    <div className={styles.contanier}>
-      <div className={styles.header}>
-        <div className={styles.title}>{companyName}</div>
+    <ComPageContanier
+      title={companyName}
+      extra={
         <Button
           className={styles.back}
           type="primary"
@@ -75,18 +87,16 @@ const Detail: React.FC = (props: any) => {
         >
           返回
         </Button>
-      </div>
-      <Tabs type="card" className={styles.content}>
-        <TabPane tab="授信信息" key="1">
-          <></>
-        </TabPane>
-        <TabPane tab="授信审核记录" key="2">
-          <CardTitle title="授信审核记录">
-            <SimpleProtable key="id" columns={columns} request={getDetail} />
-          </CardTitle>
-        </TabPane>
-      </Tabs>
-    </div>
+      }
+      tabList={tabList}
+      onTabClick={setActiveKey}
+    >
+      {activeKey === '2' ? (
+        <ComCard title="授信审核记录">
+          <SimpleProtable key="id" columns={columns} request={getDetail} />
+        </ComCard>
+      ) : null}
+    </ComPageContanier>
   )
 }
 
