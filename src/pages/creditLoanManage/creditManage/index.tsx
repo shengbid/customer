@@ -2,9 +2,9 @@ import React, { useState, useRef } from 'react'
 import MenuProTable from '@/components/ComProtable/MenuProTable'
 import type { creditListProps, creditListParamProps } from '@/services/types'
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
-import { Typography, message } from 'antd'
+import { Typography, message, Popconfirm } from 'antd'
 import { history } from 'umi'
-import { editCeditQutoStatus, getCeditList } from '@/services'
+import { editCeditQutoStatus, getCeditList, getActivityParams } from '@/services'
 import DictSelect from '@/components/ComSelect'
 import { formatEmpty } from '@/utils/base'
 
@@ -120,11 +120,12 @@ const CreditManage: React.FC = () => {
         <Link
           key="approval"
           disabled={Number(recored.auditStatus) !== 2}
-          onClick={() => {
+          onClick={async () => {
+            const { data } = await getActivityParams(String(recored.id))
             history.push({
               pathname: '/leaderPage/undone/approval',
               query: {
-                id: String(recored.id),
+                id: data.id,
               },
             })
             sessionStorage.setItem('preUrl', '/creditLoanManage/creditManage')
@@ -140,21 +141,26 @@ const CreditManage: React.FC = () => {
               query: {
                 cusEnterpriseCredit: String(recored.id),
                 enterpriseId: String(recored.enterpriseId),
+                companyName: recored.enterpriseCreditName,
               },
             })
           }}
         >
           详情
         </Link>,
-        <Link
-          key="dis"
-          disabled={recored.quotaStatus === 'ygq' || recored.quotaStatus === 'wsx'}
-          onClick={() => {
-            editQutoStatus({ id: recored.id, quotaStatus: recored.quotaStatus })
-          }}
-        >
-          {recored.quotaStatus === 'ky' ? '禁用' : '启用'}
-        </Link>,
+        recored.quotaStatus ? (
+          <Popconfirm
+            key="dis"
+            title={recored.quotaStatus === 'ky' ? '是否确定禁用?' : '是否确定启用?'}
+            onConfirm={() => editQutoStatus({ id: recored.id, quotaStatus: recored.quotaStatus })}
+            okText="确定"
+            cancelText="取消"
+          >
+            <Link disabled={recored.quotaStatus === 'ygq' || recored.quotaStatus === 'wsx'}>
+              {recored.quotaStatus === 'ky' ? '禁用' : '启用'}
+            </Link>
+          </Popconfirm>
+        ) : null,
       ],
     },
   ]
