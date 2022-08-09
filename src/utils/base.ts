@@ -253,7 +253,7 @@ export const treeDataToFlat = (data: any[]) => {
       }
       const obj = {
         path: item.path,
-        name: item.title,
+        name: item.name,
       }
       arr.push(obj)
     })

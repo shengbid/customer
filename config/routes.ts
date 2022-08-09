@@ -32,7 +32,7 @@ export default [
       {
         path: '/leaderPage',
         name: '首页',
-        access: 'hasMenu',
+        // access: 'hasMenu',
         icon: 'DesktopOutlined',
         routes: [
           {
@@ -42,7 +42,8 @@ export default [
           {
             path: '/leaderPage/welcome',
             name: '首页',
-            access: 'hasMenu',
+            wrappers: ['./auth'],
+            // access: 'hasMenu',
             component: './Welcome',
           },
           {
