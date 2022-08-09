@@ -61,7 +61,7 @@ const Detail: React.FC = (props: any) => {
                 detail: 'detail',
               },
             })
-            console.log(props.location)
+            // console.log(props.location)
             sessionStorage.setItem('preUrl', `${props.location.pathname}?${props.location.search}`)
           }}
         >

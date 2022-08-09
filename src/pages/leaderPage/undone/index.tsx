@@ -1,9 +1,9 @@
 import MenuProTable from '@/components/ComProtable/MenuProTable'
 import type { undoneListProps, undoneListParamProps, doneListProps } from '@/services/types'
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
-import { Typography, Tabs } from 'antd'
+import { Typography, Tabs, Badge } from 'antd'
 import { getUndoneList, getdoneList } from '@/services'
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 // import { StatisticCard } from '@ant-design/pro-card'
 import { useIntl, history } from 'umi'
 import AddModal from './components/addModal'
@@ -13,16 +13,18 @@ const { TabPane } = Tabs
 const { Link } = Typography
 
 const Undone: React.FC = () => {
-  const [setActiveKey] = useState<React.Key | undefined>('tab1')
+  // const [setActiveKey] = useState<React.Key | undefined>('tab1')
   const intl = useIntl()
   const actionRef = useRef<ActionType>()
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [info, setInfo] = useState<any>()
+  const [dbCount, setdbCount] = useState<number>(0)
+  const [ybCount, setybCount] = useState<number>(0)
 
   const getList = async (param: undoneListParamProps) => {
     // console.log(param)
     const { rows, total } = await getUndoneList(param)
-
+    setdbCount(total)
     return {
       data: rows,
       total,
@@ -32,12 +34,15 @@ const Undone: React.FC = () => {
   const getdoList = async (param: undoneListParamProps) => {
     // console.log(param)
     const { rows, total } = await getdoneList(param)
-
+    setybCount(total)
     return {
       data: rows,
       total,
     }
   }
+  useEffect(() => {
+    getdoList()
+  }, [])
 
   const columns: ProColumns<undoneListProps>[] = [
     {
@@ -225,8 +230,8 @@ const Undone: React.FC = () => {
           }}
         />
       </StatisticCard.Group> */}
-      <Tabs onChange={setActiveKey} type="card">
-        <TabPane tab="我的待办" key="tab1">
+      <Tabs type="card" className="tab-bages">
+        <TabPane tab={<Badge count={dbCount}>我的待办</Badge>} key="tab1">
           <MenuProTable<any>
             rowKey="id"
             request={getList}
@@ -237,7 +242,7 @@ const Undone: React.FC = () => {
         <TabPane tab="抄送给我" key="tab2">
           <MenuProTable<any> rowKey="id" request={getdoList} columns={columns} />
         </TabPane>
-        <TabPane tab="我的已办" key="tab3">
+        <TabPane tab={<Badge count={ybCount}>我的已办</Badge>} key="tab3">
           <MenuProTable<any> rowKey="taskId" request={getdoList} columns={columns2} />
         </TabPane>
       </Tabs>
