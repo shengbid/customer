@@ -42,6 +42,11 @@ export default [
         access: 'hasMenu',
         component: './creditLoanManage/creditManage',
       },
+      {
+        path: '/creditLoanManage/creditManage/detail',
+        name: '授信管理详情',
+        component: './creditLoanManage/creditManage/Detail',
+      },
     ],
   },
   {
