@@ -34,7 +34,7 @@ const ApprovalPage: React.FC = (props: any) => {
     <CreditApproval
       creditParams={creditParams}
       formName={formKey}
-      id={id}
+      id={instanceId}
       businessKey={businessKey}
     />
   )
@@ -68,7 +68,12 @@ const ApprovalPage: React.FC = (props: any) => {
     console.log(values, approvalDomRef?.current)
     let attatchmentDatas = null
     let businessData = null
-    if (approvalDomRef?.current && approvalDomRef?.current.getBusinessData) {
+    // 通过才校验表单
+    if (
+      values.radioValue === 'taskComplete' &&
+      approvalDomRef?.current &&
+      approvalDomRef?.current.getBusinessData
+    ) {
       const data = await approvalDomRef?.current?.getBusinessData()
       if (!data) {
         message.warning('请填写完成表单信息!')
