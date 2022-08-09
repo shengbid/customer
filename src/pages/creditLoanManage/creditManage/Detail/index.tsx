@@ -1,5 +1,5 @@
 import React from 'react'
-import { Tabs, Typography } from 'antd'
+import { Tabs, Typography, Button } from 'antd'
 import CardTitle from '@/components/ComPage/CardTitle'
 import SimpleProtable from '@/components/ComProtable/SimpleProTable'
 import { getCreditHistory } from '@/services'
@@ -12,7 +12,7 @@ const { TabPane } = Tabs
 const { Link } = Typography
 
 const Detail: React.FC = (props: any) => {
-  const { enterpriseId, cusEnterpriseCredit } = props.location.query
+  const { enterpriseId, cusEnterpriseCredit, companyName } = props.location.query
 
   const getDetail = async () => {
     const { rows } = await getCreditHistory(enterpriseId, cusEnterpriseCredit)
@@ -66,7 +66,17 @@ const Detail: React.FC = (props: any) => {
 
   return (
     <div className={styles.contanier}>
-      <Tabs type="card">
+      <div className={styles.header}>
+        <div className={styles.title}>{companyName}</div>
+        <Button
+          className={styles.back}
+          type="primary"
+          onClick={() => history.push('/creditLoanManage/creditManage')}
+        >
+          返回
+        </Button>
+      </div>
+      <Tabs type="card" className={styles.content}>
         <TabPane tab="授信信息" key="1">
           <></>
         </TabPane>
