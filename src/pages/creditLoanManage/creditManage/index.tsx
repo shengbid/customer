@@ -126,6 +126,10 @@ const CreditManage: React.FC = () => {
               pathname: '/leaderPage/undone/approval',
               query: {
                 id: data.id,
+                businessKey: data.businessKey,
+                taskNodeName: data.name,
+                instanceId: data.instanceId,
+                formKey: data.formKey,
               },
             })
             sessionStorage.setItem('preUrl', '/creditLoanManage/creditManage')

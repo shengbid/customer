@@ -16,6 +16,8 @@ export interface undoneListParamProps extends pageLimitProps {
 }
 // 已办
 export interface doneListProps {
+  id: string
+  businessKey: string
   taskId: string
   processDefinitionName: string
   taskNodeName: string // name

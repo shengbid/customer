@@ -54,10 +54,15 @@ const Detail: React.FC = (props: any) => {
               pathname: '/leaderPage/undone/approval',
               query: {
                 id: data.id,
+                businessKey: data.businessKey,
+                taskNodeName: data.name,
+                instanceId: data.instanceId,
+                formKey: data.formKey,
                 detail: 'detail',
               },
             })
-            sessionStorage.setItem('preUrl', props.location.pathname)
+            console.log(props.location)
+            sessionStorage.setItem('preUrl', `${props.location.pathname}?${props.location.search}`)
           }}
         >
           详情

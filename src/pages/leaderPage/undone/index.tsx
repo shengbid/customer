@@ -175,7 +175,7 @@ const Undone: React.FC = () => {
             history.push({
               pathname: '/leaderPage/undone/approval',
               query: {
-                detial: 'detail',
+                detail: 'detail',
                 id: recored.id,
                 businessKey: recored.businessKey,
                 taskNodeName: recored.taskNodeName,
