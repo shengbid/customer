@@ -11,28 +11,28 @@ import { idTestReg } from '@/utils/reg'
 // 关联信息
 const RelatedDetail = ({ creditParams }: any, ref: any) => {
   const [dataSource, setDataSource] = useState<shareholderProps[]>([
-    {
-      id: 1,
-      shareholderName: '测试人员',
-      identityType: 'dlsfz',
-      identityNumber: '365896188801252356',
-      shareProportion: '10',
-    },
+    // {
+    //   id: 1,
+    //   shareholderName: '测试人员',
+    //   identityType: 'dlsfz',
+    //   identityNumber: '365896188801252356',
+    //   shareProportion: '10',
+    // },
   ])
-  const [editableKeys, setEditableRowKeys] = useState<any[]>([1])
-  const [editableKeys2, setEditableRowKeys2] = useState<any[]>([1])
+  const [editableKeys, setEditableRowKeys] = useState<any[]>([])
+  const [editableKeys2, setEditableRowKeys2] = useState<any[]>([])
   const [dataSource2, setDataSource2] = useState<relateCompanyProps[]>([
-    {
-      id: 1,
-      frName: '张三',
-      identityType: 'dlsfz',
-      identityNumber: '365896188801252356',
-      enterpriseName: '吉祥科创',
-      companyRegister: '1',
-      enterpriseCode: '33333',
-      registrationAddress: '深圳',
-      remark: '备注',
-    },
+    // {
+    //   id: 1,
+    //   frName: '张三',
+    //   identityType: 'dlsfz',
+    //   identityNumber: '365896188801252356',
+    //   enterpriseName: '吉祥科创',
+    //   companyRegister: '1',
+    //   enterpriseCode: '33333',
+    //   registrationAddress: '深圳',
+    //   remark: '备注',
+    // },
   ])
   const [mpForm] = Form.useForm()
   const [cpForm] = Form.useForm()
@@ -214,7 +214,7 @@ const RelatedDetail = ({ creditParams }: any, ref: any) => {
             required: true,
             validator: ({ field }: any, value: any) => {
               // 获取当前行数据
-              const current = mpForm.getFieldValue(`${field.split('.')[0]}`) || {}
+              const current = cpForm.getFieldValue(`${field.split('.')[0]}`) || {}
               const idType = current.identityType ? current.identityType : 'xgsfz'
 
               if (!value) {
