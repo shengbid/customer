@@ -55,6 +55,7 @@ const Detail: React.FC = (props: any) => {
                 detail: 'detail',
               },
             })
+            sessionStorage.setItem('preUrl', props.location.pathname)
           }}
         >
           详情

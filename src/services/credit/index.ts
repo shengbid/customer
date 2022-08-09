@@ -12,9 +12,10 @@ export async function getCeditList(params: creditListParamProps) {
   })
 }
 /** 修改授信额度状态 */
-export async function editCeditQutoStatus(params: { id: number; quotaStatus: string }) {
+export async function editCeditQutoStatus(data: { id: number; quotaStatus: string }) {
   return request(`${Url}/edit/quota`, {
-    params,
+    data,
+    method: 'put',
   })
 }
 

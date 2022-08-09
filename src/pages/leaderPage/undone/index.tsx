@@ -97,6 +97,7 @@ const Undone: React.FC = () => {
                 formKey: recored.formKey,
               },
             })
+            sessionStorage.setItem('preUrl', '/leaderPage/undone')
           }}
         >
           {/* <FileImageOutlined style={{ marginRight: 3 }} /> */}
@@ -177,6 +178,7 @@ const Undone: React.FC = () => {
                 formKey: recored.formKey,
               },
             })
+            sessionStorage.setItem('preUrl', '/leaderPage/undone')
           }}
         >
           {/* <FileImageOutlined style={{ marginRight: 3 }} /> */}

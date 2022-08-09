@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, MutableRefObject } from 'react'
 import { Button, message } from 'antd'
 import styles from './index.less'
 import ComDescriptions from '@/components/ComPage/Descriptions'
-import { history } from 'umi'
+import { history, useHistory } from 'umi'
 import ComCard from '@/components/ComPage/ComCard'
 import ApprovalForm from './components/approvalForm'
 import ComCollapse from '@/components/ComPage/ComCollapse'
@@ -38,6 +38,8 @@ const ApprovalPage: React.FC = (props: any) => {
       businessKey={businessKey}
     />
   )
+  const hist = useHistory()
+  console.log(hist)
 
   // 获取授信id和企业id
   const getCredit = async () => {

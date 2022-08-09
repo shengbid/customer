@@ -127,6 +127,7 @@ const CreditManage: React.FC = () => {
                 id: String(recored.id),
               },
             })
+            sessionStorage.setItem('preUrl', '/creditLoanManage/creditManage')
           }}
         >
           审核
@@ -149,10 +150,10 @@ const CreditManage: React.FC = () => {
           key="dis"
           disabled={recored.quotaStatus === 'ygq' || recored.quotaStatus === 'wsx'}
           onClick={() => {
-            editQutoStatus(recored)
+            editQutoStatus({ id: recored.id, quotaStatus: recored.quotaStatus })
           }}
         >
-          {recored.quotaStatus === 'jy' ? '禁用' : '启用'}
+          {recored.quotaStatus === 'ky' ? '禁用' : '启用'}
         </Link>,
       ],
     },
