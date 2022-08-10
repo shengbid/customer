@@ -108,13 +108,15 @@ const CompanyInfo: React.FC<infoProps> = ({ infoData, handleUpdate, isDetail = f
       title: '附件类型',
       key: 'typeName',
       dataIndex: 'typeName',
+      width: 300,
     },
     {
       title: '附件',
-      key: 'fileList',
-      width: '60%',
-      dataIndex: 'fileList',
-      render: (val: any) => <ComUpload value={val} isDetail />,
+      key: 'typeName',
+      width: '70%',
+      ellipsis: true,
+      dataIndex: 'typeName',
+      render: (val: any) => (isEmpty(val) ? <>-</> : <ComUpload value={val} isDetail />),
     },
   ]
 
