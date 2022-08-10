@@ -29,7 +29,7 @@ const ApprovalDom: React.FC<approvalDomProps> = ({
   const approvalDom = {
     credit1: (
       <>
-        <ComCollapse>
+        <ComCollapse defaultActiveKey={['1']}>
           <Panel header="授信基础信息" key="1">
             <CreditDetail id={id} isDetail={!!detail} />
           </Panel>
@@ -41,7 +41,7 @@ const ApprovalDom: React.FC<approvalDomProps> = ({
     ),
     credit8: (
       <>
-        <ComCollapse>
+        <ComCollapse defaultActiveKey={['1']}>
           <Panel header="授信基础信息" key="1">
             <CreditDetail id={id} isDetail={!!detail} />
           </Panel>
