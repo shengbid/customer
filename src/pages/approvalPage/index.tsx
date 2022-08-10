@@ -111,7 +111,7 @@ const ApprovalPage: React.FC = (props: any) => {
     <div className={styles.container}>
       <div className={styles.header}>
         <ComDescriptions
-          title={`${infoData.enterpriseName}--授信申请`}
+          title={`${infoData.enterpriseName}-授信申请-${taskNodeName}`}
           extra={
             <Button
               type="primary"
