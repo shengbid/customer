@@ -54,7 +54,6 @@ const Undone: React.FC = () => {
     {
       title: '任务名称',
       dataIndex: 'name',
-      hideInSearch: true,
       render: (_, recored) => (
         <span>
           {recored.instanceName}-{recored.name}

@@ -24,7 +24,6 @@ const ApprovalPage: React.FC = (props: any) => {
   })
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
   const [higLigthData, setHigLigthData] = useState<any>([])
-  const title = '香港吉祥公司--授信申请'
   const approvalDomRef: MutableRefObject<any> = useRef({})
 
   const { query } = props.location
@@ -112,7 +111,7 @@ const ApprovalPage: React.FC = (props: any) => {
     <div className={styles.container}>
       <div className={styles.header}>
         <ComDescriptions
-          title={title}
+          title={`${infoData.enterpriseName}--授信申请`}
           extra={
             <Button
               type="primary"
