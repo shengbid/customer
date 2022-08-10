@@ -3,7 +3,7 @@ import type { undoneListProps, undoneListParamProps, doneListProps } from '@/ser
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import { Typography, Tabs, Badge } from 'antd'
 import { getUndoneList, getdoneList } from '@/services'
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 // import { StatisticCard } from '@ant-design/pro-card'
 import { useIntl, history } from 'umi'
 import AddModal from './components/addModal'
@@ -19,7 +19,7 @@ const Undone: React.FC = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [info, setInfo] = useState<any>()
   const [dbCount, setdbCount] = useState<number>(0)
-  const [ybCount, setybCount] = useState<number>(0)
+  const [ybCount] = useState<number>(0)
 
   const getList = async (param: undoneListParamProps) => {
     // console.log(param)
@@ -34,15 +34,12 @@ const Undone: React.FC = () => {
   const getdoList = async (param: undoneListParamProps) => {
     // console.log(param)
     const { rows, total } = await getdoneList(param)
-    setybCount(total)
+    // setybCount(total)
     return {
       data: rows,
       total,
     }
   }
-  useEffect(() => {
-    getdoList()
-  }, [])
 
   const columns: ProColumns<undoneListProps>[] = [
     {
@@ -239,10 +236,10 @@ const Undone: React.FC = () => {
             actionRef={actionRef}
           />
         </TabPane>
-        <TabPane tab="抄送给我" key="tab2">
+        <TabPane tab={<Badge count={ybCount}>抄送给我</Badge>} key="tab2">
           <MenuProTable<any> rowKey="id" request={getdoList} columns={columns} />
         </TabPane>
-        <TabPane tab={<Badge count={ybCount}>我的已办</Badge>} key="tab3">
+        <TabPane tab="我的已办" key="tab3">
           <MenuProTable<any> rowKey="taskId" request={getdoList} columns={columns2} />
         </TabPane>
       </Tabs>
