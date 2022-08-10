@@ -40,6 +40,24 @@ const LegalPerson: React.FC<reralProps> = ({ handleCancel, info }) => {
     message.success('修改成功')
   }
 
+  // 回显身份信息
+  const setIdInfo = (files: any) => {
+    if (files && files.length) {
+      const item = files[0]
+      if (idType === 'hz') {
+        form.setFieldsValue({
+          identityNumber: item.passportNumber,
+          name: item.passportName,
+        })
+      } else {
+        form.setFieldsValue({
+          identityNumber: item.number,
+          name: item.identityName,
+        })
+      }
+    }
+  }
+
   const gutter = 24
   return (
     <Form
@@ -77,7 +95,11 @@ const LegalPerson: React.FC<reralProps> = ({ handleCancel, info }) => {
               },
             ]}
           >
-            <DictSelect authorword="cus_sfzlx" onChange={(val: string) => setIdTyp(val)} />
+            <DictSelect
+              allowClear={false}
+              authorword="cus_sfzlx"
+              onChange={(val: string) => setIdTyp(val)}
+            />
           </Form.Item>
         </Col>
         <Col span={12}>
@@ -120,7 +142,12 @@ const LegalPerson: React.FC<reralProps> = ({ handleCancel, info }) => {
               },
             ]}
           >
-            <UploadImage limit={1} />
+            <UploadImage
+              urlStr={idType !== 'hz' ? '/file/upload/identity' : '/file/upload/passport'}
+              limit={1}
+              infoData={{ cardSide: 'front' }}
+              onChange={setIdInfo}
+            />
           </Form.Item>
         </Col>
         <Col span={12}>
