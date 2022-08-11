@@ -189,6 +189,7 @@ const ProcessDesign: React.FC<{ query: getdetailProps }> = ({ query }) => {
 
   // 部署流程
   const deployBpmn = async () => {
+    await modalForm.validateFields()
     setLoading(true)
     let bpmnXml = ''
     // let svgXml = ''
@@ -197,6 +198,7 @@ const ProcessDesign: React.FC<{ query: getdetailProps }> = ({ query }) => {
     })
     const formData = new FormData()
     formData.append('stringBPMN', bpmnXml)
+    formData.append('rwlx', modalForm.getFieldValue('processtype'))
     // console.log(bpmnXml)
     setLoading(false)
     await addProcess(formData)
@@ -358,7 +360,7 @@ const ProcessDesign: React.FC<{ query: getdetailProps }> = ({ query }) => {
         onCancel={() => setIsModalVisible(false)}
       >
         <Form layout="vertical" form={modalForm}>
-          <Form.Item label="流程类型" name="category">
+          <Form.Item label="流程类型" name="processtype">
             <DictSelect authorword="process_type" />
           </Form.Item>
         </Form>
