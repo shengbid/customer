@@ -156,9 +156,11 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp, isDetail = fal
         <DescriptionsItem label="证件正面">
           <ComUpload isDetail value={realData.idFront} />
         </DescriptionsItem>
-        <DescriptionsItem label="证件反面">
-          <ComUpload isDetail value={realData.idReverse} />
-        </DescriptionsItem>
+        {realData.identityType !== 'hz' ? (
+          <DescriptionsItem label="证件反面">
+            <ComUpload isDetail value={realData.idReverse} />
+          </DescriptionsItem>
+        ) : null}
         <DescriptionsItem label="手机号码">
           <DictShow dictValue={realData.phoneArea} dictkey="phone_code" />
           {realData.phoneNumber}
@@ -170,7 +172,6 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp, isDetail = fal
           <DictShow dictValue={realData.houseStatus} dictkey="zfqk" />
         </DescriptionsItem>
         <DescriptionsItem label="实控人行业从业年限">{realData.workYear}</DescriptionsItem>
-        <DescriptionsItem label="住房地址">{realData.houseAddr}</DescriptionsItem>
         <DescriptionsItem label="征信报告">
           <ComUpload isDetail value={realData.spouseCreditReport} />
         </DescriptionsItem>
@@ -180,6 +181,7 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp, isDetail = fal
         <DescriptionsItem label="行驶证">
           <ComUpload isDetail value={realData.driveLicense} />
         </DescriptionsItem>
+        <DescriptionsItem label="住房地址">{realData.houseAddr}</DescriptionsItem>
       </Descriptions>
 
       {realData.legalFlag === 'no' ? (
@@ -201,9 +203,11 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp, isDetail = fal
           <DescriptionsItem label="证件正面">
             <ComUpload isDetail value={legalData.idFront} />
           </DescriptionsItem>
-          <DescriptionsItem label="证件反面">
-            <ComUpload isDetail value={legalData.idReverse} />
-          </DescriptionsItem>
+          {legalData.identityType !== 'hz' ? (
+            <DescriptionsItem label="证件反面">
+              <ComUpload isDetail value={legalData.idReverse} />
+            </DescriptionsItem>
+          ) : null}
           <DescriptionsItem label="手机号码">
             <DictShow dictValue={legalData.phoneArea} dictkey="phone_code" />
             {legalData.phoneNumber}
@@ -234,9 +238,11 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp, isDetail = fal
           <DescriptionsItem label="证件正面">
             <ComUpload isDetail value={metalData.idFront} />
           </DescriptionsItem>
-          <DescriptionsItem label="证件反面">
-            <ComUpload isDetail value={metalData.idReverse} />
-          </DescriptionsItem>
+          {metalData.identityType !== 'hz' ? (
+            <DescriptionsItem label="证件反面">
+              <ComUpload isDetail value={metalData.idReverse} />
+            </DescriptionsItem>
+          ) : null}
           <DescriptionsItem label="手机号码">
             <DictShow dictValue={metalData.phoneArea} dictkey="phone_code" />
             {metalData.phoneNumber}
