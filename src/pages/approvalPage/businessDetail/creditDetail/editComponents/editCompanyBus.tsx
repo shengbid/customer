@@ -47,14 +47,15 @@ const EditCompany: React.FC<compnayProps> = ({ modalVisible, handleCancel, infoD
   }
 
   useEffect(() => {
-    if (infoData && infoData.id) {
+    if (modalVisible && infoData && infoData.id) {
+      // console.log(infoData)
       if (!isEmpty(infoData.businessDetailsList)) {
         initTable()
       }
       setBusType(infoData.businessTypeList)
       form.setFieldsValue(infoData)
     }
-  }, [infoData])
+  }, [modalVisible, infoData])
 
   const columns: ProColumns<companyBusinessProps>[] = [
     {

@@ -3,6 +3,8 @@ import { Modal, Button, Form, Spin, message } from 'antd'
 import { EditableProTable } from '@ant-design/pro-table'
 import ComUpload from '@/components/ComUpload'
 import { editCompanyFile } from '@/services'
+import { isEmpty } from 'lodash'
+import RequiredLabel from '@/components/RequiredLabel'
 
 interface compnayProps {
   modalVisible: boolean
@@ -30,6 +32,12 @@ const EditCompanyFile: React.FC<compnayProps> = ({
       dataIndex: 'typeName',
       width: '40%',
       editable: false,
+      render: (val: string) => {
+        if (val === '其他附件') {
+          return <>其他附件</>
+        }
+        return <RequiredLabel label={val} />
+      },
     },
     {
       title: '附件',
@@ -40,7 +48,7 @@ const EditCompanyFile: React.FC<compnayProps> = ({
           {
             required: true,
             validator: ({ field }: any, value: any) => {
-              if (field.indexOf('qt') < 0 && (!value || !value.length)) {
+              if (field.indexOf('qt') < 0 && isEmpty(value)) {
                 return Promise.reject(new Error('此项是必填项'))
               }
               return Promise.resolve()
@@ -58,7 +66,7 @@ const EditCompanyFile: React.FC<compnayProps> = ({
   const getDetail = () => {
     if (infoData && infoData.length) {
       if (!infoData.filter((item) => item.fileType === 'qt').length) {
-        infoData.push({ fileType: 'qt', typeName: '其他', fileList: [] })
+        infoData.push({ fileType: 'qt', typeName: '其他附件', fileList: [] })
       }
       setDataSource(infoData)
       setEditableRowKeys(infoData.map((item: any) => item.fileType))
@@ -74,7 +82,12 @@ const EditCompanyFile: React.FC<compnayProps> = ({
 
   // 提交
   const handleOk = async () => {
-    tableForm.validateFields()
+    try {
+      await tableForm.validateFields()
+    } catch (error) {
+      message.warning('存在必填项未填写!')
+      return
+    }
     const data = { ...extraInfo }
     dataSource.forEach((item: any) => {
       data[item.fileType] = item.fileList
