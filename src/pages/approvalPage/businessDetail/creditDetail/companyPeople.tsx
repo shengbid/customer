@@ -184,7 +184,7 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp, isDetail = fal
           )}
         </DescriptionsItem>
         <DescriptionsItem label="行驶证">
-          {isEmpty(realData.houseLicense) ? (
+          {isEmpty(realData.driveLicense) ? (
             '-'
           ) : (
             <ComUpload isDetail value={realData.driveLicense} />
