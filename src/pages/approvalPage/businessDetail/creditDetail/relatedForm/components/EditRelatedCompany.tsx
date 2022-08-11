@@ -38,6 +38,7 @@ const EditRelatedCompany: React.FC<editProps> = ({
   }, [infoData])
 
   const onSubmit = async () => {
+    await tableForm.validateFields()
     setConfirmLoading(true)
     try {
       await editRelateCompany(
