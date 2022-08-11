@@ -38,7 +38,7 @@ const ApprovalPage: React.FC = (props: any) => {
     />
   )
 
-  console.log(detail)
+  // console.log(detail)
 
   // 获取授信id和企业id
   const getCredit = async () => {

@@ -32,7 +32,7 @@ export default [
       {
         path: '/customerManage/cooperate/detail',
         name: '合作企业管理详情',
-        access: 'hasMenu',
+        // access: 'hasMenu',
         component: './customerManage/cooperateClient/Detail',
       },
       {
