@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import ComPageContanier from '@/components/ComPage/ComPagContanier'
-
 import { Button } from 'antd'
 import { history } from 'umi'
 import CooperateClient from '../components/CooperateClient'
