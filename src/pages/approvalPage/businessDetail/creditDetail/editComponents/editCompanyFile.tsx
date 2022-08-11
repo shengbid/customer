@@ -57,7 +57,7 @@ const EditCompanyFile: React.FC<compnayProps> = ({
         ],
       },
       renderFormItem: (_, { recordKey }: any) => (
-        <ComUpload limit={limitTypes.includes(recordKey) ? 1 : 10} />
+        <ComUpload limit={limitTypes.includes(recordKey) ? 1 : 100} />
       ),
     },
   ]
