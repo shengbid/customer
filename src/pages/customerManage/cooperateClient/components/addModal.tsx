@@ -4,8 +4,8 @@ import type { addModalProps } from '@/services/types'
 import { addLoanCustomer } from '@/services'
 import DictSelect from '@/components/ComSelect'
 import { useIntl } from 'umi'
-import { accountReg } from '@/utils/reg'
-import PhoneInput from '@/components/Input/phoneInput'
+
+const { TextArea } = Input
 
 const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleCancel, info }) => {
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
@@ -61,9 +61,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
 
   return (
     <Modal
-      title={`${text}${intl.formatMessage({
-        id: 'customer.loan.company',
-      })}`}
+      title="新建合作企业"
       maskClosable={false}
       destroyOnClose
       width={800}
@@ -80,11 +78,6 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
           autoComplete="off"
           layout="vertical"
         >
-          <h3 style={{ fontWeight: 'bold' }}>
-            {intl.formatMessage({
-              id: 'customer.loan.baseInfo',
-            })}
-          </h3>
           <Form.Item label="id" name="id" style={{ display: 'none' }}>
             <Input />
           </Form.Item>
@@ -111,6 +104,22 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
             </Col>
             <Col span={12}>
               <Form.Item
+                label="企业类型"
+                name="companyType"
+                rules={[
+                  {
+                    required: true,
+                    message: '请选择企业类型',
+                  },
+                ]}
+              >
+                <DictSelect authorword="credit_status" mode="multiple" />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={24}>
+            <Col span={12}>
+              <Form.Item
                 label={intl.formatMessage({
                   id: 'customer.loan.companyName',
                 })}
@@ -129,8 +138,6 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
                 <Input maxLength={50} />
               </Form.Item>
             </Col>
-          </Row>
-          <Row gutter={24}>
             <Col span={12}>
               <Form.Item
                 label={intl.formatMessage({
@@ -153,36 +160,38 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
             </Col>
           </Row>
 
-          <h3 style={{ fontWeight: 'bold' }}>
-            {intl.formatMessage({
-              id: 'customer.loan.accountInfo',
-            })}
-          </h3>
-
           <Row gutter={24}>
             <Col span={12}>
               <Form.Item
-                label={intl.formatMessage({
-                  id: 'customer.loan.accountName',
-                })}
-                name="userName"
+                label="企业编号（注册编号\社会信用代码）"
+                name="enterpriseNumber"
                 rules={[
                   {
                     required: true,
                     message: `${intl.formatMessage({
                       id: 'pages.form.input',
-                    })}${intl.formatMessage({
-                      id: 'customer.loan.accountName',
-                    })}`,
+                    })}企业编号`,
                   },
-                  accountReg,
                 ]}
               >
                 <Input maxLength={18} />
               </Form.Item>
             </Col>
             <Col span={12}>
-              <PhoneInput />
+              <Form.Item
+                label="注册地址"
+                name="registerDetails"
+                rules={[
+                  {
+                    required: true,
+                    message: `${intl.formatMessage({
+                      id: 'pages.form.input',
+                    })}注册地址`,
+                  },
+                ]}
+              >
+                <TextArea autoSize={{ minRows: 1, maxRows: 3 }} />
+              </Form.Item>
             </Col>
           </Row>
 

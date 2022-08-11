@@ -78,7 +78,7 @@ const RoleManage: React.FC = () => {
       title: intl.formatMessage({
         id: 'pages.table.option',
       }),
-      width: 150,
+      width: 110,
       key: 'option',
       valueType: 'option',
       render: (_, recored) => [
@@ -109,6 +109,7 @@ const RoleManage: React.FC = () => {
   ]
 
   const getList = async (param: customerListParamProps) => {
+    console.log(param)
     const { rows, total } = await getLoanCustomerList(param)
     return {
       data: rows,
