@@ -19,9 +19,10 @@ export interface doneListProps {
   id: string
   businessKey: string
   taskId: string
-  processDefinitionName: string
+  rwlx: string
+  taskTotalName: string
   taskNodeName: string // name
-  createBy: string
+  fqrNickname: string
   startTime: string //
   endTime: string
   instanceId: string

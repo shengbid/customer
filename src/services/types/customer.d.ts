@@ -9,7 +9,7 @@ export interface customerListParamProps extends pageLimitProps {
 // 借款客户列表
 export interface customerListProps {
   id: string
-  fullName?: string
+  fullName: string
   shortName?: string
   code?: string
   createTime?: string
