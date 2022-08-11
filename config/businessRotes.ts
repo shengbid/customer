@@ -24,6 +24,18 @@ export default [
         component: './customerManage/loan/Detail',
       },
       {
+        path: '/customerManage/cooperate',
+        name: '合作企业管理',
+        access: 'hasMenu',
+        component: './customerManage/cooperateClient',
+      },
+      {
+        path: '/customerManage/cooperate/detail',
+        name: '合作企业管理详情',
+        access: 'hasMenu',
+        component: './customerManage/cooperateClient/Detail',
+      },
+      {
         path: '/customerManage/menu',
         name: '菜单管理',
         access: 'hasMenu',
