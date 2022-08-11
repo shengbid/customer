@@ -18,7 +18,8 @@ export * from './docusin/index' // docusign
 export * from './sys/process' // 流程管理
 export * from './customer/loan' // 客户管理
 export * from './customer/menu' // 客户菜单管理
-export * from './leader/task' // 待办管理
+export * from './leader/task' // 流程任务管理
+export * from './leader/undone' // 待办管理
 
 export * from './credit' // 授信
 export * from './credit/approve' // 授信

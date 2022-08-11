@@ -1,27 +1,9 @@
 import { request } from 'umi'
-import type {
-  undoneListProps,
-  undoneListParamProps,
-  leaveListProps,
-  leaveListParamProps,
-} from '@/services/types'
+import type { leaveListProps, leaveListParamProps } from '@/services/types'
 import { paramsToPageParams } from '@/utils/base'
 
 const url = '/activiti/task'
 const leaveurl = '/activiti/leave'
-
-/** 获取待办列表 */
-export async function getUndoneList(params: undoneListParamProps) {
-  return request<{ rows: undoneListProps[]; total: number }>(`${url}/list`, {
-    params: paramsToPageParams(params),
-  })
-}
-/** 获取已办列表 */
-export async function getdoneList(params: undoneListParamProps) {
-  return request<{ rows: undoneListProps[]; total: number }>(`${url}/ybList`, {
-    params: paramsToPageParams(params),
-  })
-}
 
 /** 获取请假列表 */
 export async function getLeaveList(params: leaveListParamProps) {
