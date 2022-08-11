@@ -6,11 +6,11 @@ import { message, Tooltip, Typography } from 'antd'
 import { getLoanCustomerList, deleteLoanCustomer } from '@/services'
 import DictSelect from '@/components/ComSelect'
 import AddModal from './components/addModal'
-import { useIntl } from 'umi'
+import { useIntl, history } from 'umi'
 import { DeleteOutlined } from '@ant-design/icons'
 
 const { MenuAddButton, MenuDelteButton } = MenuProTable
-const { Text } = Typography
+const { Text, Link } = Typography
 
 const RoleManage: React.FC = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false)
@@ -108,6 +108,20 @@ const RoleManage: React.FC = () => {
         //     setModalVisible(true)
         //   }}
         // />,
+        <Link
+          key="detail"
+          onClick={() => {
+            history.push({
+              pathname: '/customerManage/loan/detail',
+              query: {
+                enterpriseId: String(recored.id),
+                companyName: recored.fullName,
+              },
+            })
+          }}
+        >
+          详情
+        </Link>,
         Number(recored.status) === 0 ? (
           <Tooltip key="delete" placement="topLeft" title="该客户已授信或授信审核中无法删除">
             <Text type="secondary">
