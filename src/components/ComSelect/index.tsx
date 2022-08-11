@@ -19,6 +19,7 @@ export interface iconSelectProps {
   allowClear?: boolean
   disabled?: boolean
   size?: SizeType
+  mode?: 'multiple' | 'tags' | undefined
 }
 // 数据字典
 const DictSelect: React.FC<iconSelectProps> = (props) => {
@@ -37,6 +38,7 @@ const DictSelect: React.FC<iconSelectProps> = (props) => {
     allowClear = true,
     disabled = false,
     size,
+    mode,
   } = props
 
   const getList = async () => {
@@ -96,6 +98,7 @@ const DictSelect: React.FC<iconSelectProps> = (props) => {
     <Select
       placeholder={place}
       disabled={disabled}
+      mode={mode}
       // showSearch
       allowClear={allowClear}
       labelInValue={labelInValue}
