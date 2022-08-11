@@ -38,6 +38,7 @@ const RealPersonInfo: React.FC<reralProps> = ({ handleCancel, info }) => {
     values.spouseCreditReport = JSON.stringify(values.spouseCreditReport)
     values.houseLicense = JSON.stringify(values.houseLicense)
     values.driveLicense = JSON.stringify(values.driveLicense)
+    // console.log(values)
     await editCompanyPeople(values)
     setConfirmLoading(false)
     handleCancel()

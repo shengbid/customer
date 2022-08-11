@@ -8,6 +8,7 @@ import Principal from './editComponents/principal'
 import FinancePrincipal from './editComponents/financePrincipal'
 import ComUpload from '@/components/ComUpload'
 import DictShow from '@/components/ComSelect/dictShow'
+import { isEmpty } from 'lodash'
 
 const { DescriptionsItem } = Descriptions
 
@@ -176,10 +177,18 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp, isDetail = fal
           <ComUpload isDetail value={realData.spouseCreditReport} />
         </DescriptionsItem>
         <DescriptionsItem label="房产证">
-          <ComUpload isDetail value={realData.houseLicense} />
+          {isEmpty(realData.houseLicense) ? (
+            '-'
+          ) : (
+            <ComUpload isDetail value={realData.houseLicense} />
+          )}
         </DescriptionsItem>
         <DescriptionsItem label="行驶证">
-          <ComUpload isDetail value={realData.driveLicense} />
+          {isEmpty(realData.houseLicense) ? (
+            '-'
+          ) : (
+            <ComUpload isDetail value={realData.driveLicense} />
+          )}
         </DescriptionsItem>
         <DescriptionsItem label="住房地址">{realData.houseAddr}</DescriptionsItem>
       </Descriptions>
@@ -294,7 +303,7 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp, isDetail = fal
         title={title}
         maskClosable={false}
         destroyOnClose
-        width={800}
+        width={860}
         visible={modalVisible}
         footer={false}
         onCancel={() => {
