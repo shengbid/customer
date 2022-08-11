@@ -18,6 +18,12 @@ export default [
         component: './customerManage/loan',
       },
       {
+        path: '/customerManage/loan/detail',
+        name: '借款客户管理详情',
+        // access: 'hasMenu',
+        component: './customerManage/loan/Detail',
+      },
+      {
         path: '/customerManage/menu',
         name: '菜单管理',
         access: 'hasMenu',
