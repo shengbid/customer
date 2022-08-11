@@ -1,4 +1,4 @@
-import { useImperativeHandle, forwardRef, useState } from 'react'
+import { useImperativeHandle, forwardRef, useState, useEffect } from 'react'
 import CardTitle from '@/components/ComPage/CardTitle'
 import ComEditTable from '@/components/ComProtable/ComEditTable'
 import type { shareholderProps, relateCompanyProps } from '@/services/types'
@@ -7,35 +7,41 @@ import type { ProColumns } from '@ant-design/pro-table'
 import RequiredTilte from '@/components/RequiredLabel'
 import DictSelect from '@/components/ComSelect'
 import { idTestReg } from '@/utils/reg'
+import { getRelateCompany, getRelateShareholder } from '@/services'
 
 // 关联信息
 const RelatedDetail = ({ creditParams }: any, ref: any) => {
-  const [dataSource, setDataSource] = useState<shareholderProps[]>([
-    // {
-    //   id: 1,
-    //   shareholderName: '测试人员',
-    //   identityType: 'dlsfz',
-    //   identityNumber: '365896188801252356',
-    //   shareProportion: '10',
-    // },
-  ])
+  const [dataSource, setDataSource] = useState<shareholderProps[]>([])
   const [editableKeys, setEditableRowKeys] = useState<any[]>([])
   const [editableKeys2, setEditableRowKeys2] = useState<any[]>([])
-  const [dataSource2, setDataSource2] = useState<relateCompanyProps[]>([
-    // {
-    //   id: 1,
-    //   frName: '张三',
-    //   identityType: 'dlsfz',
-    //   identityNumber: '365896188801252356',
-    //   enterpriseName: '吉祥科创',
-    //   companyRegister: '1',
-    //   enterpriseCode: '33333',
-    //   registrationAddress: '深圳',
-    //   remark: '备注',
-    // },
-  ])
+  const [dataSource2, setDataSource2] = useState<relateCompanyProps[]>([])
   const [mpForm] = Form.useForm()
   const [cpForm] = Form.useForm()
+
+  // 下一个节点驳回时,需要查询数据
+  // 获取关联企业
+  const getRlist = async () => {
+    const { rows } = await getRelateCompany(creditParams.enterpriseId)
+    if (rows && rows.length) {
+      setDataSource2(rows)
+      setEditableRowKeys2((item: any) => item.id)
+    }
+  }
+  // 获取关联股东
+  const getShareloaderList = async () => {
+    const { rows } = await getRelateShareholder(creditParams.enterpriseId)
+    if (rows && rows.length) {
+      setDataSource(rows)
+      setEditableRowKeys((item: any) => item.id)
+    }
+  }
+
+  useEffect(() => {
+    if (creditParams.enterpriseId) {
+      getShareloaderList()
+      getRlist()
+    }
+  }, [creditParams])
 
   useImperativeHandle(ref, () => ({
     // 暴露给父组件的方法
@@ -48,6 +54,7 @@ const RelatedDetail = ({ creditParams }: any, ref: any) => {
             associatedEnterpriseId: creditParams.enterpriseId,
           }
         })
+        await cpForm.validateFields()
         const businessData = dataSource2.map((item) => {
           return {
             ...item,
