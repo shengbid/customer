@@ -116,7 +116,8 @@ const CompanyInfo: React.FC<infoProps> = ({ infoData, handleUpdate, isDetail = f
       width: '70%',
       ellipsis: true,
       dataIndex: 'typeName',
-      render: (val: any) => (isEmpty(val) ? <>-</> : <ComUpload value={val} isDetail />),
+      render: (val: any, recored: any) =>
+        isEmpty(recored.fileList) ? <>-</> : <ComUpload value={recored.fileList} isDetail />,
     },
   ]
 
@@ -159,10 +160,10 @@ const CompanyInfo: React.FC<infoProps> = ({ infoData, handleUpdate, isDetail = f
           <DictShow dictValue={infoData.businessTypeList} dictkey="cus_zyyw" />
         </DescriptionsItem>
         <DescriptionsItem label="销售产品类型">{infoData.sellProduct}</DescriptionsItem>
-        <DescriptionsItem label="企业债务情况">{infoData.enterpriseDebt}</DescriptionsItem>
         <DescriptionsItem label="申请额度(万元)">
           {transferAmount(infoData.applyQuota)}
         </DescriptionsItem>
+        <DescriptionsItem label="企业债务情况">{infoData.enterpriseDebt}</DescriptionsItem>
       </Descriptions>
       <SimpleProtable
         key="year"
