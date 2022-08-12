@@ -189,7 +189,7 @@ const ProcessDesign: React.FC<{ query: getdetailProps }> = ({ query }) => {
 
   // 部署流程
   const deployBpmn = async () => {
-    await modalForm.validateFields()
+    const data = await modalForm.validateFields()
     setLoading(true)
     let bpmnXml = ''
     // let svgXml = ''
@@ -198,8 +198,8 @@ const ProcessDesign: React.FC<{ query: getdetailProps }> = ({ query }) => {
     })
     const formData = new FormData()
     formData.append('stringBPMN', bpmnXml)
-    formData.append('rwlx', modalForm.getFieldValue('processtype'))
-    // console.log(bpmnXml)
+    formData.append('rwlx', data.processtype)
+    // console.log(formData, data)
     setLoading(false)
     await addProcess(formData)
     message.success('部署成功!')
@@ -360,7 +360,16 @@ const ProcessDesign: React.FC<{ query: getdetailProps }> = ({ query }) => {
         onCancel={() => setIsModalVisible(false)}
       >
         <Form layout="vertical" form={modalForm}>
-          <Form.Item label="流程类型" name="processtype">
+          <Form.Item
+            label="流程类型"
+            name="processtype"
+            rules={[
+              {
+                required: true,
+                message: `请选择流程类型`,
+              },
+            ]}
+          >
             <DictSelect authorword="process_type" />
           </Form.Item>
         </Form>
