@@ -7,9 +7,9 @@ import { getLoanCustomerList, deleteLoanCustomer } from '@/services'
 import DictSelect from '@/components/ComSelect'
 import AddModal from './components/addModal'
 import { useIntl, history } from 'umi'
-import { DeleteOutlined } from '@ant-design/icons'
+// import { DeleteOutlined } from '@ant-design/icons'
 
-const { MenuAddButton, MenuDelteButton } = MenuProTable
+const { MenuAddButton } = MenuProTable
 const { Text, Link } = Typography
 
 const RoleManage: React.FC = () => {
@@ -96,7 +96,7 @@ const RoleManage: React.FC = () => {
       title: intl.formatMessage({
         id: 'pages.table.option',
       }),
-      width: 150,
+      width: 110,
       key: 'option',
       valueType: 'option',
       render: (_, recored) => [
@@ -125,16 +125,14 @@ const RoleManage: React.FC = () => {
         Number(recored.status) === 0 ? (
           <Tooltip key="delete" placement="topLeft" title="该客户已授信或授信审核中无法删除">
             <Text type="secondary">
-              <DeleteOutlined style={{ marginRight: 3 }} />
+              {/* <DeleteOutlined style={{ marginRight: 3 }} /> */}
               删除
             </Text>
           </Tooltip>
         ) : (
-          <MenuDelteButton
-            key="delete"
-            authorword="system:post:remove"
-            onClick={() => delteRecored(recored.id)}
-          />
+          <Link key="delete" onClick={() => delteRecored(recored.id)}>
+            删除
+          </Link>
         ),
       ],
     },
