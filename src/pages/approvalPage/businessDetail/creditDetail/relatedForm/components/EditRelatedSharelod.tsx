@@ -5,8 +5,9 @@ import type { ProColumns } from '@ant-design/pro-table'
 import RequiredTilte from '@/components/RequiredLabel'
 import DictSelect from '@/components/ComSelect'
 import { idTestReg } from '@/utils/reg'
-import { Modal, Form, Button, InputNumber } from 'antd'
+import { Modal, Form, Button, message } from 'antd'
 import { editRelateShareholder } from '@/services'
+import ComInputNumber from '@/components/Input/InputNumber'
 
 interface editProps {
   modalVisible: boolean
@@ -39,6 +40,16 @@ const EditRelatedCompany: React.FC<editProps> = ({
 
   const onSubmit = async () => {
     await tableForm.validateFields()
+    let totalRate = 0
+    dataSource?.forEach((item: any) => {
+      if (item.shareProportion) {
+        totalRate += Number(item.shareProportion)
+      }
+    })
+    if (totalRate > 100) {
+      message.warning('占股比例总和不能超过100')
+      return
+    }
     setConfirmLoading(true)
     try {
       await editRelateShareholder(
@@ -123,7 +134,7 @@ const EditRelatedCompany: React.FC<editProps> = ({
         ],
       },
       renderFormItem: () => {
-        return <InputNumber style={{ width: '100%' }} placeholder="请输入数字" />
+        return <ComInputNumber max={100} />
       },
     },
   ]

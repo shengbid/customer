@@ -2,12 +2,13 @@ import { useImperativeHandle, forwardRef, useState, useEffect } from 'react'
 import CardTitle from '@/components/ComPage/CardTitle'
 import ComEditTable from '@/components/ComProtable/ComEditTable'
 import type { shareholderProps, relateCompanyProps } from '@/services/types'
-import { Form, InputNumber } from 'antd'
+import { Form } from 'antd'
 import type { ProColumns } from '@ant-design/pro-table'
 import RequiredTilte from '@/components/RequiredLabel'
 import DictSelect from '@/components/ComSelect'
 import { idTestReg } from '@/utils/reg'
 import { getRelateCompany, getRelateShareholder } from '@/services'
+import ComInputNumber from '@/components/Input/InputNumber'
 
 // 关联信息
 const RelatedDetail = ({ creditParams }: any, ref: any) => {
@@ -46,8 +47,19 @@ const RelatedDetail = ({ creditParams }: any, ref: any) => {
   useImperativeHandle(ref, () => ({
     // 暴露给父组件的方法
     getBusinessData: async () => {
+      let errors = ''
       try {
         await mpForm.validateFields()
+        let totalRate = 0
+        dataSource?.forEach((item: any) => {
+          if (item.shareProportion) {
+            totalRate += Number(item.shareProportion)
+          }
+        })
+        if (totalRate > 100) {
+          errors = '关联股东信息: 占股比例总和不能超过100!'
+          throw new Error('占股比例总和不能超过100')
+        }
         const cusRelatedShareholderReqList = dataSource.map((item) => {
           return {
             ...item,
@@ -68,7 +80,7 @@ const RelatedDetail = ({ creditParams }: any, ref: any) => {
           },
         }
       } catch (error) {
-        return ''
+        return errors ? { error: errors } : ''
       }
     },
   }))
@@ -137,9 +149,7 @@ const RelatedDetail = ({ creditParams }: any, ref: any) => {
           },
         ],
       },
-      renderFormItem: () => {
-        return <InputNumber style={{ width: '100%' }} placeholder="请输入数字" />
-      },
+      renderFormItem: () => <ComInputNumber max={100} />,
     },
   ]
 

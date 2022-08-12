@@ -74,8 +74,8 @@ const ApprovalPage: React.FC = (props: any) => {
       approvalDomRef?.current.getBusinessData
     ) {
       const data = await approvalDomRef?.current?.getBusinessData()
-      if (!data) {
-        message.warning('请填写完成表单信息!')
+      if (!data || data.error) {
+        message.warning(data.error ? data.error : '请填写完成表单信息!')
         return
       }
       if (data.attatchmentDatas) {
@@ -83,8 +83,7 @@ const ApprovalPage: React.FC = (props: any) => {
       } else if (data.businessData) {
         businessData = data.businessData
       }
-      console.log(attatchmentDatas, businessData)
-      // await addSurveyReport(businessData)
+      // console.log(attatchmentDatas, businessData, data)
     }
     // return
     setConfirmLoading(true)
