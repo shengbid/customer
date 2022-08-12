@@ -75,7 +75,7 @@ const ApprovalDom: React.FC<approvalDomProps> = ({
     credit7: <ComCard title="审核信息">{/* <SignContract ref={approvalDomRef} /> */}</ComCard>,
   }
 
-  return <>{approvalDom[formName]}</>
+  return approvalDom[formName]
 }
 
 export default ApprovalDom

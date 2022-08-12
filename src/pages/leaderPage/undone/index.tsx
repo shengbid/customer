@@ -102,11 +102,11 @@ const Undone: React.FC = () => {
             history.push({
               pathname: '/leaderPage/undone/approval',
               query: {
-                id: recored.id,
-                businessKey: recored.businessKey,
-                taskNodeName: recored.name,
-                instanceId: recored.instanceId,
-                formKey: recored.formKey,
+                // id: recored.id,
+                // businessKey: recored.businessKey,
+                // taskNodeName: recored.name,
+                taskNumber: recored.instanceId,
+                // formKey: recored.formKey,
                 title: recored.taskTotalName,
               },
             })
@@ -186,12 +186,13 @@ const Undone: React.FC = () => {
               pathname: '/leaderPage/undone/approval',
               query: {
                 detail: 'detail',
-                id: recored.id,
-                businessKey: recored.businessKey,
-                taskNodeName: recored.taskNodeName,
-                instanceId: recored.instanceId,
-                formKey: recored.formKey,
+                // id: recored.id,
+                // businessKey: recored.businessKey,
+                // taskNodeName: recored.taskNodeName,
+                // instanceId: recored.instanceId,
+                // formKey: recored.formKey,
                 title: recored.taskTotalName,
+                taskNumber: recored.instanceId,
               },
             })
             sessionStorage.setItem('preUrl', '/leaderPage/undone')
