@@ -42,7 +42,7 @@ const SignPerson: React.FC = () => {
       >
         <Descriptions>
           <DescriptionsItem label="姓名">{infoData.fullName}</DescriptionsItem>
-          <DescriptionsItem label="邮箱">{infoData}</DescriptionsItem>
+          <DescriptionsItem label="邮箱">{infoData.email}</DescriptionsItem>
           <DescriptionsItem label="手机号">
             <DictShow dictValue={infoData.phoneArea} dictkey="phone_code" />
             {infoData.phoneNumber}

@@ -5,11 +5,11 @@ import SimpleProtable from '@/components/ComProtable/SimpleProTable'
 import CardTitle from '@/components/ComPage/CardTitle'
 import EditCompanyFile from './editComponents/editCompanyFile'
 import EditCompanyBus from './editComponents/editCompanyBus'
-import EditCompany from './editComponents/editCompany'
-import { formatEmpty, transferAmount } from '@/utils/base'
+import { transferAmount } from '@/utils/base'
 import ComUpload from '@/components/ComUpload'
 import { isEmpty } from 'lodash'
 import DictShow from '@/components/ComSelect/dictShow'
+import CompanyBasicInfo from './companyBasicInfo'
 
 const { DescriptionsItem } = Descriptions
 
@@ -21,7 +21,6 @@ interface infoProps {
 // 企业基础信息
 const CompanyInfo: React.FC<infoProps> = ({ infoData, handleUpdate, isDetail = false }) => {
   const [infoVisible, setInfoVisible] = useState<boolean>(false)
-  const [companyVisible, setComapnyVisible] = useState<boolean>(false)
   const [fileVisible, setFileVisible] = useState<boolean>(false)
   const [companyData, setCompanyData] = useState<any>({})
   const [tableData, setTableData] = useState<any>([])
@@ -124,27 +123,9 @@ const CompanyInfo: React.FC<infoProps> = ({ infoData, handleUpdate, isDetail = f
   const style = { marginTop: 24 }
   return (
     <>
-      <Descriptions
-        title="企业基础信息"
-        extra={
-          !isDetail && (
-            <Button type="primary" onClick={() => setComapnyVisible(true)}>
-              编辑
-            </Button>
-          )
-        }
-      >
-        <DescriptionsItem label="企业名称">{companyData.fullName}</DescriptionsItem>
-        <DescriptionsItem label="企业注册所在地区">
-          <DictShow dictValue={companyData.registerAddr} dictkey="company_register" />
-        </DescriptionsItem>
-        <DescriptionsItem label="企业编号（注册编号\社会信用代码）">
-          {formatEmpty(companyData.enterpriseNumber)}
-        </DescriptionsItem>
-        <DescriptionsItem label="注册地址">
-          {formatEmpty(companyData.registerDetails)}
-        </DescriptionsItem>
-      </Descriptions>
+      {/* 企业基础信息 */}
+      <CompanyBasicInfo infoData={companyData} isDetail={isDetail} handleUpdate={handleUpdate} />
+
       <Descriptions
         style={style}
         title="企业经营信息"
@@ -183,18 +164,6 @@ const CompanyInfo: React.FC<infoProps> = ({ infoData, handleUpdate, isDetail = f
       >
         <SimpleProtable key="id" columns={columns2} isPagination={false} dataSource={tableData} />
       </CardTitle>
-
-      {/* 修改企业信息 */}
-      <EditCompany
-        info={companyData.id}
-        modalVisible={companyVisible}
-        handleCancel={(val: any) => {
-          setComapnyVisible(false)
-          if (val === 1) {
-            handleUpdate()
-          }
-        }}
-      />
 
       {/* 修改企业经营信息 */}
       <EditCompanyBus
