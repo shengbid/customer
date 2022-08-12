@@ -2,11 +2,12 @@ import MenuProTable from '@/components/ComProtable/MenuProTable'
 import type { undoneListProps, undoneListParamProps, doneListProps } from '@/services/types'
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import { Typography, Tabs, Badge } from 'antd'
-import { getUndoneList, getdoneList } from '@/services'
+import { searchdoneList, searchUndoneList } from '@/services'
 import React, { useState, useRef } from 'react'
 // import { StatisticCard } from '@ant-design/pro-card'
 import { useIntl, history } from 'umi'
 import AddModal from './components/addModal'
+import DictSelect from '@/components/ComSelect'
 // import { FileImageOutlined } from '@ant-design/icons'
 const { TabPane } = Tabs
 // const { Divider } = StatisticCard
@@ -20,10 +21,12 @@ const Undone: React.FC = () => {
   const [info, setInfo] = useState<any>()
   const [dbCount, setdbCount] = useState<number>(0)
   const [ybCount] = useState<number>(0)
+  const [processTypes, setProcessTypes] = useState<any[]>([])
 
   const getList = async (param: undoneListParamProps) => {
     // console.log(param)
-    const { rows, total } = await getUndoneList(param)
+    // const { rows, total } = await getUndoneList(param)
+    const { rows, total } = await searchUndoneList(param)
     setdbCount(total)
     return {
       data: rows,
@@ -33,7 +36,8 @@ const Undone: React.FC = () => {
   // 获取已办列表
   const getdoList = async (param: undoneListParamProps) => {
     // console.log(param)
-    const { rows, total } = await getdoneList(param)
+    // const { rows, total } = await getdoneList(param)
+    const { rows, total } = await searchdoneList(param)
     // setybCount(total)
     return {
       data: rows,
@@ -44,32 +48,34 @@ const Undone: React.FC = () => {
   const columns: ProColumns<undoneListProps>[] = [
     {
       title: '任务编号',
-      dataIndex: 'id',
+      dataIndex: 'processNo',
     },
     {
       title: '任务类型',
-      dataIndex: 'instanceName',
+      dataIndex: 'rwlx',
       hideInSearch: true,
+      render: (_, recored) => <>{processTypes[recored.rwlx]}</>,
     },
     {
       title: '任务名称',
-      dataIndex: 'name',
-      render: (_, recored) => (
-        <span>
-          {recored.instanceName}-{recored.name}
-        </span>
-      ),
+      dataIndex: 'taskTotalName',
     },
     {
       title: '任务类型',
-      key: 'status',
-      dataIndex: 'status',
+      key: 'rwlx',
+      dataIndex: 'rwlx',
       hideInTable: true,
+      renderFormItem: (_, { type }) => {
+        if (type === 'form') {
+          return null
+        }
+        return <DictSelect getDictData={setProcessTypes} authorword="process_type" />
+      },
     },
     {
       title: '发起人',
-      key: 'deploymentTime',
-      dataIndex: 'deploymentTime',
+      key: 'fqrNickname',
+      dataIndex: 'fqrNickname',
       hideInSearch: true,
     },
     {
@@ -101,6 +107,7 @@ const Undone: React.FC = () => {
                 taskNodeName: recored.name,
                 instanceId: recored.instanceId,
                 formKey: recored.formKey,
+                title: recored.taskTotalName,
               },
             })
             sessionStorage.setItem('preUrl', '/leaderPage/undone')
@@ -116,32 +123,34 @@ const Undone: React.FC = () => {
   const columns2: ProColumns<doneListProps>[] = [
     {
       title: '任务编号',
-      dataIndex: 'taskId',
+      dataIndex: 'processNo',
     },
     {
       title: '任务类型',
-      dataIndex: 'processDefinitionName',
+      dataIndex: 'rwlx',
       hideInSearch: true,
+      render: (_, recored) => <>{processTypes[recored.rwlx]}</>,
     },
     {
       title: '任务名称',
-      dataIndex: 'name',
-      render: (_, recored) => (
-        <span>
-          {recored.processDefinitionName}-{recored.taskNodeName}
-        </span>
-      ),
+      dataIndex: 'taskTotalName',
     },
     {
       title: '任务类型',
-      key: 'processDefinitionName',
-      dataIndex: 'processDefinitionName',
+      key: 'rwlx',
+      dataIndex: 'rwlx',
       hideInTable: true,
+      renderFormItem: (_, { type }) => {
+        if (type === 'form') {
+          return null
+        }
+        return <DictSelect authorword="process_type" />
+      },
     },
     {
       title: '发起人',
-      key: 'createBy',
-      dataIndex: 'createBy',
+      key: 'fqrNickname',
+      dataIndex: 'fqrNickname',
       hideInSearch: true,
     },
     {
@@ -182,6 +191,7 @@ const Undone: React.FC = () => {
                 taskNodeName: recored.taskNodeName,
                 instanceId: recored.instanceId,
                 formKey: recored.formKey,
+                title: recored.taskTotalName,
               },
             })
             sessionStorage.setItem('preUrl', '/leaderPage/undone')

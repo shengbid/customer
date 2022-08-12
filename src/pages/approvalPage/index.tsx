@@ -27,7 +27,7 @@ const ApprovalPage: React.FC = (props: any) => {
   const approvalDomRef: MutableRefObject<any> = useRef({})
 
   const { query } = props.location
-  const { id, businessKey, taskNodeName, instanceId, formKey = 'credit1', detail } = query
+  const { id, businessKey, taskNodeName, instanceId, formKey = 'credit1', detail, title } = query
   // 审核历史
   const DetailDom = (
     <CreditApproval
@@ -111,7 +111,7 @@ const ApprovalPage: React.FC = (props: any) => {
     <div className={styles.container}>
       <div className={styles.header}>
         <ComDescriptions
-          title={`${infoData.enterpriseName}-授信申请-${taskNodeName}`}
+          title={title}
           extra={
             <Button
               type="primary"

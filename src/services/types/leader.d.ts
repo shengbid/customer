@@ -2,9 +2,11 @@ import type { pageLimitProps } from './base'
 // 待办
 export interface undoneListProps {
   id: string
+  processNo: string
+  rwlx: string
   businessKey: string
-  instanceName: string // name
-  name: string
+  name: string // name
+  taskTotalName: string
   status: string //
   instanceId: string
   formkey: string
@@ -12,7 +14,9 @@ export interface undoneListProps {
   formKey: string
 }
 export interface undoneListParamProps extends pageLimitProps {
-  instanceName: string // name
+  rwlx: any
+  processNo: string
+  taskTotalName: string // name
 }
 // 已办
 export interface doneListProps {
@@ -20,6 +24,7 @@ export interface doneListProps {
   businessKey: string
   taskId: string
   rwlx: string
+  processNo: string
   taskTotalName: string
   taskNodeName: string // name
   fqrNickname: string
@@ -30,9 +35,9 @@ export interface doneListProps {
   formKey: string
 }
 export interface doneListParamProps extends pageLimitProps {
-  instanceName: string // name
-  taskId: string
-  processDefinitionName: string
+  rwlx: any
+  processNo: string
+  taskTotalName: string // name
 }
 
 export interface leaveListProps {
