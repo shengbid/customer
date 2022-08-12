@@ -130,6 +130,7 @@ const CreditManage: React.FC = () => {
                 taskNodeName: data.name,
                 instanceId: data.instanceId,
                 formKey: data.formKey,
+                title: `${recored.enterpriseCreditName}-授信审核-${data.name}`,
               },
             })
             sessionStorage.setItem('preUrl', '/creditLoanManage/creditManage')

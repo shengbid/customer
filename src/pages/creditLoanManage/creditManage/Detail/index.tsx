@@ -59,6 +59,7 @@ const Detail: React.FC = (props: any) => {
                 instanceId: data.instanceId,
                 formKey: data.formKey,
                 detail: 'detail',
+                title: `${companyName}-授信审核-${data.name}`,
               },
             })
             // console.log(props.location)
