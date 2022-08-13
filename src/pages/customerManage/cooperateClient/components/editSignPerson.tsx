@@ -72,7 +72,7 @@ const EditSignPerson: React.FC<personProps> = ({ modalVisible, infoData, handleC
         </Form.Item>
 
         <Form.Item
-          name="duty"
+          name="email"
           label="邮箱"
           rules={[
             {
