@@ -4,6 +4,7 @@ import { Button } from 'antd'
 import { history } from 'umi'
 import CooperateClient from '../components/CooperateClient'
 import CreditBasic from '../components/CreditBasic'
+import CreditInfo from '../CreditInfo'
 
 const Detail: React.FC = (props: any) => {
   const [activeKey, setActiveKey] = useState<string>('1')
@@ -35,6 +36,7 @@ const Detail: React.FC = (props: any) => {
       onTabClick={setActiveKey}
     >
       {activeKey === '1' ? <CreditBasic companyId={enterpriseId} /> : null}
+      {activeKey === '2' ? <CreditInfo enterpriseId={enterpriseId} /> : null}
       {activeKey === '7' ? <CooperateClient /> : null}
     </ComPageContanier>
   )

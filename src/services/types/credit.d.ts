@@ -97,6 +97,6 @@ export interface signContractProps {
 }
 // 获取尽调报告参数
 export interface surveyParamProps {
-  infoId: number | string
+  infoId?: number | string
   enterpriseId: number | string
 }
