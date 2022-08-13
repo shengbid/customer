@@ -95,6 +95,23 @@ export default [
         ],
       },
       {
+        path: '/basicManage/warehouseManage',
+        name: '仓储管理',
+        access: 'hasMenu',
+        routes: [
+          {
+            path: '/basicManage/warehouseManage',
+            redirect: '/basicManage/warehouseManage/warehouse',
+          },
+          {
+            path: '/basicManage/warehouseManage/warehouse',
+            name: '仓储管理',
+            access: 'hasMenu',
+            component: './basicManage/warehouseManage/warehouse',
+          },
+        ],
+      },
+      {
         path: '/basicManage/contractManage',
         name: '合同管理',
         access: 'hasMenu',
