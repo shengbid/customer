@@ -19,10 +19,16 @@ export async function editCeditQutoStatus(data: { id: number; quotaStatus: strin
   })
 }
 
-// 获取授信详情
+// 根据任务编号获取授信详情
 export async function getCreditDetail(taskNumber: string) {
   return request<{ data: any }>(`${Url}/get/task/details`, {
     params: { taskNumber },
+  })
+}
+// 根据企业id获取授信详情
+export async function getCreditDetailById(enterpriseId: string) {
+  return request<{ data: any }>(`${Url}/get/credit/details`, {
+    params: { enterpriseId },
   })
 }
 
