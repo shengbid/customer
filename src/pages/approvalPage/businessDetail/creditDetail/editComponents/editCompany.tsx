@@ -1,18 +1,26 @@
 import React, { useState, useEffect } from 'react'
 import { Modal, Button, Form, Input, Row, Col, message } from 'antd'
-import { editCompany, getCompanyDetail } from '@/services'
+import { editCompany, getCompanyDetail, editCooperateBasic } from '@/services'
 import DictSelect from '@/components/ComSelect'
 
 interface compnayProps {
   info: string
   modalVisible: boolean
   handleCancel: (val?: any) => void
+  infoData?: any // 合作企业编辑使用详情数据
+  type?: number // 1合作企业
 }
-const EditCompany: React.FC<compnayProps> = ({ info, modalVisible, handleCancel }) => {
+const EditCompany: React.FC<compnayProps> = ({
+  info,
+  modalVisible,
+  handleCancel,
+  infoData,
+  type,
+}) => {
   const [form] = Form.useForm()
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
 
-  // 获取企业信息
+  // 获取借款企业信息
   const getDetail = async () => {
     const { data } = await getCompanyDetail(Number(info))
     form.setFieldsValue(data)
@@ -20,13 +28,29 @@ const EditCompany: React.FC<compnayProps> = ({ info, modalVisible, handleCancel 
 
   useEffect(() => {
     if (modalVisible) {
-      getDetail()
+      if (type === 1) {
+        if (infoData && infoData.id) {
+          form.setFieldsValue(infoData)
+        }
+      } else {
+        getDetail()
+      }
     }
-  }, [modalVisible])
+  }, [modalVisible, infoData])
 
   // 提交
   const handleOk = async (values: any) => {
-    await editCompany(values)
+    setConfirmLoading(true)
+    try {
+      if (type === 1) {
+        await editCooperateBasic(values)
+      } else {
+        await editCompany(values)
+      }
+    } catch (error) {
+      setConfirmLoading(false)
+      return
+    }
     setConfirmLoading(false)
     message.success('修改成功')
     handleCancel(1)

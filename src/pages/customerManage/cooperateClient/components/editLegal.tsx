@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from 'react'
-import { Modal, Form, Input, Button, message } from 'antd'
+import { Modal, Form, Input, Button } from 'antd'
 import { useIntl } from 'umi'
-import PhoneInput from '@/components/Input/phoneInput'
-import ComUpload from '@/components/ComUpload'
-import { editCooperateSigner } from '@/services'
-import { emailReg } from '@/utils/reg'
+import { idReg } from '@/utils/reg'
+import DictSelect from '@/components/ComSelect'
+import { editCooperateLegal } from '@/services'
 
 interface personProps {
   modalVisible: boolean
   infoData: any
   handleCancel: (val?: number) => void
-  type?: number // 1合作企业 2借款企业
 }
 
-// 编辑签约经办人信息
-const EditSignPerson: React.FC<personProps> = ({ modalVisible, infoData, handleCancel, type }) => {
+// 编辑企业法人信息
+const EditSignPerson: React.FC<personProps> = ({ modalVisible, infoData, handleCancel }) => {
   const intl = useIntl()
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
   const [form] = Form.useForm()
+  const [idType, setIdTyp] = useState<string>('dlsfz')
 
   useEffect(() => {
     if (modalVisible && infoData && infoData.id) {
@@ -28,28 +27,20 @@ const EditSignPerson: React.FC<personProps> = ({ modalVisible, infoData, handleC
   // 修改
   const handleOk = async (values: any) => {
     console.log(values)
-    setConfirmLoading(true)
     try {
-      if (type === 1) {
-        await editCooperateSigner({
-          ...values,
-          fileName: values.files[0].fileName,
-          fileUrl: values.files[0].fileUrl,
-        })
-      } else {
-      }
+      setConfirmLoading(true)
+      await editCooperateLegal(values)
     } catch (error) {
       setConfirmLoading(false)
       return
     }
     setConfirmLoading(false)
-    message.success('修改成功!')
     handleCancel(1)
   }
 
   return (
     <Modal
-      title="修改签约经办人"
+      title="修改企业相关人员信息"
       maskClosable={false}
       destroyOnClose
       width={800}
@@ -62,7 +53,7 @@ const EditSignPerson: React.FC<personProps> = ({ modalVisible, infoData, handleC
       <Form
         name="basic"
         layout="vertical"
-        initialValues={{ phoneArea: '1' }}
+        initialValues={{ identityType: 'dlsfz' }}
         form={form}
         autoComplete="off"
         scrollToFirstError
@@ -72,14 +63,14 @@ const EditSignPerson: React.FC<personProps> = ({ modalVisible, infoData, handleC
           <Input />
         </Form.Item>
         <Form.Item
-          name="name"
-          label="姓名"
+          name="frName"
+          label="法人/董事姓名"
           rules={[
             {
               required: true,
               message: `${intl.formatMessage({
                 id: 'pages.form.input',
-              })}姓名`,
+              })}法人/董事姓名姓名`,
             },
           ]}
         >
@@ -87,34 +78,36 @@ const EditSignPerson: React.FC<personProps> = ({ modalVisible, infoData, handleC
         </Form.Item>
 
         <Form.Item
-          name="email"
-          label="邮箱"
+          name="identityType"
+          label="身份证件类型"
+          rules={[
+            {
+              required: true,
+              message: `请选择身份证件类型`,
+            },
+          ]}
+        >
+          <DictSelect
+            allowClear={false}
+            authorword="cus_sfzlx"
+            onChange={(val: string) => setIdTyp(val)}
+          />
+        </Form.Item>
+
+        <Form.Item
+          name="identityNumber"
+          label="证件号码"
           rules={[
             {
               required: true,
               message: `${intl.formatMessage({
                 id: 'pages.form.input',
-              })}邮箱`,
+              })}证件号码`,
             },
-            emailReg,
+            idReg[idType],
           ]}
         >
           <Input maxLength={50} />
-        </Form.Item>
-
-        <PhoneInput initType={infoData.phoneArea} />
-
-        <Form.Item
-          name="files"
-          label="授权书"
-          rules={[
-            {
-              required: true,
-              message: `请上传授权书`,
-            },
-          ]}
-        >
-          <ComUpload limit={1} />
         </Form.Item>
 
         <div className="modal-btns">

@@ -16,7 +16,8 @@ export * from './sys/template' // 模板管理
 
 export * from './docusin/index' // docusign
 export * from './sys/process' // 流程管理
-export * from './customer/loan' // 客户管理
+export * from './customer/loan' // 借款客户管理
+export * from './customer/coopreate' // 合作企业管理
 export * from './customer/menu' // 客户菜单管理
 export * from './leader/task' // 流程任务管理
 export * from './leader/undone' // 待办管理

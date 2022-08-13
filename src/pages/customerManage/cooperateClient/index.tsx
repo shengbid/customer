@@ -3,7 +3,7 @@ import MenuProTable from '@/components/ComProtable/MenuProTable'
 import type { cooperateListProps, cooperateListParamProps } from '@/services/types'
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import { message, Typography } from 'antd'
-import { getLoanCustomerList, deleteLoanCustomer } from '@/services'
+import { getCooperateCustomerList, deleteCooperateCustomer } from '@/services'
 import DictSelect from '@/components/ComSelect'
 import AddModal from './components/addModal'
 import { useIntl, history } from 'umi'
@@ -20,7 +20,7 @@ const RoleManage: React.FC = () => {
 
   // 删除
   const delteRecored = async (ids: number | string) => {
-    await deleteLoanCustomer(ids)
+    await deleteCooperateCustomer(ids)
     message.success(
       intl.formatMessage({
         id: 'pages.form.delete',
@@ -51,7 +51,7 @@ const RoleManage: React.FC = () => {
         }
         return (
           <DictSelect
-            authorword="credit_status"
+            authorword="enterprise_type"
             mode="multiple"
             getDictData={(data: any) => {
               setStatusData(data)
@@ -109,8 +109,7 @@ const RoleManage: React.FC = () => {
   ]
 
   const getList = async (param: cooperateListParamProps) => {
-    console.log(param)
-    const { rows, total } = await getLoanCustomerList(param)
+    const { rows, total } = await getCooperateCustomerList(param)
     return {
       data: rows,
       total,

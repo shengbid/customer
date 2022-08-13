@@ -1,29 +1,31 @@
 import React, { useState, useEffect } from 'react'
-import { getCompanyDetail } from '@/services'
+import { getCooperateBasic, getCooperateLegal } from '@/services'
 import { Button } from 'antd'
 import ComCard from '@/components/ComPage/ComCard'
 import CompanyBasicInfo from '@/pages/approvalPage/businessDetail/creditDetail/companyBasicInfo'
 import Descriptions from '@/components/ComPage/Descriptions'
 import DictShow from '@/components/ComSelect/dictShow'
 import SignPerson from './SignPerson'
+import EditLegal from './editLegal'
 
 const { DescriptionsItem } = Descriptions
 interface basicProps {
-  companyId: number
+  companyId: string
 }
 
 const CreditBasic: React.FC<basicProps> = ({ companyId }) => {
   const [companyData, setCompanyData] = useState<any>({})
   const [legalData, setLegalData] = useState<any>({})
+  const [legalVisible, setlegalVisible] = useState<boolean>(false)
 
   // 获取企业信息
   const getDetail = async () => {
-    const { data } = await getCompanyDetail(companyId)
+    const { data } = await getCooperateBasic(companyId)
     setCompanyData(data)
   }
   // 获取企业相关人员信息
   const getLegalDetail = async () => {
-    const { data } = await getCompanyDetail(companyId)
+    const { data } = await getCooperateLegal(companyId)
     setLegalData(data)
   }
 
@@ -32,28 +34,32 @@ const CreditBasic: React.FC<basicProps> = ({ companyId }) => {
     getLegalDetail()
   }, [])
 
-  const handleUpdate = () => {}
-
-  // 修改企业相关人员信息
-  const editReatePerson = () => {}
+  const handleUpdate = () => {
+    getDetail()
+  }
 
   return (
     <>
       {/* 企业基础信息 */}
       <div style={{ padding: 24, backgroundColor: '#fff' }}>
-        <CompanyBasicInfo infoData={companyData} handleUpdate={handleUpdate} />
+        <CompanyBasicInfo type={1} infoData={companyData} handleUpdate={handleUpdate} />
       </div>
       <ComCard
         style={{ marginTop: 12 }}
         title="企业相关人员信息"
         extra={
-          <Button type="primary" onClick={editReatePerson}>
+          <Button
+            type="primary"
+            onClick={() => {
+              setlegalVisible(true)
+            }}
+          >
             编辑
           </Button>
         }
       >
         <Descriptions>
-          <DescriptionsItem label="法人/董事姓名">{legalData.name}</DescriptionsItem>
+          <DescriptionsItem label="法人/董事姓名">{legalData.frName}</DescriptionsItem>
           <DescriptionsItem label="身份证件类型">
             <DictShow dictValue={legalData.identityType} dictkey="cus_sfzlx" />
           </DescriptionsItem>
@@ -61,7 +67,19 @@ const CreditBasic: React.FC<basicProps> = ({ companyId }) => {
         </Descriptions>
       </ComCard>
       {/* 签约经办人 */}
-      <SignPerson />
+      <SignPerson type={1} companyId={companyId} />
+
+      {/* 修改法人 */}
+      <EditLegal
+        modalVisible={legalVisible}
+        infoData={legalData}
+        handleCancel={(val?: number) => {
+          if (val) {
+            getLegalDetail()
+          }
+          setlegalVisible(false)
+        }}
+      />
     </>
   )
 }

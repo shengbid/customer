@@ -10,17 +10,6 @@ interface basicProps {
 }
 
 const CreditBasic: React.FC<basicProps> = ({ companyId }) => {
-  // const [infoData, setInfoData] = useState<any>({})
-
-  // const getDetail = async () => {
-  //   const { data } = await getCreditDetailById(companyId)
-  //   setInfoData(data)
-  // }
-
-  // useEffect(() => {
-  //   getDetail()
-  // }, [])
-
   return (
     <>
       <ComCard style={{ marginTop: 12 }} title="基础信息">
@@ -30,7 +19,7 @@ const CreditBasic: React.FC<basicProps> = ({ companyId }) => {
         <RealteDetail isEdit={true} creditParams={{ enterpriseId: companyId }} />
       </ComCard>
       {/* 签约经办人 */}
-      <SignPerson />
+      <SignPerson type={2} companyId={companyId} />
     </>
   )
 }

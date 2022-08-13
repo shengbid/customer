@@ -11,9 +11,15 @@ interface companyProps {
   infoData: any
   isDetail?: boolean
   handleUpdate: () => void
+  type?: number // 1合作企业基础信息 默认借款企业基础信息
 }
 
-const CompanyBasicInfo: React.FC<companyProps> = ({ infoData, handleUpdate, isDetail = false }) => {
+const CompanyBasicInfo: React.FC<companyProps> = ({
+  infoData,
+  handleUpdate,
+  isDetail = false,
+  type,
+}) => {
   const [companyVisible, setComapnyVisible] = useState<boolean>(false)
   const [companyData, setCompanyData] = useState<any>({})
 
@@ -51,6 +57,8 @@ const CompanyBasicInfo: React.FC<companyProps> = ({ infoData, handleUpdate, isDe
       <EditCompany
         info={companyData.id}
         modalVisible={companyVisible}
+        infoData={infoData}
+        type={type}
         handleCancel={(val: any) => {
           setComapnyVisible(false)
           if (val === 1) {

@@ -1,55 +1,32 @@
 import React, { useState } from 'react'
 import { Modal, Button, Form, Input, message, Spin, Row, Col } from 'antd'
 import type { addModalProps } from '@/services/types'
-import { addLoanCustomer } from '@/services'
+import { addCooperateCustomer } from '@/services'
 import DictSelect from '@/components/ComSelect'
 import { useIntl } from 'umi'
 
 const { TextArea } = Input
 
-const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleCancel, info }) => {
+const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleCancel }) => {
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
   const [spinning] = useState<boolean>(false)
   const [form] = Form.useForm()
   const intl = useIntl()
-  const text = info
-    ? intl.formatMessage({
-        id: 'pages.btn.edit',
-      })
-    : intl.formatMessage({
-        id: 'pages.btn.add',
-      })
-
-  // const getDetail = async () => {
-  //   setSpinning(true)
-  //   const { data } = await postDetail(info)
-  //   setSpinning(false)
-  //   if (data) {
-  //     form.setFieldsValue({ ...data })
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   if (modalVisible && info) {
-  //     getDetail()
-  //   }
-  // }, [modalVisible])
 
   const handleOk = async (values: any) => {
     console.log(values)
     setConfirmLoading(true)
     try {
-      await addLoanCustomer(values)
+      await addCooperateCustomer({
+        ...values,
+        enterpriseType: values.enterpriseType.join(','),
+      })
       setConfirmLoading(false)
     } catch (error) {
       setConfirmLoading(false)
       return
     }
-    message.success(
-      `${text}${intl.formatMessage({
-        id: 'pages.form.success',
-      })}`,
-    )
+    message.success(`新增成功`)
     handleSubmit()
     form.resetFields()
   }
@@ -113,7 +90,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
                   },
                 ]}
               >
-                <DictSelect authorword="credit_status" mode="multiple" />
+                <DictSelect authorword="enterprise_type" mode="multiple" />
               </Form.Item>
             </Col>
           </Row>
