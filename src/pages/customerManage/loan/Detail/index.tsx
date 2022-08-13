@@ -37,7 +37,7 @@ const Detail: React.FC = (props: any) => {
     >
       {activeKey === '1' ? <CreditBasic companyId={enterpriseId} /> : null}
       {activeKey === '2' ? <CreditInfo enterpriseId={enterpriseId} /> : null}
-      {activeKey === '7' ? <CooperateClient /> : null}
+      {activeKey === '7' ? <CooperateClient enterpriseId={enterpriseId} /> : null}
     </ComPageContanier>
   )
 }

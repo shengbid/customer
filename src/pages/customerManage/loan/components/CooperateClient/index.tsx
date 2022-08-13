@@ -1,10 +1,17 @@
-import React from 'react'
-import ComCard from '@/components/ComPage/ComCard'
+import React, { useState } from 'react'
+import Logistics from './logistics'
 
-const CooperateClient: React.FC = () => {
+interface infoProps {
+  enterpriseId: string
+}
+
+const CooperateClient: React.FC<infoProps> = ({ enterpriseId }) => {
+  const [tableData] = useState<any[]>([])
+
   return (
     <>
-      <ComCard title="合作客户">5</ComCard>
+      <Logistics infoData={tableData} enterpriseId={enterpriseId} title="物流" />
+      <Logistics infoData={tableData} enterpriseId={enterpriseId} title="仓储" />
     </>
   )
 }
