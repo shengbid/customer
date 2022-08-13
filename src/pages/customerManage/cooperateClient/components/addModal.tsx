@@ -87,7 +87,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
                 label={intl.formatMessage({
                   id: 'customer.loan.register',
                 })}
-                name="registerAddr"
+                name="companyRegister"
                 rules={[
                   {
                     required: true,
@@ -105,7 +105,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
             <Col span={12}>
               <Form.Item
                 label="企业类型"
-                name="companyType"
+                name="enterpriseType"
                 rules={[
                   {
                     required: true,
@@ -164,7 +164,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
             <Col span={12}>
               <Form.Item
                 label="企业编号（注册编号\社会信用代码）"
-                name="enterpriseNumber"
+                name="enterpriseCode"
                 rules={[
                   {
                     required: true,
@@ -180,7 +180,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
             <Col span={12}>
               <Form.Item
                 label="注册地址"
-                name="registerDetails"
+                name="registrationAddress"
                 rules={[
                   {
                     required: true,

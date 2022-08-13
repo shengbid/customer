@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 import MenuProTable from '@/components/ComProtable/MenuProTable'
-import type { customerListProps, customerListParamProps } from '@/services/types'
+import type { cooperateListProps, cooperateListParamProps } from '@/services/types'
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import { message, Typography } from 'antd'
 import { getLoanCustomerList, deleteLoanCustomer } from '@/services'
@@ -29,21 +29,21 @@ const RoleManage: React.FC = () => {
     actionRef.current?.reload()
   }
 
-  const columns: ProColumns<customerListProps>[] = [
+  const columns: ProColumns<cooperateListProps>[] = [
     {
       title: '客户名称',
-      key: 'code',
-      dataIndex: 'code',
-    },
-    {
-      title: '客户简称',
       key: 'fullName',
       dataIndex: 'fullName',
     },
     {
+      title: '客户简称',
+      key: 'shortName',
+      dataIndex: 'shortName',
+    },
+    {
       title: '企业类型',
-      key: 'status',
-      dataIndex: 'status',
+      key: 'enterpriseType',
+      dataIndex: 'enterpriseType',
       hideInTable: true,
       renderFormItem: (_, { type }) => {
         if (type === 'form') {
@@ -62,10 +62,10 @@ const RoleManage: React.FC = () => {
     },
     {
       title: '企业类型',
-      key: 'status',
-      dataIndex: 'status',
+      key: 'enterpriseType',
+      dataIndex: 'enterpriseType',
       hideInSearch: true,
-      render: (_, recored) => statusData[recored.status],
+      render: (_, recored) => statusData[recored.enterpriseType],
     },
     {
       title: '创建时间',
@@ -108,7 +108,7 @@ const RoleManage: React.FC = () => {
     },
   ]
 
-  const getList = async (param: customerListParamProps) => {
+  const getList = async (param: cooperateListParamProps) => {
     console.log(param)
     const { rows, total } = await getLoanCustomerList(param)
     return {
@@ -125,7 +125,7 @@ const RoleManage: React.FC = () => {
 
   return (
     <>
-      <MenuProTable<customerListProps>
+      <MenuProTable<cooperateListProps>
         request={getList}
         rowKey="id"
         columns={columns}

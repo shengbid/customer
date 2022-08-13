@@ -25,3 +25,20 @@ export interface customerDetailProps {
   registerAddr?: string
   phoneArea?: string
 }
+
+// 合作企业查询参数
+export interface cooperateListParamProps extends pageLimitProps {
+  fullName?: string
+  shortName?: string
+  enterpriseType?: string
+}
+
+// 合作企业列表
+export interface cooperateListProps {
+  id: string
+  fullName: string
+  shortName?: string
+  code?: string
+  createTime?: string
+  enterpriseType: string
+}
