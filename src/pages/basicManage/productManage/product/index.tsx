@@ -7,12 +7,15 @@ import { getLoanCustomerList } from '@/services'
 import AddModal from './components/addModal'
 import { useIntl } from 'umi'
 import ImportFile from '@/components/ComUpload/importFile'
+import ImportProduct from './components/importProduct'
 
 const { MenuAddButton } = MenuProTable
 const { Link } = Typography
 
 const ListManage: React.FC = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false)
+  const [importVisible, setImportVisible] = useState<boolean>(false)
+  const [tableData, setTableData] = useState<any[]>([])
   const [id, setId] = useState<any>()
   const intl = useIntl()
   const actionRef = useRef<ActionType>()
@@ -101,6 +104,14 @@ const ListManage: React.FC = () => {
   // 导入成功
   const handleSuccess = () => {
     actionRef?.current?.reload()
+    setImportVisible(true)
+    setTableData([])
+  }
+
+  // 导入新增
+  const submitImport = () => {
+    actionRef?.current?.reload()
+    setImportVisible(false)
   }
 
   return (
@@ -136,6 +147,14 @@ const ListManage: React.FC = () => {
         handleSubmit={submit}
         info={id}
         handleCancel={() => setModalVisible(false)}
+      />
+
+      {/* 批量导入 */}
+      <ImportProduct
+        modalVisible={importVisible}
+        handleSubmit={submitImport}
+        info={tableData}
+        handleCancel={() => setImportVisible(false)}
       />
     </>
   )
