@@ -7,13 +7,16 @@ interface inputProps {
   onChange?: (vals: any) => void
   unit?: number // 单位 1万元 2亿元 无元
   max?: number
+  addonAfter?: any
 }
 
+// 数字输入,带转换
 const ComInputNumber: React.FC<inputProps> = ({
   value,
   onChange = () => {},
   unit,
   max = 99999.99,
+  addonAfter,
 }) => {
   const [val, setVal] = useState<number | string>(value)
   useEffect(() => {
@@ -36,6 +39,7 @@ const ComInputNumber: React.FC<inputProps> = ({
       min={0}
       max={max}
       placeholder="请输入数字"
+      addonAfter={addonAfter}
       formatter={(vals: any) => numToThousandReg(vals)}
       parser={(vals: any) => thousandToNumReg(vals)}
       onChange={(vals) => {
