@@ -35,6 +35,7 @@ const EditSignPerson: React.FC<personProps> = ({ modalVisible, infoData, handleC
           ...values,
           fileName: values.files[0].fileName,
           fileUrl: values.files[0].fileUrl,
+          hzEnterpriseId: infoData.companyId,
         })
       } else {
       }

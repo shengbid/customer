@@ -17,18 +17,28 @@ interface infoProps {
 // 签约经办人
 const SignPerson: React.FC<infoProps> = ({ companyId, type }) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false)
-  const [signerData, setSignerData] = useState<any>({})
+  const [signerData, setSignerData] = useState<any>({ companyId })
 
   // 获取合作企业签约经办人信息
   const getSignerDetail = async () => {
     const { data } = await getCooperateSigner(companyId)
-    setSignerData(data)
+    if (data) {
+      if (data.fileUrl) {
+        data.files = [
+          {
+            fileName: data.fileName,
+            fileUrl: data.fileUrl,
+          },
+        ]
+      }
+      setSignerData(data)
+    }
   }
 
   // 获取借款企业签约经办人信息
   const getSignerDetail2 = async () => {
     const { data } = await getCooperateSigner(companyId)
-    setSignerData(data)
+    if (data) setSignerData(data)
   }
 
   const getDetails = () => {

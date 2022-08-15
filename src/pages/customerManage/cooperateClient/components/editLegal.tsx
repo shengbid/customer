@@ -21,6 +21,7 @@ const EditSignPerson: React.FC<personProps> = ({ modalVisible, infoData, handleC
   useEffect(() => {
     if (modalVisible && infoData && infoData.id) {
       form.setFieldsValue({ ...infoData })
+      if (infoData.identityType) setIdTyp(infoData.identityType)
     }
   }, [modalVisible, infoData])
 
@@ -29,7 +30,10 @@ const EditSignPerson: React.FC<personProps> = ({ modalVisible, infoData, handleC
     console.log(values)
     try {
       setConfirmLoading(true)
-      await editCooperateLegal(values)
+      await editCooperateLegal({
+        ...values,
+        hzEnterpriseId: infoData.hzEnterpriseId,
+      })
     } catch (error) {
       setConfirmLoading(false)
       return

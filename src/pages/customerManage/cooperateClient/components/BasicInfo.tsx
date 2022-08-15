@@ -15,18 +15,22 @@ interface basicProps {
 
 const CreditBasic: React.FC<basicProps> = ({ companyId }) => {
   const [companyData, setCompanyData] = useState<any>({})
-  const [legalData, setLegalData] = useState<any>({})
+  const [legalData, setLegalData] = useState<any>({ hzEnterpriseId: companyId })
   const [legalVisible, setlegalVisible] = useState<boolean>(false)
 
   // 获取企业信息
   const getDetail = async () => {
     const { data } = await getCooperateBasic(companyId)
-    setCompanyData(data)
+    if (data) {
+      setCompanyData(data)
+    }
   }
   // 获取企业相关人员信息
   const getLegalDetail = async () => {
     const { data } = await getCooperateLegal(companyId)
-    setLegalData(data)
+    if (data) {
+      setLegalData(data)
+    }
   }
 
   useEffect(() => {

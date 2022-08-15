@@ -7,6 +7,7 @@ import { getCooperateCustomerList, deleteCooperateCustomer } from '@/services'
 import DictSelect from '@/components/ComSelect'
 import AddModal from './components/addModal'
 import { useIntl, history } from 'umi'
+import DictShow from '@/components/ComSelect/dictShow'
 
 const { MenuAddButton } = MenuProTable
 const { Link } = Typography
@@ -42,8 +43,8 @@ const RoleManage: React.FC = () => {
     },
     {
       title: '企业类型',
-      key: 'enterpriseType',
-      dataIndex: 'enterpriseType',
+      key: 'enterpriseTypes',
+      dataIndex: 'enterpriseTypes',
       hideInTable: true,
       renderFormItem: (_, { type }) => {
         if (type === 'form') {
@@ -53,6 +54,7 @@ const RoleManage: React.FC = () => {
           <DictSelect
             authorword="enterprise_type"
             mode="multiple"
+            dataType="array"
             getDictData={(data: any) => {
               setStatusData(data)
             }}
@@ -65,7 +67,9 @@ const RoleManage: React.FC = () => {
       key: 'enterpriseType',
       dataIndex: 'enterpriseType',
       hideInSearch: true,
-      render: (_, recored) => statusData[recored.enterpriseType],
+      render: (_, recored) => (
+        <DictShow dictValue={recored.enterpriseType.split(',')} dictData={statusData} />
+      ),
     },
     {
       title: '创建时间',
@@ -109,6 +113,9 @@ const RoleManage: React.FC = () => {
   ]
 
   const getList = async (param: cooperateListParamProps) => {
+    if (param.enterpriseTypes) {
+      Reflect.set(param, 'enterpriseType', param.enterpriseTypes.join(','))
+    }
     const { rows, total } = await getCooperateCustomerList(param)
     return {
       data: rows,

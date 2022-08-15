@@ -31,6 +31,7 @@ export interface cooperateListParamProps extends pageLimitProps {
   fullName?: string
   shortName?: string
   enterpriseType?: string
+  enterpriseTypes?: any[]
 }
 
 // 合作企业列表
