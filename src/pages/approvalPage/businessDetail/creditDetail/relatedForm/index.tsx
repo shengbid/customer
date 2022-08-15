@@ -25,7 +25,7 @@ const RelatedDetail = ({ creditParams }: any, ref: any) => {
     const { rows } = await getRelateCompany(creditParams.enterpriseId)
     if (rows && rows.length) {
       setDataSource2(rows)
-      setEditableRowKeys2((item: any) => item.id)
+      setEditableRowKeys2(rows.map((item: any) => item.id))
     }
   }
   // 获取关联股东
@@ -33,7 +33,7 @@ const RelatedDetail = ({ creditParams }: any, ref: any) => {
     const { rows } = await getRelateShareholder(creditParams.enterpriseId)
     if (rows && rows.length) {
       setDataSource(rows)
-      setEditableRowKeys((item: any) => item.id)
+      setEditableRowKeys(rows.map((item: any) => item.id))
     }
   }
 
