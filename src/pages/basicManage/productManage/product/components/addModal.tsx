@@ -2,61 +2,25 @@ import React, { useState, useEffect } from 'react'
 import { Modal, Button, Form, Input, message, Spin, Row, Col } from 'antd'
 import type { addModalProps } from '@/services/types'
 import { addLoanCustomer } from '@/services'
-import DictSelect from '@/components/ComSelect'
+import IntergerInput from '@/components/Input/integerInput'
+import PointInput from '@/components/Input/InputNumber'
 import { useIntl } from 'umi'
-import RequiredLabel from '@/components/RequiredLabel'
-import ComEditTable from '@/components/ComProtable/ComEditTable'
 
 const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleCancel, info }) => {
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
-  const [dataSource, setDataSource] = useState<any[]>([
-    {
-      id: '1',
-    },
-  ])
-  const [editableKeys, setEditableRowKeys] = useState<any[]>(['1'])
   const [spinning] = useState<boolean>(false)
   const [form] = Form.useForm()
-  const [tableForm] = Form.useForm()
-  const [title, setTitle] = useState<string>('新增仓库')
+  const [title, setTitle] = useState<string>('新增商品信息')
+  const [isDetail, setIsDetail] = useState<boolean>(false)
 
   useEffect(() => {
     if (modalVisible && info) {
-      setTitle('修改仓库')
-      setDataSource([])
+      setTitle('修改商品信息')
+      setIsDetail(true)
     }
   }, [modalVisible, info])
 
   const intl = useIntl()
-
-  const columns = [
-    {
-      title: <RequiredLabel label="联系人姓名" />,
-      dataIndex: 'contractName',
-      width: '25%',
-    },
-    {
-      title: <RequiredLabel label="岗位" />,
-      dataIndex: 'contractNo',
-      width: '17%',
-    },
-    {
-      title: '联系电话',
-      dataIndex: 'typeName',
-      width: '17%',
-      editable: false,
-    },
-    {
-      title: <RequiredLabel label="邮箱" />,
-      dataIndex: 'signTime',
-      width: '17%',
-    },
-    {
-      title: <RequiredLabel label="抄送邮箱" />,
-      dataIndex: 'signTime',
-      width: '17%',
-    },
-  ]
 
   const handleOk = async (values: any) => {
     console.log(values)
@@ -97,35 +61,29 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
           autoComplete="off"
           layout="vertical"
         >
-          <h3 style={{ fontWeight: 'bold' }}>
-            {intl.formatMessage({
-              id: 'customer.loan.baseInfo',
-            })}
-          </h3>
-
           <Row gutter={24}>
             <Col span={12}>
               <Form.Item
-                label="仓库名称"
+                label="商品ID"
                 name="name"
                 rules={[
                   {
                     required: true,
-                    message: `请输入仓库名称`,
+                    message: `请输入商品ID`,
                   },
                 ]}
               >
-                <Input maxLength={150} />
+                <Input disabled={isDetail} maxLength={150} />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item
-                label="仓库编号"
+                label="商品名称"
                 name="code"
                 rules={[
                   {
                     required: true,
-                    message: `请输入仓库编号`,
+                    message: `请输入商品名称`,
                   },
                 ]}
               >
@@ -133,72 +91,116 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
               </Form.Item>
             </Col>
           </Row>
-          <Row gutter={24}>
-            <Col span={12}>
-              <Form.Item
-                label="仓库类型"
-                name="type1"
-                rules={[
-                  {
-                    required: true,
-                    message: `请选择仓库类型`,
-                  },
-                ]}
-              >
-                <DictSelect authorword="company_register" />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                label="所属企业"
-                name="type2"
-                rules={[
-                  {
-                    required: true,
-                    message: `请选择所属企业`,
-                  },
-                ]}
-              >
-                <DictSelect authorword="company_register" />
-              </Form.Item>
-            </Col>
-          </Row>
 
           <Row gutter={24}>
-            <Col span={24}>
+            <Col span={12}>
               <Form.Item
-                label="仓库地址"
+                label="商品品牌"
                 name="name"
                 rules={[
                   {
                     required: true,
-                    message: `请输入仓库地址`,
+                    message: `请输入商品品牌`,
                   },
                 ]}
               >
-                <Input maxLength={350} />
+                <Input maxLength={150} />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="商品条码"
+                name="code"
+                rules={[
+                  {
+                    required: true,
+                    message: `请输入商品条码`,
+                  },
+                ]}
+              >
+                <Input maxLength={150} />
               </Form.Item>
             </Col>
           </Row>
 
-          <h3 style={{ fontWeight: 'bold' }}>联系人信息</h3>
+          <Row gutter={24}>
+            <Col span={12}>
+              <Form.Item
+                label="商品REF码"
+                name="name"
+                rules={[
+                  {
+                    required: true,
+                    message: `请输入商品REF码`,
+                  },
+                ]}
+              >
+                <Input maxLength={150} />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="商品HScode"
+                name="code4"
+                rules={[
+                  {
+                    required: true,
+                    message: `请输入商品HScode`,
+                  },
+                ]}
+              >
+                <Input maxLength={150} />
+              </Form.Item>
+            </Col>
+          </Row>
 
-          <ComEditTable<any>
-            rowKey="id"
-            className="nopaddingtable"
-            maxLength={5}
-            columns={columns}
-            value={dataSource}
-            onChange={setDataSource}
-            editable={{
-              form: tableForm,
-              editableKeys,
-              onValuesChange: (record, recordList) => {
-                setDataSource(recordList)
-              },
-              onChange: setEditableRowKeys,
-            }}
-          />
+          <Row gutter={24}>
+            <Col span={12}>
+              <Form.Item
+                label="最近采购价"
+                name="name3"
+                rules={[
+                  {
+                    required: true,
+                    message: `请输入最近采购价`,
+                  },
+                ]}
+              >
+                <PointInput addonAfter={'美元'} />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="公允价"
+                name="code3"
+                rules={[
+                  {
+                    required: true,
+                    message: `请输入公允价`,
+                  },
+                ]}
+              >
+                <PointInput addonAfter={'美元'} />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Row gutter={24}>
+            <Col span={12}>
+              <Form.Item
+                label="保质期"
+                name="date"
+                rules={[
+                  {
+                    required: true,
+                    message: `请输入保质期`,
+                  },
+                ]}
+              >
+                <IntergerInput />
+              </Form.Item>
+            </Col>
+          </Row>
 
           <div className="modal-btns" style={{ marginTop: 24 }}>
             <Button type="primary" htmlType="submit" loading={confirmLoading}>
