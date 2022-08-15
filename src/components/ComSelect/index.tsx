@@ -20,6 +20,7 @@ export interface iconSelectProps {
   disabled?: boolean
   size?: SizeType
   mode?: 'multiple' | 'tags' | undefined
+  dataType?: 'array' // 默认返回对象,传入返回array
 }
 // 数据字典
 const DictSelect: React.FC<iconSelectProps> = (props) => {
@@ -39,6 +40,7 @@ const DictSelect: React.FC<iconSelectProps> = (props) => {
     disabled = false,
     size,
     mode,
+    dataType,
   } = props
 
   const getList = async () => {
@@ -49,7 +51,11 @@ const DictSelect: React.FC<iconSelectProps> = (props) => {
       data.forEach((item) => {
         obj[item.dictValue] = item.dictLabel
       })
-      getDictData(obj)
+      if (dataType) {
+        getDictData(data)
+      } else {
+        getDictData(obj)
+      }
     }
   }
 
