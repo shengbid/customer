@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
-import { Modal, Radio, Upload, message, Button, notification } from 'antd'
-import type { RadioChangeEvent } from 'antd'
+import React, { useState, useEffect } from 'react'
+import { Modal, Upload, message, Button, notification } from 'antd'
+// import type { RadioChangeEvent } from 'antd'
 import { UploadOutlined, VerticalAlignTopOutlined } from '@ant-design/icons'
 import Cookies from 'js-cookie'
 import { loginOut } from '@/utils/base'
@@ -8,17 +8,30 @@ import ExportFile from './exportFile'
 import PermissionButton from '@/components/Permission'
 import { useIntl } from 'umi'
 export interface importFileProps {
-  url: string // 请求地址
+  url: string // 下载请求地址
   title: string // 下载模板名称
   authorword: string // 权限字符
   handleSuccess: () => void
+  actionUrl?: string // 上传地址
 }
 // 导入文件
-const ImportFile: React.FC<importFileProps> = ({ url, title, authorword, handleSuccess }) => {
+const ImportFile: React.FC<importFileProps> = ({
+  url,
+  title,
+  authorword,
+  actionUrl,
+  handleSuccess,
+}) => {
   const [fileVisible, setFileVisible] = useState<boolean>(false)
   const [action, setAction] = useState<string>(
     `${URL_PREFIX}/system/${url}/importData?updateSupport=false`,
   )
+
+  useEffect(() => {
+    if (actionUrl) {
+      setAction(actionUrl)
+    }
+  }, [actionUrl])
 
   const intl = useIntl()
 
@@ -46,16 +59,22 @@ const ImportFile: React.FC<importFileProps> = ({ url, title, authorword, handleS
     }
   }
 
-  const changeSelect = (e: RadioChangeEvent) => {
-    const f = e.target.value === 1
-    setAction(`${URL_PREFIX}/system/${url}/importData?updateSupport=${f}`)
-  }
+  // const changeSelect = (e: RadioChangeEvent) => {
+  //   const f = e.target.value === 1
+  //   setAction(`${URL_PREFIX}/system/${url}/importData?updateSupport=${f}`)
+  // }
   const cancel = () => {
     setFileVisible(false)
   }
 
   const checkFileSize = (file: any) => {
+    // console.log(file)
     const size = file.size / 1024 / 1024
+    const names = ['.xls', '.xlsx']
+    if (!names.includes(file.name)) {
+      message.warn(intl.formatMessage({ id: 'pages.modal.importTit' }))
+      return Upload.LIST_IGNORE
+    }
     if (size > 20) {
       message.warn(intl.formatMessage({ id: 'pages.modal.updateRule' }))
       return Upload.LIST_IGNORE
@@ -89,7 +108,7 @@ const ImportFile: React.FC<importFileProps> = ({ url, title, authorword, handleS
           {intl.formatMessage({ id: 'pages.modal.importTit' })}
           <ExportFile authorword="" title={title} url={url} icon={false} />
         </div>
-        <div style={{ margin: '16px 0' }}>
+        {/* <div style={{ margin: '16px 0' }}>
           <span style={{ marginRight: 10 }}>
             {intl.formatMessage({ id: 'pages.modal.isUpdateData' })}
           </span>
@@ -97,8 +116,8 @@ const ImportFile: React.FC<importFileProps> = ({ url, title, authorword, handleS
             <Radio value={1}>{intl.formatMessage({ id: 'pages.form.yes' })}</Radio>
             <Radio value={2}>{intl.formatMessage({ id: 'pages.form.no' })}</Radio>
           </Radio.Group>
-        </div>
-        <div style={{ marginBottom: 20 }}>
+        </div> */}
+        <div style={{ margin: '20px 0 ' }}>
           <Upload
             action={action}
             accept=".xlsx, .xls"
