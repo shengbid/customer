@@ -85,7 +85,10 @@ const EditCompany: React.FC<compnayProps> = ({
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item label="企业注册所在地区" name="registerAddr">
+            <Form.Item
+              label="企业注册所在地区"
+              name={type === 1 ? 'companyRegister' : 'registerAddr'}
+            >
               <DictSelect authorword="company_register" disabled />
             </Form.Item>
           </Col>
@@ -94,7 +97,7 @@ const EditCompany: React.FC<compnayProps> = ({
           <Col span={12}>
             <Form.Item
               label="企业编号（注册编号\社会信用代码）"
-              name="enterpriseNumber"
+              name={type === 1 ? 'enterpriseCode' : 'enterpriseNumber'}
               rules={[
                 {
                   required: true,
@@ -108,7 +111,7 @@ const EditCompany: React.FC<compnayProps> = ({
           <Col span={12}>
             <Form.Item
               label="注册地址"
-              name="registerDetails"
+              name={type === 1 ? 'registrationAddress' : 'registerDetails'}
               rules={[
                 {
                   required: true,

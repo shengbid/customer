@@ -43,13 +43,16 @@ const CompanyBasicInfo: React.FC<companyProps> = ({
       >
         <DescriptionsItem label="企业名称">{companyData.fullName}</DescriptionsItem>
         <DescriptionsItem label="企业注册所在地区">
-          <DictShow dictValue={companyData.registerAddr} dictkey="company_register" />
+          <DictShow
+            dictValue={type === 1 ? companyData.companyRegister : companyData.registerAddr}
+            dictkey="company_register"
+          />
         </DescriptionsItem>
         <DescriptionsItem label="企业编号（注册编号\社会信用代码）">
-          {formatEmpty(companyData.enterpriseNumber)}
+          {formatEmpty(type === 1 ? companyData.enterpriseCode : companyData.enterpriseNumber)}
         </DescriptionsItem>
         <DescriptionsItem label="注册地址">
-          {formatEmpty(companyData.registerDetails)}
+          {formatEmpty(type === 1 ? companyData.registrationAddress : companyData.registerDetails)}
         </DescriptionsItem>
       </Descriptions>
 
