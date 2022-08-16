@@ -40,14 +40,19 @@ const ApprovalPage: React.FC = (props: any) => {
   }, [])
 
   // 审核历史
-  const DetailDom = (
-    <CreditApproval
-      creditParams={creditParams}
-      formName={activityParams.formKey}
-      id={activityParams.instanceId}
-      businessKey={activityParams.businessKey}
-    />
-  )
+  const DetailDom = () => {
+    if (activityParams.formKey.indexOf('credit') > -1) {
+      return (
+        <CreditApproval
+          creditParams={creditParams}
+          formName={activityParams.formKey}
+          id={activityParams.instanceId}
+          businessKey={activityParams.businessKey}
+        />
+      )
+    }
+    return <></>
+  }
 
   // console.log(detail)
 

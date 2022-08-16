@@ -23,6 +23,7 @@ const CreditApproval: React.FC<creditApprovalprops> = ({
   creditParams,
 }) => {
   const reports = ['credit1', 'credit2', 'credit3', 'credit8']
+
   // const contracts = ['credit1', 'credit2', 'credit3', 'credit4', 'credit5']
   return (
     <Tabs type="card">
