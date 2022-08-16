@@ -16,7 +16,6 @@ const { Panel } = ComCollapse
 const { DescriptionsItem } = ComDescriptions
 
 const ApprovalPage: React.FC = (props: any) => {
-  const [infoData, setInfoData] = useState<any>({})
   const [creditParams, setCreditParams] = useState<surveyParamProps>({
     infoId: '',
     enterpriseId: '',
@@ -48,7 +47,6 @@ const ApprovalPage: React.FC = (props: any) => {
       infoId: data.id,
       enterpriseId: data.enterpriseId,
     })
-    setInfoData(data)
   }
 
   // 获取流程信息
@@ -125,9 +123,9 @@ const ApprovalPage: React.FC = (props: any) => {
             </Button>
           }
         >
-          <DescriptionsItem label="创建时间">{infoData.updateTime}</DescriptionsItem>
-          <DescriptionsItem label="发起人">{infoData.updateBy}</DescriptionsItem>
-          <DescriptionsItem label="流程编号">{activityParams.id}</DescriptionsItem>
+          <DescriptionsItem label="创建时间">{activityParams.createTime}</DescriptionsItem>
+          <DescriptionsItem label="发起人">{activityParams.fqrNickname}</DescriptionsItem>
+          <DescriptionsItem label="流程编号">{activityParams.processNo}</DescriptionsItem>
         </ComDescriptions>
       </div>
       {/* 详情与审批历史 */}
