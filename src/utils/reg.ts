@@ -56,6 +56,14 @@ export const idTestReg = (value: string) => {
     hz: REGS.ID_PASSPORT.test(value),
   }
 }
+export const phoneTestReg = (value: string) => {
+  return {
+    1: REGS.TELEPHONE_REG.test(value),
+    2: REGS.TELEPHONE_HK_REG.test(value),
+    3: REGS.TELEPHONE_HK_REG.test(value),
+    4: REGS.TELEPHONE_KOREA_REG.test(value),
+  }
+}
 
 // 数字正则的验证
 export const numReg = {

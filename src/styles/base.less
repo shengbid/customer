@@ -46,3 +46,16 @@
     }
   }
 }
+
+// 可编辑表格,一列有多个输入框样式
+.nopaddingtable .ant-table .ant-table-container {
+  .edittablecolleft {
+    padding-right: 0;
+    &::before {
+      width: 0 !important;
+    }
+  }
+  .edittablecolright {
+    padding-left: 0;
+  }
+}
