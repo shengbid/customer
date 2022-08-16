@@ -65,6 +65,31 @@ export default [
         name: '授信管理详情',
         component: './creditLoanManage/creditManage/Detail',
       },
+      {
+        path: '/creditLoanManage/inventoryManage',
+        name: '库存管理',
+        access: 'hasMenu',
+        routes: [
+          {
+            path: '/creditLoanManage/inventoryManage/search',
+            name: '库存查询',
+            access: 'hasMenu',
+            component: './creditLoanManage/inventoryManage/search',
+          },
+          {
+            path: '/creditLoanManage/inventoryManage/enter',
+            name: '入库管理',
+            access: 'hasMenu',
+            component: './creditLoanManage/inventoryManage/enter',
+          },
+          {
+            path: '/creditLoanManage/inventoryManage/delivery',
+            name: '出库管理',
+            access: 'hasMenu',
+            component: './creditLoanManage/inventoryManage/delivery',
+          },
+        ],
+      },
     ],
   },
   {
