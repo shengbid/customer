@@ -10,6 +10,7 @@ import { approvalSave, getProcessIds, getCreditDetail, getActivityParams } from 
 import BusinessDetail from './businessDetail'
 import ApprovalDom from './components/approvalDom'
 import type { surveyParamProps } from '@/services/types'
+import { omit } from 'lodash'
 
 const { Panel } = ComCollapse
 
@@ -92,7 +93,7 @@ const ApprovalPage: React.FC = (props: any) => {
     try {
       await approvalSave(activityParams.id, {
         ...values,
-        ...activityParams,
+        ...omit(activityParams, ['createdDate', 'createTime']),
         attatchmentDatas,
         businessData,
       })
