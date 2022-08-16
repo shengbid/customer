@@ -194,10 +194,26 @@ const ListManage: React.FC = () => {
         >
           转在仓
         </Link>,
-        <Link key="edit3" onClick={() => {}}>
+        <Link
+          key="edit3"
+          onClick={() => {
+            setModalVisible(true)
+          }}
+        >
           质押
         </Link>,
-        <Link key="detail" onClick={() => {}}>
+        <Link
+          key="detail"
+          onClick={() =>
+            history.push({
+              pathname: '/creditLoanManage/inventoryManage/enter/detail',
+              query: {
+                id: recored.id,
+                type: '3',
+              },
+            })
+          }
+        >
           查看
         </Link>,
         <Popconfirm
