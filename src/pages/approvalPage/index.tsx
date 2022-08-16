@@ -88,12 +88,13 @@ const ApprovalPage: React.FC = (props: any) => {
       }
       // console.log(attatchmentDatas, businessData, data)
     }
+
     // return
     setConfirmLoading(true)
     try {
       await approvalSave(activityParams.id, {
         ...values,
-        ...omit(activityParams, ['createdDate', 'createTime']),
+        ...omit(activityParams, ['createdDate', 'createTime', 'id']),
         attatchmentDatas,
         businessData,
       })
