@@ -83,6 +83,12 @@ export default [
             component: './creditLoanManage/inventoryManage/enter',
           },
           {
+            path: '/creditLoanManage/inventoryManage/enter/detail',
+            name: '入库管理详情',
+            // access: 'hasMenu',
+            component: './creditLoanManage/inventoryManage/enter/Detail',
+          },
+          {
             path: '/creditLoanManage/inventoryManage/delivery',
             name: '出库管理',
             access: 'hasMenu',
