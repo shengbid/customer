@@ -3,12 +3,11 @@ import { Button, message } from 'antd'
 import styles from './index.less'
 import ComDescriptions from '@/components/ComPage/Descriptions'
 import { history } from 'umi'
-import ComCard from '@/components/ComPage/ComCard'
 import ApprovalForm from './components/approvalForm'
 import ComCollapse from '@/components/ComPage/ComCollapse'
 import ViewBpmn from '@/components/Bpmn/ViewBpmn'
 import { approvalSave, getProcessIds, getCreditDetail, getActivityParams } from '@/services'
-import CreditApproval from './businessDetail/creditApproval'
+import BusinessDetail from './businessDetail'
 import ApprovalDom from './components/approvalDom'
 import type { surveyParamProps } from '@/services/types'
 
@@ -39,21 +38,6 @@ const ApprovalPage: React.FC = (props: any) => {
     getActivitParams()
   }, [])
 
-  // 审核历史
-  const DetailDom = () => {
-    if (activityParams.formKey.indexOf('credit') > -1) {
-      return (
-        <CreditApproval
-          creditParams={creditParams}
-          formName={activityParams.formKey}
-          id={activityParams.instanceId}
-          businessKey={activityParams.businessKey}
-        />
-      )
-    }
-    return <></>
-  }
-
   // console.log(detail)
 
   // 获取授信id和企业id
@@ -75,7 +59,9 @@ const ApprovalPage: React.FC = (props: any) => {
 
   useEffect(() => {
     if (activityParams.instanceId) {
-      getCredit()
+      if (activityParams.formKey.indexOf('credit') > -1) {
+        getCredit()
+      }
       getProcess()
     }
   }, [activityParams.instanceId])
@@ -139,13 +125,15 @@ const ApprovalPage: React.FC = (props: any) => {
             </Button>
           }
         >
-          <DescriptionsItem label="创建任务时间">{infoData.updateTime}</DescriptionsItem>
+          <DescriptionsItem label="创建时间">{infoData.updateTime}</DescriptionsItem>
           <DescriptionsItem label="发起人">{infoData.updateBy}</DescriptionsItem>
-          <DescriptionsItem label="任务编号">{activityParams.id}</DescriptionsItem>
+          <DescriptionsItem label="流程编号">{activityParams.id}</DescriptionsItem>
         </ComDescriptions>
       </div>
       {/* 详情与审批历史 */}
-      {activityParams.formKey ? <ComCard title="详情信息">{DetailDom}</ComCard> : null}
+      {activityParams.formKey ? (
+        <BusinessDetail creditParams={creditParams} activityParams={activityParams} />
+      ) : null}
 
       {/* 审核业务表单 */}
       {activityParams.formKey ? (

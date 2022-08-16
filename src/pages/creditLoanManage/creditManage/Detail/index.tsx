@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Typography, Button } from 'antd'
 import ComCard from '@/components/ComPage/ComCard'
 import SimpleProtable from '@/components/ComProtable/SimpleProTable'
-import { getCreditHistory, getActivityParams } from '@/services'
+import { getCreditHistory } from '@/services'
 import type { ProColumns } from '@ant-design/pro-table'
 import DictShow from '@/components/ComSelect/dictShow'
 import styles from './index.less'
@@ -24,7 +24,7 @@ const Detail: React.FC = (props: any) => {
 
   const columns: ProColumns<any>[] = [
     {
-      title: '任务编号',
+      title: '流程编号',
       key: 'taskNumber',
       dataIndex: 'taskNumber',
     },
@@ -49,21 +49,20 @@ const Detail: React.FC = (props: any) => {
         <Link
           key="approval"
           onClick={async () => {
-            const { data } = await getActivityParams(recored.taskNumber)
             history.push({
               pathname: '/leaderPage/undone/approval',
               query: {
-                id: data.id,
-                businessKey: data.businessKey,
-                taskNodeName: data.name,
-                instanceId: data.instanceId,
-                formKey: data.formKey,
+                taskNumber: recored.taskNumber,
                 detail: 'detail',
-                title: `${companyName}-授信审核-${data.name}`,
+                title: `${companyName}-授信审核`,
               },
             })
             // console.log(props.location)
-            sessionStorage.setItem('preUrl', `${props.location.pathname}?${props.location.search}`)
+            const search =
+              props.location.search.indexOf('?') > -1
+                ? props.location.search
+                : `?${props.location.search}`
+            sessionStorage.setItem('preUrl', `${props.location.pathname}${search}`)
           }}
         >
           详情
