@@ -6,6 +6,7 @@ import DictSelect from '@/components/ComSelect'
 import { useIntl } from 'umi'
 import RequiredLabel from '@/components/RequiredLabel'
 import ComEditTable from '@/components/ComProtable/ComEditTable'
+import { emailReg, phoneTestReg } from '@/utils/reg'
 
 const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleCancel, info }) => {
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
@@ -33,28 +34,88 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
     {
       title: <RequiredLabel label="联系人姓名" />,
       dataIndex: 'contractName',
-      width: '25%',
+      width: '20%',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '此项是必填项',
+          },
+        ],
+      },
     },
     {
       title: <RequiredLabel label="岗位" />,
       dataIndex: 'contractNo',
       width: '17%',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '此项是必填项',
+          },
+        ],
+      },
     },
     {
-      title: '联系电话',
-      dataIndex: 'typeName',
-      width: '17%',
-      editable: false,
+      title: <RequiredLabel label="联系电话" />,
+      dataIndex: 'phoneArea',
+      className: 'edittablecolleft',
+      width: 90,
+      renderFormItem: () => <DictSelect authorword="phone_code" allowClear={false} />,
+    },
+    {
+      title: '',
+      dataIndex: 'phoneNumber',
+      className: 'edittablecolright',
+      width: 130,
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            validator: ({ field }: any, value: any) => {
+              // 获取当前行数据
+              const current = tableForm.getFieldValue(`${field.split('.')[0]}`) || {}
+              const idType = current.phoneArea ? Number(current.phoneArea) : 1
+
+              if (!value) {
+                return Promise.reject(new Error('此项是必填项'))
+              } else if (!phoneTestReg(value)[idType]) {
+                return Promise.reject(new Error('电话号码格式不正确'))
+              }
+              return Promise.resolve()
+            },
+          },
+        ],
+      },
     },
     {
       title: <RequiredLabel label="邮箱" />,
       dataIndex: 'signTime',
       width: '17%',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '此项是必填项',
+          },
+          emailReg,
+        ],
+      },
     },
     {
       title: <RequiredLabel label="抄送邮箱" />,
-      dataIndex: 'signTime',
+      dataIndex: 'signTime6',
       width: '17%',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '此项是必填项',
+          },
+          emailReg,
+        ],
+      },
     },
   ]
 
@@ -71,11 +132,13 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
     message.success(`新增成功`)
     handleSubmit()
     form.resetFields()
+    tableForm.resetFields()
   }
 
   const cancel = () => {
     handleCancel()
     form.resetFields()
+    tableForm.resetFields()
   }
 
   return (
@@ -83,7 +146,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
       title={title}
       maskClosable={false}
       destroyOnClose
-      width={800}
+      width={900}
       visible={modalVisible}
       footer={false}
       onCancel={cancel}
@@ -189,6 +252,9 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
             maxLength={5}
             columns={columns}
             value={dataSource}
+            scroll={{
+              x: 1000,
+            }}
             onChange={setDataSource}
             editable={{
               form: tableForm,

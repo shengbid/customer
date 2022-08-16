@@ -2,11 +2,11 @@ import React, { useState, useRef } from 'react'
 import MenuProTable from '@/components/ComProtable/MenuProTable'
 import type { cooperateListProps, cooperateListParamProps } from '@/services/types'
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
-import { message, Typography } from 'antd'
+import { message, Typography, Popconfirm } from 'antd'
 import { getLoanCustomerList, deleteLoanCustomer } from '@/services'
 import DictSelect from '@/components/ComSelect'
 import AddModal from './components/addModal'
-import { useIntl, history } from 'umi'
+import { useIntl } from 'umi'
 
 const { MenuAddButton } = MenuProTable
 const { Link } = Typography
@@ -108,35 +108,24 @@ const ListManage: React.FC = () => {
       valueType: 'option',
       render: (_, recored) => [
         <Link
-          key="detail"
-          onClick={() => {
-            history.push({
-              pathname: '/customerManage/cooperate/detail',
-              query: {
-                enterpriseId: String(recored.id),
-                companyName: recored.fullName,
-              },
-            })
-          }}
-        >
-          详情
-        </Link>,
-        <Link
           key="edit"
           onClick={() => {
-            delteRecored(recored.id)
+            setModalVisible(true)
           }}
         >
           编辑
         </Link>,
-        <Link
+        <Popconfirm
           key="delete"
-          onClick={() => {
+          title="是否确认删除?"
+          onConfirm={() => {
             delteRecored(recored.id)
           }}
+          okText="确定"
+          cancelText="取消"
         >
-          删除
-        </Link>,
+          <Link>删除</Link>
+        </Popconfirm>,
       ],
     },
   ]

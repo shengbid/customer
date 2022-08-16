@@ -3,6 +3,9 @@ import { Modal, Button } from 'antd'
 import type { addModalProps } from '@/services/types'
 import SimpleProtable from '@/components/ComProtable/SimpleProTable'
 import type { ProColumns } from '@ant-design/pro-table'
+import { Typography } from 'antd'
+
+const { Link } = Typography
 
 const ImportProduct: React.FC<addModalProps> = ({
   modalVisible,
@@ -16,7 +19,6 @@ const ImportProduct: React.FC<addModalProps> = ({
     },
   ])
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
   const [count] = useState<number>(0)
 
   useEffect(() => {
@@ -83,6 +85,22 @@ const ImportProduct: React.FC<addModalProps> = ({
       width: 90,
       hideInSearch: true,
     },
+    {
+      title: '操作',
+      width: 85,
+      key: 'option',
+      valueType: 'option',
+      render: (_, recored) => [
+        <Link
+          key="edit"
+          onClick={() => {
+            setDataSource(dataSource.filter((item: any) => item.id !== recored.id))
+          }}
+        >
+          删除
+        </Link>,
+      ],
+    },
   ]
 
   const submit = () => {
@@ -103,17 +121,10 @@ const ImportProduct: React.FC<addModalProps> = ({
       <SimpleProtable
         columns={columns}
         dataSource={dataSource}
-        pagination={false}
         scroll={{ x: 1100 }}
-        rowSelection={{
-          selectedRowKeys,
-          onChange: (value) => {
-            setSelectedRowKeys(value)
-          },
-        }}
         tableAlertRender={() => (
           <div>
-            <span>已选择 {selectedRowKeys.length} 个商品</span>
+            <span>本次新增 {dataSource.length} 个商品</span>
             {count ? <span>，其中{count}个商品已存在， 若继续提交会覆盖已有商品信息。</span> : null}
           </div>
         )}
