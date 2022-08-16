@@ -2,35 +2,72 @@ import React, { useState, useRef } from 'react'
 import MenuProTable from '@/components/ComProtable/MenuProTable'
 import type { cooperateListProps, cooperateListParamProps } from '@/services/types'
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
-import { Typography } from 'antd'
 import { getLoanCustomerList } from '@/services'
 import DictSelect from '@/components/ComSelect'
-import { useIntl } from 'umi'
-
-const { Link } = Typography
 
 const ListManage: React.FC = () => {
-  const intl = useIntl()
   const actionRef = useRef<ActionType>()
   const [statusData, setStatusData] = useState<any>([])
 
   const columns: ProColumns<cooperateListProps>[] = [
     {
-      title: '仓库编号',
+      title: '企业名称',
+      key: 'fullName',
+      dataIndex: 'fullName',
+    },
+    {
+      title: '商品编号/ID',
       key: 'fullName',
       dataIndex: 'fullName',
       hideInSearch: true,
+    },
+    {
+      title: '商品名称',
+      key: 'fullName',
+      dataIndex: 'fullName',
+    },
+    {
+      title: '条形码',
+      key: 'fullName',
+      dataIndex: 'fullName',
+    },
+    {
+      title: '仓库',
+      key: 'enterpriseType',
+      dataIndex: 'enterpriseType',
+      hideInTable: true,
+      renderFormItem: (_, { type }) => {
+        if (type === 'form') {
+          return null
+        }
+        return (
+          <DictSelect
+            authorword="credit_status"
+            getDictData={(data: any) => {
+              setStatusData(data)
+            }}
+          />
+        )
+      },
     },
     {
       title: '仓库名称',
+      key: 'enterpriseType',
+      dataIndex: 'enterpriseType',
+      hideInSearch: true,
+      render: (_, recored) => statusData[recored.enterpriseType],
+    },
+    {
+      title: '是否质押',
       key: 'fullName',
       dataIndex: 'fullName',
     },
     {
-      title: '仓库类型',
+      title: '库存类型',
       key: 'enterpriseType',
       dataIndex: 'enterpriseType',
       hideInTable: true,
+      hideInSearch: true,
       renderFormItem: (_, { type }) => {
         if (type === 'form') {
           return null
@@ -46,56 +83,58 @@ const ListManage: React.FC = () => {
       },
     },
     {
-      title: '仓库类型',
+      title: '库存类型',
       key: 'enterpriseType',
       dataIndex: 'enterpriseType',
       hideInSearch: true,
       render: (_, recored) => statusData[recored.enterpriseType],
     },
     {
-      title: '所属物流企业',
-      key: 'enterpriseType',
-      dataIndex: 'enterpriseType',
-      hideInTable: true,
-      renderFormItem: (_, { type }) => {
-        if (type === 'form') {
-          return null
-        }
-        return (
-          <DictSelect
-            authorword="credit_status"
-            getDictData={(data: any) => {
-              setStatusData(data)
-            }}
-          />
-        )
-      },
-    },
-    {
-      title: '所属物流企业',
-      key: 'enterpriseType',
-      dataIndex: 'enterpriseType',
-      hideInSearch: true,
-      render: (_, recored) => statusData[recored.enterpriseType],
-    },
-    {
-      title: '仓库地址',
+      title: '良品数量/残次品数量',
       key: 'createTime',
       dataIndex: 'createTime',
       hideInSearch: true,
     },
     {
-      title: intl.formatMessage({
-        id: 'pages.table.option',
-      }),
+      title: '效期截止日',
+      key: 'code',
+      dataIndex: 'code',
+      width: 90,
+      hideInSearch: true,
+    },
+    {
+      title: '入库单号',
+      key: 'createTime',
+      dataIndex: 'createTime',
+      // hideInSearch: true,
+    },
+    {
+      title: '批次号',
+      key: 'createTime',
+      dataIndex: 'createTime',
+      hideInSearch: true,
+    },
+    {
+      title: '公允单价(美元)',
+      key: 'code',
+      dataIndex: 'code',
+      valueType: 'digit',
       width: 110,
-      key: 'option',
-      valueType: 'option',
-      render: () => [
-        <Link key="edit" onClick={() => {}}>
-          详情
-        </Link>,
-      ],
+      hideInSearch: true,
+    },
+    {
+      title: '库存估值(美元)',
+      key: 'code',
+      dataIndex: 'code',
+      valueType: 'digit',
+      width: 127,
+      hideInSearch: true,
+    },
+    {
+      title: '单位',
+      key: 'createTime',
+      dataIndex: 'createTime',
+      hideInSearch: true,
     },
   ]
 
@@ -113,6 +152,7 @@ const ListManage: React.FC = () => {
       <MenuProTable<cooperateListProps>
         request={getList}
         rowKey="id"
+        scroll={{ x: 1400 }}
         columns={columns}
         actionRef={actionRef}
         tableAlertRender={false}

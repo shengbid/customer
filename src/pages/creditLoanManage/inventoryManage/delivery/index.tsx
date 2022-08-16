@@ -8,7 +8,7 @@ import DictSelect from '@/components/ComSelect'
 import AddModal from './components/addModal'
 import { useIntl } from 'umi'
 
-const { MenuAddButton } = MenuProTable
+// const { MenuAddButton } = MenuProTable
 const { Link } = Typography
 
 const ListManage: React.FC = () => {
@@ -31,18 +31,54 @@ const ListManage: React.FC = () => {
 
   const columns: ProColumns<cooperateListProps>[] = [
     {
-      title: '仓库编号',
+      title: '出库单号',
       key: 'fullName',
       dataIndex: 'fullName',
       hideInSearch: true,
+    },
+    {
+      title: '企业名称',
+      key: 'fullName',
+      dataIndex: 'fullName',
+    },
+    {
+      title: '关联还款单号',
+      key: 'fullName',
+      dataIndex: 'fullName',
+    },
+    {
+      title: '关联金融产品',
+      key: 'fullName',
+      dataIndex: 'fullName',
+    },
+    {
+      title: '仓库',
+      key: 'enterpriseType',
+      dataIndex: 'enterpriseType',
+      hideInTable: true,
+      renderFormItem: (_, { type }) => {
+        if (type === 'form') {
+          return null
+        }
+        return (
+          <DictSelect
+            authorword="credit_status"
+            getDictData={(data: any) => {
+              setStatusData(data)
+            }}
+          />
+        )
+      },
     },
     {
       title: '仓库名称',
-      key: 'fullName',
-      dataIndex: 'fullName',
+      key: 'enterpriseType',
+      dataIndex: 'enterpriseType',
+      hideInSearch: true,
+      render: (_, recored) => statusData[recored.enterpriseType],
     },
     {
-      title: '仓库类型',
+      title: '销售类型',
       key: 'enterpriseType',
       dataIndex: 'enterpriseType',
       hideInTable: true,
@@ -61,40 +97,22 @@ const ListManage: React.FC = () => {
       },
     },
     {
-      title: '仓库类型',
+      title: '销售类型',
       key: 'enterpriseType',
       dataIndex: 'enterpriseType',
       hideInSearch: true,
       render: (_, recored) => statusData[recored.enterpriseType],
     },
     {
-      title: '所属物流企业',
-      key: 'enterpriseType',
-      dataIndex: 'enterpriseType',
-      hideInTable: true,
-      renderFormItem: (_, { type }) => {
-        if (type === 'form') {
-          return null
-        }
-        return (
-          <DictSelect
-            authorword="credit_status"
-            getDictData={(data: any) => {
-              setStatusData(data)
-            }}
-          />
-        )
-      },
-    },
-    {
-      title: '所属物流企业',
-      key: 'enterpriseType',
-      dataIndex: 'enterpriseType',
+      title: '出库数量',
+      key: 'code',
+      dataIndex: 'code',
+      valueType: 'digit',
+      width: 110,
       hideInSearch: true,
-      render: (_, recored) => statusData[recored.enterpriseType],
     },
     {
-      title: '仓库地址',
+      title: '出库时间',
       key: 'createTime',
       dataIndex: 'createTime',
       hideInSearch: true,
@@ -111,9 +129,10 @@ const ListManage: React.FC = () => {
           key="edit"
           onClick={() => {
             setModalVisible(true)
+            setId(recored.id)
           }}
         >
-          编辑
+          详情
         </Link>,
         <Popconfirm
           key="delete"
@@ -150,17 +169,18 @@ const ListManage: React.FC = () => {
       <MenuProTable<cooperateListProps>
         request={getList}
         rowKey="id"
+        scroll={{ x: 1200 }}
         columns={columns}
         actionRef={actionRef}
-        headerTitle={
-          <MenuAddButton
-            authorword="system:post:add"
-            onClick={() => {
-              setId(null)
-              setModalVisible(true)
-            }}
-          />
-        }
+        // headerTitle={
+        //   <MenuAddButton
+        //     authorword="system:post:add"
+        //     onClick={() => {
+        //       setId(null)
+        //       setModalVisible(true)
+        //     }}
+        //   />
+        // }
         tableAlertRender={false}
       />
 
