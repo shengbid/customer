@@ -6,7 +6,7 @@ import { message, Typography, Popconfirm } from 'antd'
 import { getLoanCustomerList, deleteLoanCustomer } from '@/services'
 import DictSelect from '@/components/ComSelect'
 import AddModal from './components/addModal'
-import { useIntl } from 'umi'
+import { useIntl, history } from 'umi'
 
 // const { MenuAddButton } = MenuProTable
 const { Link } = Typography
@@ -165,11 +165,33 @@ const ListManage: React.FC = () => {
       width: 180,
       key: 'option',
       valueType: 'option',
+      fixed: 'right',
       render: (_, recored) => [
-        <Link key="edit" onClick={() => {}}>
+        <Link
+          key="edit"
+          onClick={() =>
+            history.push({
+              pathname: '/creditLoanManage/inventoryManage/enter/detail',
+              query: {
+                id: recored.id,
+                type: '1',
+              },
+            })
+          }
+        >
           转在途
         </Link>,
-        <Link key="edit2" onClick={() => {}}>
+        <Link
+          key="edit2"
+          onClick={() =>
+            history.push({
+              pathname: '/creditLoanManage/inventoryManage/enter/detail',
+              query: {
+                id: recored.id,
+              },
+            })
+          }
+        >
           转在仓
         </Link>,
         <Link key="edit3" onClick={() => {}}>
