@@ -13,7 +13,7 @@ const ComPageContanier: React.FC<pageProps> = (props: any) => {
   return (
     <div
       style={{
-        background: '#F5F7FA',
+        background: '#f0f2f5',
       }}
     >
       <PageContainer
