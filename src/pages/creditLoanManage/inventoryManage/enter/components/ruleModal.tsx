@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { Modal, Button, Form, message, Spin, Input } from 'antd'
+import { Modal, Button, Form, message, Spin } from 'antd'
 import type { addModalProps } from '@/services/types'
 import { addLoanCustomer } from '@/services'
 import { useIntl } from 'umi'
 import styles from './rule.less'
+import ComInputNumber from '@/components/Input/InputNumber'
 
 interface detailProps extends addModalProps {
   isDetail?: boolean
@@ -80,7 +81,7 @@ const AddModal: React.FC<detailProps> = ({
                   },
                 ]}
               >
-                <Input addonAfter="%" />
+                <ComInputNumber max={100} addonAfter="%" />
               </Form.Item>
             </div>
             <span className={styles.text}>，则商品效期折扣率为</span>
@@ -94,7 +95,7 @@ const AddModal: React.FC<detailProps> = ({
                   },
                 ]}
               >
-                <Input addonAfter="%" />
+                <ComInputNumber max={100} addonAfter="%" />
               </Form.Item>
             </div>
           </div>
@@ -111,7 +112,7 @@ const AddModal: React.FC<detailProps> = ({
                   },
                 ]}
               >
-                <Input addonAfter="%" />
+                <ComInputNumber max={100} addonAfter="%" />
               </Form.Item>
             </div>
             <span className={styles.text}> ＜ 商品剩余有效天数 ＜ 商品整体有效期的</span>
@@ -125,7 +126,7 @@ const AddModal: React.FC<detailProps> = ({
                   },
                 ]}
               >
-                <Input addonAfter="%" />
+                <ComInputNumber max={100} addonAfter="%" />
               </Form.Item>
             </div>
             <span className={styles.text}>，则商品效期折扣率为</span>
@@ -139,7 +140,7 @@ const AddModal: React.FC<detailProps> = ({
                   },
                 ]}
               >
-                <Input addonAfter="%" />
+                <ComInputNumber max={100} addonAfter="%" />
               </Form.Item>
             </div>
           </div>
@@ -156,7 +157,7 @@ const AddModal: React.FC<detailProps> = ({
                   },
                 ]}
               >
-                <Input addonAfter="%" />
+                <ComInputNumber max={100} addonAfter="%" />
               </Form.Item>
             </div>
             <span className={styles.text}>，则商品效期折扣率为</span>
@@ -170,7 +171,7 @@ const AddModal: React.FC<detailProps> = ({
                   },
                 ]}
               >
-                <Input addonAfter="%" />
+                <ComInputNumber max={100} addonAfter="%" />
               </Form.Item>
             </div>
           </div>
