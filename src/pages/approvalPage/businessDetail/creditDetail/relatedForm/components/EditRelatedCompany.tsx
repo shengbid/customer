@@ -5,8 +5,9 @@ import type { ProColumns } from '@ant-design/pro-table'
 import RequiredTilte from '@/components/RequiredLabel'
 import DictSelect from '@/components/ComSelect'
 import { idTestReg } from '@/utils/reg'
-import { Modal, Form, Button } from 'antd'
+import { Modal, Form, Button, message } from 'antd'
 import { editRelateCompany } from '@/services'
+import { isEmpty } from 'lodash'
 
 interface editProps {
   modalVisible: boolean
@@ -38,6 +39,10 @@ const EditRelatedCompany: React.FC<editProps> = ({
   }, [infoData])
 
   const onSubmit = async () => {
+    if (isEmpty(dataSource)) {
+      message.warning('至少添加一条数据再提交!')
+      return
+    }
     await tableForm.validateFields()
     setConfirmLoading(true)
     try {

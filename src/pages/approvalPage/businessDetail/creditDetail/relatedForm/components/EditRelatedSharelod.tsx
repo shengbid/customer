@@ -8,6 +8,7 @@ import { idTestReg } from '@/utils/reg'
 import { Modal, Form, Button, message } from 'antd'
 import { editRelateShareholder } from '@/services'
 import ComInputNumber from '@/components/Input/InputNumber'
+import { isEmpty } from 'lodash'
 
 interface editProps {
   modalVisible: boolean
@@ -39,6 +40,10 @@ const EditRelatedCompany: React.FC<editProps> = ({
   }, [infoData])
 
   const onSubmit = async () => {
+    if (isEmpty(dataSource)) {
+      message.warning('至少添加一条数据再提交!')
+      return
+    }
     await tableForm.validateFields()
     let totalRate = 0
     dataSource?.forEach((item: any) => {
