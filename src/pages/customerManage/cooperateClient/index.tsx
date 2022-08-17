@@ -53,7 +53,6 @@ const RoleManage: React.FC = () => {
         return (
           <DictSelect
             authorword="enterprise_type"
-            mode="multiple"
             dataType="array"
             getDictData={(data: any) => {
               setStatusData(data)
@@ -116,9 +115,9 @@ const RoleManage: React.FC = () => {
   ]
 
   const getList = async (param: cooperateListParamProps) => {
-    if (param.enterpriseTypes) {
-      Reflect.set(param, 'enterpriseType', param.enterpriseTypes.join(','))
-    }
+    // if (param.enterpriseTypes) {
+    //   Reflect.set(param, 'enterpriseType', param.enterpriseTypes.join(','))
+    // }
     const { rows, total } = await getCooperateCustomerList(param)
     return {
       data: rows,
