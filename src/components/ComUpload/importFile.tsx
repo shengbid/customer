@@ -8,28 +8,26 @@ import ExportFile from './exportFile'
 import PermissionButton from '@/components/Permission'
 import { useIntl } from 'umi'
 export interface importFileProps {
-  url: string // 下载请求地址
+  downUrl: string // 下载请求地址
   title: string // 下载模板名称
   authorword: string // 权限字符
-  handleSuccess: () => void
+  handleSuccess: (data?: any) => void
   actionUrl?: string // 上传地址
 }
 // 导入文件
 const ImportFile: React.FC<importFileProps> = ({
-  url,
+  downUrl,
   title,
   authorword,
   actionUrl,
   handleSuccess,
 }) => {
   const [fileVisible, setFileVisible] = useState<boolean>(false)
-  const [action, setAction] = useState<string>(
-    `${URL_PREFIX}/system/${url}/importData?updateSupport=false`,
-  )
+  const [action, setAction] = useState<string>('')
 
   useEffect(() => {
     if (actionUrl) {
-      setAction(actionUrl)
+      setAction(`${URL_PREFIX}${actionUrl}`)
     }
   }, [actionUrl])
 
@@ -53,7 +51,7 @@ const ImportFile: React.FC<importFileProps> = ({
         })
         return
       }
-      handleSuccess()
+      handleSuccess(file.response.data)
       setFileVisible(false)
       message.success(intl.formatMessage({ id: 'pages.modal.importInfo' }))
     }
@@ -68,10 +66,9 @@ const ImportFile: React.FC<importFileProps> = ({
   }
 
   const checkFileSize = (file: any) => {
-    // console.log(file)
     const size = file.size / 1024 / 1024
-    const names = ['.xls', '.xlsx']
-    if (!names.includes(file.name)) {
+    // console.log(file)
+    if (file.name.indexOf('.xls') < 1) {
       message.warn(intl.formatMessage({ id: 'pages.modal.importTit' }))
       return Upload.LIST_IGNORE
     }
@@ -106,7 +103,7 @@ const ImportFile: React.FC<importFileProps> = ({
       >
         <div>
           {intl.formatMessage({ id: 'pages.modal.importTit' })}
-          <ExportFile authorword="" title={title} url={url} icon={false} />
+          <ExportFile authorword="" title={title} url={downUrl} icon={false} />
         </div>
         {/* <div style={{ margin: '16px 0' }}>
           <span style={{ marginRight: 10 }}>
