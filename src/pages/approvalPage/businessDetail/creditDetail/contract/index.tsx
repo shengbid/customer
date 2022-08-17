@@ -35,7 +35,7 @@ const Contract = ({ title }: contractprops, ref: any) => {
             },
           ]}
         >
-          <ComUpload limit={10} />
+          <ComUpload />
         </Form.Item>
       </Form>
     </CardTitle>
