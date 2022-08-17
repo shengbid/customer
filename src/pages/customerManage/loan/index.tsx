@@ -116,6 +116,7 @@ const RoleManage: React.FC = () => {
               query: {
                 enterpriseId: String(recored.id),
                 companyName: recored.fullName,
+                status: recored.status,
               },
             })
           }}

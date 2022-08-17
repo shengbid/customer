@@ -8,7 +8,7 @@ import CreditInfo from '../CreditInfo'
 
 const Detail: React.FC = (props: any) => {
   const [activeKey, setActiveKey] = useState<string>('1')
-  const { enterpriseId, companyName } = props.location.query
+  const { enterpriseId, companyName, status } = props.location.query
 
   const tabList = [
     {
@@ -35,8 +35,8 @@ const Detail: React.FC = (props: any) => {
       tabList={tabList}
       onTabClick={setActiveKey}
     >
-      {activeKey === '1' ? <CreditBasic companyId={enterpriseId} /> : null}
-      {activeKey === '2' ? <CreditInfo enterpriseId={enterpriseId} /> : null}
+      {activeKey === '1' ? <CreditBasic status={status} companyId={enterpriseId} /> : null}
+      {activeKey === '2' && status !== '01' ? <CreditInfo enterpriseId={enterpriseId} /> : null}
       {activeKey === '7' ? <CooperateClient enterpriseId={enterpriseId} /> : null}
     </ComPageContanier>
   )

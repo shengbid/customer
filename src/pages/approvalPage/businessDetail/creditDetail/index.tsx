@@ -16,10 +16,10 @@ const CreditDetail: React.FC<creditprops> = ({ id, isDetail = false, type }) => 
   const getCredit = async () => {
     if (type) {
       const { data } = await getCreditDetailById(id)
-      setInfoData(data)
+      if (data) setInfoData(data)
     } else {
       const { data } = await getCreditDetail(id)
-      setInfoData(data)
+      if (data) setInfoData(data)
     }
     setSpinning(false)
   }
