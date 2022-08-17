@@ -99,6 +99,31 @@ export default [
     ],
   },
   {
+    path: '/riskMonitoring',
+    name: '风险监控',
+    access: 'hasMenu',
+    icon: 'DesktopOutlined',
+    routes: [
+      {
+        path: '/riskMonitoring',
+        redirect: '/riskMonitoring/ruleCenter',
+      },
+      {
+        path: '/riskMonitoring/ruleCenter',
+        name: '规则中心',
+        access: 'hasMenu',
+        routes: [
+          {
+            path: '/riskMonitoring/ruleCenter/collateralRules',
+            name: '押品规则配置',
+            access: 'hasMenu',
+            component: './riskMonitoring/ruleCenter/collateralRules',
+          },
+        ],
+      },
+    ],
+  },
+  {
     path: '/basicManage',
     name: '基础管理',
     access: 'hasMenu',
