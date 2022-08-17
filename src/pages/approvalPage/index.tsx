@@ -95,6 +95,7 @@ const ApprovalPage: React.FC = (props: any) => {
       await approvalSave(activityParams.id, {
         ...values,
         ...omit(activityParams, ['createdDate', 'createTime', 'id']),
+        taskNodeName: activityParams.name,
         attatchmentDatas,
         businessData,
       })
