@@ -1,9 +1,9 @@
 import React, { useState, useRef } from 'react'
 import MenuProTable from '@/components/ComProtable/MenuProTable'
-import type { cooperateListProps, cooperateListParamProps } from '@/services/types'
+import type { productListProps, productListParamProps } from '@/services/types'
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import { Typography } from 'antd'
-import { getLoanCustomerList } from '@/services'
+import { getProductList } from '@/services'
 import AddModal from './components/addModal'
 import { useIntl } from 'umi'
 import ImportFile from '@/components/ComUpload/importFile'
@@ -16,52 +16,52 @@ const ListManage: React.FC = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [importVisible, setImportVisible] = useState<boolean>(false)
   const [tableData, setTableData] = useState<any[]>([])
-  const [id, setId] = useState<any>()
+  const [info, setInfo] = useState<any>()
   const intl = useIntl()
   const actionRef = useRef<ActionType>()
 
-  const columns: ProColumns<cooperateListProps>[] = [
+  const columns: ProColumns<productListProps>[] = [
     {
       title: '商品ID',
-      key: 'fullName',
-      dataIndex: 'fullName',
+      key: 'id',
+      dataIndex: 'id',
       hideInSearch: true,
     },
     {
       title: '商品名称',
-      key: 'fullName',
-      dataIndex: 'fullName',
+      key: 'goodName',
+      dataIndex: 'goodName',
     },
     {
       title: '品牌名称',
-      key: 'fullName',
-      dataIndex: 'fullName',
+      key: 'goodBrand',
+      dataIndex: 'goodBrand',
     },
     {
       title: '商品条码',
-      key: 'fullName',
-      dataIndex: 'fullName',
+      key: 'barCode',
+      dataIndex: 'barCode',
     },
     {
       title: '最近采购价(美元)',
-      key: 'code',
-      dataIndex: 'code',
+      key: 'purchasePrice',
+      dataIndex: 'purchasePrice',
       valueType: 'digit',
       width: 127,
       hideInSearch: true,
     },
     {
       title: '公允价(美元)',
-      key: 'code',
-      dataIndex: 'code',
+      key: 'fairPrice',
+      dataIndex: 'fairPrice',
       valueType: 'digit',
       width: 110,
       hideInSearch: true,
     },
     {
       title: '保质期(月)',
-      key: 'code',
-      dataIndex: 'code',
+      key: 'warrantyMonth',
+      dataIndex: 'warrantyMonth',
       width: 90,
       hideInSearch: true,
     },
@@ -77,7 +77,7 @@ const ListManage: React.FC = () => {
           key="edit"
           onClick={() => {
             setModalVisible(true)
-            setId(recored.id)
+            setInfo(recored)
           }}
         >
           编辑
@@ -86,9 +86,8 @@ const ListManage: React.FC = () => {
     },
   ]
 
-  const getList = async (param: cooperateListParamProps) => {
-    console.log(param)
-    const { rows, total } = await getLoanCustomerList(param)
+  const getList = async (param: productListParamProps) => {
+    const { rows, total } = await getProductList(param)
     return {
       data: rows,
       total,
@@ -102,10 +101,9 @@ const ListManage: React.FC = () => {
   }
 
   // 导入成功
-  const handleSuccess = () => {
-    actionRef?.current?.reload()
+  const handleSuccess = (data: any[]) => {
+    setTableData(data)
     setImportVisible(true)
-    setTableData([])
   }
 
   // 导入新增
@@ -116,7 +114,7 @@ const ListManage: React.FC = () => {
 
   return (
     <>
-      <MenuProTable<cooperateListProps>
+      <MenuProTable<productListProps>
         request={getList}
         rowKey="id"
         columns={columns}
@@ -125,7 +123,7 @@ const ListManage: React.FC = () => {
           <MenuAddButton
             authorword="system:post:add"
             onClick={() => {
-              setId(null)
+              setInfo(null)
               setModalVisible(true)
             }}
           />
@@ -134,7 +132,8 @@ const ListManage: React.FC = () => {
           <ImportFile
             authorword="system:user:import"
             key="import"
-            url="user"
+            actionUrl="/system/goodManage/importData"
+            downUrl="/system/goodManage"
             title={'商品列表'}
             handleSuccess={handleSuccess}
           />,
@@ -145,7 +144,7 @@ const ListManage: React.FC = () => {
       <AddModal
         modalVisible={modalVisible}
         handleSubmit={submit}
-        info={id}
+        info={info}
         handleCancel={() => setModalVisible(false)}
       />
 

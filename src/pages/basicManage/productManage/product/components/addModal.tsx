@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Modal, Button, Form, Input, message, Spin, Row, Col } from 'antd'
 import type { addModalProps } from '@/services/types'
-import { addLoanCustomer } from '@/services'
+import { addProduct, editProduct } from '@/services'
 import IntergerInput from '@/components/Input/integerInput'
 import PointInput from '@/components/Input/InputNumber'
 import { useIntl } from 'umi'
@@ -11,22 +11,24 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
   const [spinning] = useState<boolean>(false)
   const [form] = Form.useForm()
   const [title, setTitle] = useState<string>('新增商品信息')
-  const [isDetail, setIsDetail] = useState<boolean>(false)
 
   useEffect(() => {
     if (modalVisible && info) {
       setTitle('修改商品信息')
-      setIsDetail(true)
+      form.setFieldsValue(info)
     }
   }, [modalVisible, info])
 
   const intl = useIntl()
 
   const handleOk = async (values: any) => {
-    console.log(values)
     setConfirmLoading(true)
     try {
-      await addLoanCustomer(values)
+      if (info) {
+        await editProduct(values)
+      } else {
+        await addProduct(values)
+      }
       setConfirmLoading(false)
     } catch (error) {
       setConfirmLoading(false)
@@ -61,25 +63,18 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
           autoComplete="off"
           layout="vertical"
         >
+          <Form.Item label="id" name="id" style={{ display: 'none' }}>
+            <Input maxLength={150} />
+          </Form.Item>
+          <Form.Item label="version" name="version" style={{ display: 'none' }}>
+            <Input maxLength={150} />
+          </Form.Item>
+
           <Row gutter={24}>
             <Col span={12}>
               <Form.Item
-                label="商品ID"
-                name="name"
-                rules={[
-                  {
-                    required: true,
-                    message: `请输入商品ID`,
-                  },
-                ]}
-              >
-                <Input disabled={isDetail} maxLength={150} />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
                 label="商品名称"
-                name="code"
+                name="goodName"
                 rules={[
                   {
                     required: true,
@@ -90,13 +85,10 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
                 <Input maxLength={150} />
               </Form.Item>
             </Col>
-          </Row>
-
-          <Row gutter={24}>
             <Col span={12}>
               <Form.Item
                 label="商品品牌"
-                name="name"
+                name="goodBrand"
                 rules={[
                   {
                     required: true,
@@ -107,10 +99,13 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
                 <Input maxLength={150} />
               </Form.Item>
             </Col>
+          </Row>
+
+          <Row gutter={24}>
             <Col span={12}>
               <Form.Item
                 label="商品条码"
-                name="code"
+                name="barCode"
                 rules={[
                   {
                     required: true,
@@ -121,13 +116,58 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
                 <Input maxLength={150} />
               </Form.Item>
             </Col>
+            <Col span={12}>
+              <Form.Item
+                label="最近采购价"
+                name="purchasePrice"
+                rules={[
+                  {
+                    required: true,
+                    message: `请输入最近采购价`,
+                  },
+                ]}
+              >
+                <PointInput addonAfter={'美元'} />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Row gutter={24}>
+            <Col span={12}>
+              <Form.Item
+                label="公允价"
+                name="fairPrice"
+                rules={[
+                  {
+                    required: true,
+                    message: `请输入公允价`,
+                  },
+                ]}
+              >
+                <PointInput addonAfter={'美元'} />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="保质期"
+                name="warrantyMonth"
+                rules={[
+                  {
+                    required: true,
+                    message: `请输入保质期`,
+                  },
+                ]}
+              >
+                <IntergerInput />
+              </Form.Item>
+            </Col>
           </Row>
 
           <Row gutter={24}>
             <Col span={12}>
               <Form.Item
                 label="商品REF码"
-                name="name"
+                name="goodRef"
                 rules={[
                   {
                     required: true,
@@ -135,13 +175,13 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
                   },
                 ]}
               >
-                <Input maxLength={150} />
+                <Input placeholder="请输入商品REF码, 如果有多个以逗号(半角)隔开" maxLength={150} />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item
                 label="商品HScode"
-                name="code4"
+                name="goodHscode"
                 rules={[
                   {
                     required: true,
@@ -157,47 +197,16 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
           <Row gutter={24}>
             <Col span={12}>
               <Form.Item
-                label="最近采购价"
-                name="name3"
+                label="商品SKU NO"
+                name="goodSku"
                 rules={[
                   {
                     required: true,
-                    message: `请输入最近采购价`,
+                    message: `请输入商品SKU NO`,
                   },
                 ]}
               >
-                <PointInput addonAfter={'美元'} />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                label="公允价"
-                name="code3"
-                rules={[
-                  {
-                    required: true,
-                    message: `请输入公允价`,
-                  },
-                ]}
-              >
-                <PointInput addonAfter={'美元'} />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Row gutter={24}>
-            <Col span={12}>
-              <Form.Item
-                label="保质期"
-                name="date"
-                rules={[
-                  {
-                    required: true,
-                    message: `请输入保质期`,
-                  },
-                ]}
-              >
-                <IntergerInput />
+                <Input placeholder="请输入商品SKU NO, 如果有多个以逗号(半角)隔开" maxLength={150} />
               </Form.Item>
             </Col>
           </Row>

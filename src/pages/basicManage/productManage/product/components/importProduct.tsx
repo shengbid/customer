@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { Modal, Button } from 'antd'
-import type { addModalProps } from '@/services/types'
+import type { addModalProps, productListProps } from '@/services/types'
 import SimpleProtable from '@/components/ComProtable/SimpleProTable'
 import type { ProColumns } from '@ant-design/pro-table'
-import { Typography } from 'antd'
+import { Typography, message } from 'antd'
+import { addMutilProduct } from '@/services'
 
 const { Link } = Typography
 
@@ -13,76 +14,81 @@ const ImportProduct: React.FC<addModalProps> = ({
   handleCancel,
   info,
 }) => {
-  const [dataSource, setDataSource] = useState<any[]>([
-    {
-      id: '1',
-    },
-  ])
+  const [dataSource, setDataSource] = useState<any[]>([])
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
-  const [count] = useState<number>(0)
+  const [count, setCount] = useState<number>(0)
 
   useEffect(() => {
     if (modalVisible && info) {
-      setDataSource([{ id: '1' }])
+      setDataSource(info)
+      setCount(info.filter((item: any) => item.existFlag).length)
     }
   }, [modalVisible, info])
 
-  const columns: ProColumns<any>[] = [
+  const columns: ProColumns<productListProps>[] = [
     {
       title: '商品名称',
-      key: 'fullName',
-      dataIndex: 'fullName',
+      key: 'goodName',
+      dataIndex: 'goodName',
     },
     {
       title: '品牌名称',
-      key: 'fullName',
-      dataIndex: 'fullName',
+      key: 'goodBrand',
+      dataIndex: 'goodBrand',
     },
     {
       title: '商品条码',
-      key: 'fullName',
-      dataIndex: 'fullName',
+      key: 'barCode',
+      dataIndex: 'barCode',
+      render: (_, recored) => (
+        <span style={recored.existFlag ? { color: 'red' } : {}}>{recored.barCode}</span>
+      ),
     },
     {
       title: 'REF码',
-      key: 'fullName',
-      dataIndex: 'fullName',
+      key: 'goodRef',
+      dataIndex: 'goodRef',
+    },
+    {
+      title: 'SKU NO',
+      key: 'goodSku',
+      dataIndex: 'goodSku',
     },
     {
       title: '商品HScode',
-      key: 'code',
-      dataIndex: 'code',
+      key: 'goodHscode',
+      dataIndex: 'goodHscode',
       valueType: 'digit',
       hideInSearch: true,
     },
     {
-      title: '最近购单价(美元)',
-      key: 'code',
-      dataIndex: 'code',
+      title: '最近采购单价(美元)',
+      key: 'purchasePrice',
+      dataIndex: 'purchasePrice',
       valueType: 'digit',
       width: 125,
       hideInSearch: true,
     },
     {
-      title: '公允价(美元)',
-      key: 'code',
-      dataIndex: 'code',
+      title: '公允单价(美元)',
+      key: 'fairPrice',
+      dataIndex: 'fairPrice',
       valueType: 'digit',
       width: 110,
       hideInSearch: true,
     },
     {
-      title: '单位',
-      key: 'code',
-      dataIndex: 'code',
-      width: 60,
+      title: '保质期(月)',
+      key: 'warrantyMonth',
+      dataIndex: 'warrantyMonth',
+      width: 90,
       hideInSearch: true,
     },
     {
-      title: '保质期(月)',
-      key: 'code',
-      dataIndex: 'code',
-      width: 90,
+      title: '单位',
+      key: 'unit',
+      dataIndex: 'unit',
+      width: 60,
       hideInSearch: true,
     },
     {
@@ -94,7 +100,7 @@ const ImportProduct: React.FC<addModalProps> = ({
         <Link
           key="edit"
           onClick={() => {
-            setDataSource(dataSource.filter((item: any) => item.id !== recored.id))
+            setDataSource(dataSource.filter((item: any) => item.barCode !== recored.barCode))
           }}
         >
           删除
@@ -103,8 +109,16 @@ const ImportProduct: React.FC<addModalProps> = ({
     },
   ]
 
-  const submit = () => {
+  const submit = async () => {
+    setConfirmLoading(true)
+    try {
+      await addMutilProduct(dataSource)
+    } catch (error) {
+      setConfirmLoading(false)
+      return
+    }
     setConfirmLoading(false)
+    message.success('添加成功!')
     handleSubmit()
   }
 
@@ -119,6 +133,7 @@ const ImportProduct: React.FC<addModalProps> = ({
       onCancel={handleCancel}
     >
       <SimpleProtable
+        key="barCode"
         columns={columns}
         dataSource={dataSource}
         scroll={{ x: 1100 }}

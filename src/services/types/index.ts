@@ -9,3 +9,4 @@ export * from './leader'
 export * from './approval'
 export * from './credit'
 export * from './basic/warehouse' // 仓库管理
+export * from './basic/product' // 商品管理

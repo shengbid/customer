@@ -12,12 +12,8 @@ const { Option } = Select
 
 const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleCancel, info }) => {
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
-  const [dataSource, setDataSource] = useState<any[]>([
-    {
-      id: '1',
-    },
-  ])
-  const [editableKeys, setEditableRowKeys] = useState<any[]>(['1'])
+  const [dataSource, setDataSource] = useState<any[]>([])
+  const [editableKeys, setEditableRowKeys] = useState<any[]>([])
   const [companyList, setCompanyList] = useState<any[]>([])
   const [spinning] = useState<boolean>(false)
   const [form] = Form.useForm()
@@ -36,13 +32,14 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
     const { data } = await warehouseDetail(info)
     if (data) {
       form.setFieldsValue({
-        ...data.jxWarehouseManage,
+        ...data,
         logistics: {
           label: data.logisticsEnterprise,
           value: data.logisticsEnterpriseId,
         },
       })
-      setDataSource(data.jxWarehouseContactList)
+      setDataSource(data.warehouseContactList)
+      setEditableRowKeys(data.warehouseContactList.map((item: any) => item.id))
     }
   }
 
@@ -52,6 +49,13 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
       if (info) {
         setTitle('修改仓库')
         getDetail()
+      } else {
+        setDataSource([
+          {
+            id: '1',
+          },
+        ])
+        setEditableRowKeys(['1'])
       }
     }
   }, [modalVisible, info])
@@ -62,7 +66,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
     {
       title: <RequiredLabel label="联系人姓名" />,
       dataIndex: 'name',
-      width: '20%',
+      width: '17%',
       formItemProps: {
         rules: [
           {
@@ -89,14 +93,14 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
       title: <RequiredLabel label="联系电话" />,
       dataIndex: 'phoneArea',
       className: 'edittablecolleft',
-      width: 90,
+      width: 100,
       renderFormItem: () => <DictSelect authorword="phone_code" allowClear={false} />,
     },
     {
       title: '',
       dataIndex: 'phoneNumber',
       className: 'edittablecolright',
-      width: 130,
+      width: 135,
       formItemProps: {
         rules: [
           {
@@ -148,7 +152,6 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
   ]
 
   const handleOk = async (values: any) => {
-    console.log(values)
     setConfirmLoading(true)
     await tableForm.validateFields()
     try {
@@ -214,6 +217,9 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
           </h3>
 
           <Form.Item label="id" name="id" style={{ display: 'none' }}>
+            <Input maxLength={150} />
+          </Form.Item>
+          <Form.Item label="version" name="version" style={{ display: 'none' }}>
             <Input maxLength={150} />
           </Form.Item>
 
@@ -298,6 +304,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
             onChange={setDataSource}
             editable={{
               form: tableForm,
+              type: 'multiple',
               editableKeys,
               onValuesChange: (record, recordList) => {
                 setDataSource(recordList)
