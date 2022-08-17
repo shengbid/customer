@@ -27,7 +27,7 @@ export async function addWarehouse(data: any) {
 /** 编辑 */
 export async function editWarehouse(data: any) {
   return request<{ data: any[] }>(`${url}/edit`, {
-    method: 'post',
+    method: 'put',
     data,
   })
 }
