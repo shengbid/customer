@@ -55,56 +55,58 @@ const CompanyPeople: React.FC<infoProps> = ({ infoData, handleUp, isDetail = fal
       }
       // 实控人
       const skr = ryList.skr
-      if (skr.backFileName) {
-        skr.idReverse = [
-          {
-            fileName: skr.backFileName,
-            fileUrl: skr.backFileUrl,
-            pictureDomain: skr.pictureDomain,
-          },
-        ]
-      }
-      skr.idFront = [
-        {
-          fileName: skr.frontFileName,
-          fileUrl: skr.frontFileUrl,
-          pictureDomain: skr.pictureDomain,
-        },
-      ]
-      skr.spouseCreditReport = JSON.parse(skr.spouseCreditReport)
-      if (skr.houseLicense) {
-        skr.houseLicense = JSON.parse(skr.houseLicense)
-      }
-      if (skr.driveLicense) {
-        skr.driveLicense = JSON.parse(skr.driveLicense)
-      }
-
-      setRealData(skr)
-
-      // 实控人配偶
-      const skrpo = ryList.skrpo
-      if (skrpo) {
-        if (skrpo.backFileName) {
-          skrpo.idReverse = [
+      if (skr) {
+        if (skr.backFileName) {
+          skr.idReverse = [
             {
-              fileName: skrpo.backFileName,
-              fileUrl: skrpo.backFileUrl,
-              pictureDomain: skrpo.pictureDomain,
+              fileName: skr.backFileName,
+              fileUrl: skr.backFileUrl,
+              pictureDomain: skr.pictureDomain,
             },
           ]
         }
-        skrpo.idFront = [
+        skr.idFront = [
           {
-            fileName: skrpo.frontFileName,
-            fileUrl: skrpo.frontFileUrl,
-            pictureDomain: skrpo.pictureDomain,
+            fileName: skr.frontFileName,
+            fileUrl: skr.frontFileUrl,
+            pictureDomain: skr.pictureDomain,
           },
         ]
-        skrpo.creditReport = JSON.parse(skrpo.creditReport)
-        setMetalData(skrpo)
+        skr.spouseCreditReport = JSON.parse(skr.spouseCreditReport)
+        if (skr.houseLicense) {
+          skr.houseLicense = JSON.parse(skr.houseLicense)
+        }
+        if (skr.driveLicense) {
+          skr.driveLicense = JSON.parse(skr.driveLicense)
+        }
+
+        setRealData(skr)
+
+        // 实控人配偶
+        const skrpo = ryList.skrpo
+        if (skrpo) {
+          if (skrpo.backFileName) {
+            skrpo.idReverse = [
+              {
+                fileName: skrpo.backFileName,
+                fileUrl: skrpo.backFileUrl,
+                pictureDomain: skrpo.pictureDomain,
+              },
+            ]
+          }
+          skrpo.idFront = [
+            {
+              fileName: skrpo.frontFileName,
+              fileUrl: skrpo.frontFileUrl,
+              pictureDomain: skrpo.pictureDomain,
+            },
+          ]
+          skrpo.creditReport = JSON.parse(skrpo.creditReport)
+          setMetalData(skrpo)
+        }
+        setMainData(ryList.zyfzr)
+        setFinanceData(ryList.cwfzr)
       }
-      setMainData(ryList.zyfzr)
-      setFinanceData(ryList.cwfzr)
     }
   }, [infoData])
 
