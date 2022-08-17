@@ -53,7 +53,6 @@ const ImportFile: React.FC<importFileProps> = ({
       }
       handleSuccess(file.response.data)
       setFileVisible(false)
-      message.success(intl.formatMessage({ id: 'pages.modal.importInfo' }))
     }
   }
 
