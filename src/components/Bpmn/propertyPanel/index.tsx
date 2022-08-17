@@ -425,7 +425,7 @@ const PropertyPanel: React.FC<{ bpmnModeler: any }> = ({ bpmnModeler }) => {
     newUserTask.recipientUsers = users.join(',')
     newUserTask.recipientUsersName = usersName.join(',')
     updateProperties({
-      recipientUsers: newUserTask.recipientUsers,
+      'activiti:recipientUsers': newUserTask.recipientUsers,
     })
     setRecipientTaskArr(newUserTask)
   }
@@ -708,8 +708,7 @@ const PropertyPanel: React.FC<{ bpmnModeler: any }> = ({ bpmnModeler }) => {
         item === 'jobPriority' ||
         item === 'historyTimeToLive' ||
         item === 'candidateGroups' ||
-        item === 'formKey' ||
-        item === 'recipientGroups'
+        item === 'formKey'
       ) {
         if (item === 'id' && !changedValues[item]) {
           return false
@@ -777,6 +776,10 @@ const PropertyPanel: React.FC<{ bpmnModeler: any }> = ({ bpmnModeler }) => {
         setUserTask({ ...userTask, [item]: changedValues[item] })
       }
       if (item === 'recipientGroups') {
+        updateProperties({ 'activiti:recipientGroups': changedValues[item] })
+      }
+      if (item === 'recipientGroups') {
+        // 抄送人
         setRecipientTaskArr({ ...recipientTask, [item]: changedValues[item] })
       } else {
         setForm({ ...panelValue, [item]: changedValues[item] })
