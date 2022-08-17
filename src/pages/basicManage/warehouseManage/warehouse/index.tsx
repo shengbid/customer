@@ -1,15 +1,16 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import MenuProTable from '@/components/ComProtable/MenuProTable'
-import type { cooperateListProps, cooperateListParamProps } from '@/services/types'
+import type { warehouseListProps, warehouseListParamProps } from '@/services/types'
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
-import { message, Typography, Popconfirm } from 'antd'
-import { getLoanCustomerList, deleteLoanCustomer } from '@/services'
+import { message, Typography, Popconfirm, Select } from 'antd'
+import { getWarehouseList, deleteWarehouse, getWareCompanyList } from '@/services'
 import DictSelect from '@/components/ComSelect'
 import AddModal from './components/addModal'
 import { useIntl } from 'umi'
 
 const { MenuAddButton } = MenuProTable
 const { Link } = Typography
+const { Option } = Select
 
 const ListManage: React.FC = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false)
@@ -17,10 +18,23 @@ const ListManage: React.FC = () => {
   const intl = useIntl()
   const actionRef = useRef<ActionType>()
   const [statusData, setStatusData] = useState<any>([])
+  const [companyList, setCompanyList] = useState<any[]>([])
+
+  // 获取物流企业下拉
+  const getWareList = async () => {
+    const { data } = await getWareCompanyList()
+    if (data) {
+      setCompanyList(data)
+    }
+  }
+
+  useEffect(() => {
+    getWareList()
+  }, [])
 
   // 删除
   const delteRecored = async (ids: number | string) => {
-    await deleteLoanCustomer(ids)
+    await deleteWarehouse(ids)
     message.success(
       intl.formatMessage({
         id: 'pages.form.delete',
@@ -29,22 +43,22 @@ const ListManage: React.FC = () => {
     actionRef.current?.reload()
   }
 
-  const columns: ProColumns<cooperateListProps>[] = [
+  const columns: ProColumns<warehouseListProps>[] = [
     {
       title: '仓库编号',
-      key: 'fullName',
-      dataIndex: 'fullName',
+      key: 'id',
+      dataIndex: 'id',
       hideInSearch: true,
     },
     {
       title: '仓库名称',
-      key: 'fullName',
-      dataIndex: 'fullName',
+      key: 'warehouseName',
+      dataIndex: 'warehouseName',
     },
     {
       title: '仓库类型',
-      key: 'enterpriseType',
-      dataIndex: 'enterpriseType',
+      key: 'warehouseType',
+      dataIndex: 'warehouseType',
       hideInTable: true,
       renderFormItem: (_, { type }) => {
         if (type === 'form') {
@@ -52,7 +66,7 @@ const ListManage: React.FC = () => {
         }
         return (
           <DictSelect
-            authorword="credit_status"
+            authorword="warehouse_type"
             getDictData={(data: any) => {
               setStatusData(data)
             }}
@@ -62,41 +76,41 @@ const ListManage: React.FC = () => {
     },
     {
       title: '仓库类型',
-      key: 'enterpriseType',
-      dataIndex: 'enterpriseType',
+      key: 'warehouseType',
+      dataIndex: 'warehouseType',
       hideInSearch: true,
-      render: (_, recored) => statusData[recored.enterpriseType],
+      render: (_, recored) => statusData[recored.warehouseType],
     },
     {
       title: '所属物流企业',
-      key: 'enterpriseType',
-      dataIndex: 'enterpriseType',
+      key: 'logistics',
+      dataIndex: 'logistics',
       hideInTable: true,
       renderFormItem: (_, { type }) => {
         if (type === 'form') {
           return null
         }
         return (
-          <DictSelect
-            authorword="credit_status"
-            getDictData={(data: any) => {
-              setStatusData(data)
-            }}
-          />
+          <Select labelInValue>
+            {companyList.map((item: any) => (
+              <Option key={item.id} value={item.id}>
+                {item.fullName}
+              </Option>
+            ))}
+          </Select>
         )
       },
     },
     {
       title: '所属物流企业',
-      key: 'enterpriseType',
-      dataIndex: 'enterpriseType',
+      key: 'logisticsEnterprise',
+      dataIndex: 'logisticsEnterprise',
       hideInSearch: true,
-      render: (_, recored) => statusData[recored.enterpriseType],
     },
     {
       title: '仓库地址',
-      key: 'createTime',
-      dataIndex: 'createTime',
+      key: 'warehouseAddress',
+      dataIndex: 'warehouseAddress',
       hideInSearch: true,
     },
     {
@@ -110,6 +124,7 @@ const ListManage: React.FC = () => {
         <Link
           key="edit"
           onClick={() => {
+            setId(recored.id)
             setModalVisible(true)
           }}
         >
@@ -130,9 +145,12 @@ const ListManage: React.FC = () => {
     },
   ]
 
-  const getList = async (param: cooperateListParamProps) => {
-    console.log(param)
-    const { rows, total } = await getLoanCustomerList(param)
+  const getList = async (param: warehouseListParamProps) => {
+    if (param.logistics) {
+      param.logisticsEnterpriseId = param.logistics.value
+      param.logisticsEnterprise = param.logistics.label
+    }
+    const { rows, total } = await getWarehouseList(param)
     return {
       data: rows,
       total,
@@ -147,7 +165,7 @@ const ListManage: React.FC = () => {
 
   return (
     <>
-      <MenuProTable<cooperateListProps>
+      <MenuProTable<warehouseListProps>
         request={getList}
         rowKey="id"
         columns={columns}

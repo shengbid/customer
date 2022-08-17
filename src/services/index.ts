@@ -24,3 +24,5 @@ export * from './leader/undone' // 待办管理
 
 export * from './credit' // 授信
 export * from './credit/approve' // 授信
+
+export * from './basicManage/warehouse' // 仓库管理

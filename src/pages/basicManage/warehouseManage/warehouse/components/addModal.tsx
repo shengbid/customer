@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { Modal, Button, Form, Input, message, Spin, Row, Col } from 'antd'
+import { Modal, Button, Form, Input, message, Spin, Row, Col, Select } from 'antd'
 import type { addModalProps } from '@/services/types'
-import { addLoanCustomer } from '@/services'
+import { addWarehouse, warehouseDetail, editWarehouse, getWareCompanyList } from '@/services'
 import DictSelect from '@/components/ComSelect'
 import { useIntl } from 'umi'
 import RequiredLabel from '@/components/RequiredLabel'
 import ComEditTable from '@/components/ComProtable/ComEditTable'
 import { emailReg, phoneTestReg } from '@/utils/reg'
+
+const { Option } = Select
 
 const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleCancel, info }) => {
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
@@ -16,15 +18,41 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
     },
   ])
   const [editableKeys, setEditableRowKeys] = useState<any[]>(['1'])
+  const [companyList, setCompanyList] = useState<any[]>([])
   const [spinning] = useState<boolean>(false)
   const [form] = Form.useForm()
   const [tableForm] = Form.useForm()
   const [title, setTitle] = useState<string>('新增仓库')
 
+  // 获取物流企业下拉
+  const getWareList = async () => {
+    const { data } = await getWareCompanyList()
+    if (data) {
+      setCompanyList(data)
+    }
+  }
+  // 获取详情
+  const getDetail = async () => {
+    const { data } = await warehouseDetail(info)
+    if (data) {
+      form.setFieldsValue({
+        ...data.jxWarehouseManage,
+        logistics: {
+          label: data.logisticsEnterprise,
+          value: data.logisticsEnterpriseId,
+        },
+      })
+      setDataSource(data.jxWarehouseContactList)
+    }
+  }
+
   useEffect(() => {
-    if (modalVisible && info) {
-      setTitle('修改仓库')
-      setDataSource([])
+    if (modalVisible) {
+      getWareList()
+      if (info) {
+        setTitle('修改仓库')
+        getDetail()
+      }
     }
   }, [modalVisible, info])
 
@@ -33,7 +61,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
   const columns = [
     {
       title: <RequiredLabel label="联系人姓名" />,
-      dataIndex: 'contractName',
+      dataIndex: 'name',
       width: '20%',
       formItemProps: {
         rules: [
@@ -46,7 +74,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
     },
     {
       title: <RequiredLabel label="岗位" />,
-      dataIndex: 'contractNo',
+      dataIndex: 'post',
       width: '17%',
       formItemProps: {
         rules: [
@@ -91,7 +119,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
     },
     {
       title: <RequiredLabel label="邮箱" />,
-      dataIndex: 'signTime',
+      dataIndex: 'mailbox',
       width: '17%',
       formItemProps: {
         rules: [
@@ -105,7 +133,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
     },
     {
       title: <RequiredLabel label="抄送邮箱" />,
-      dataIndex: 'signTime6',
+      dataIndex: 'copyMailbox',
       width: '17%',
       formItemProps: {
         rules: [
@@ -122,8 +150,27 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
   const handleOk = async (values: any) => {
     console.log(values)
     setConfirmLoading(true)
+    await tableForm.validateFields()
     try {
-      await addLoanCustomer(values)
+      if (info) {
+        await editWarehouse({
+          jxWarehouseManage: {
+            ...values,
+            logisticsEnterpriseId: values.logistics.value,
+            logisticsEnterprise: values.logistics.label,
+          },
+          jxWarehouseContactList: dataSource,
+        })
+      } else {
+        await addWarehouse({
+          jxWarehouseManage: {
+            ...values,
+            logisticsEnterpriseId: values.logistics.value,
+            logisticsEnterprise: values.logistics.label,
+          },
+          jxWarehouseContactList: dataSource,
+        })
+      }
       setConfirmLoading(false)
     } catch (error) {
       setConfirmLoading(false)
@@ -166,11 +213,15 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
             })}
           </h3>
 
+          <Form.Item label="id" name="id" style={{ display: 'none' }}>
+            <Input maxLength={150} />
+          </Form.Item>
+
           <Row gutter={24}>
             <Col span={12}>
               <Form.Item
                 label="仓库名称"
-                name="name"
+                name="warehouseName"
                 rules={[
                   {
                     required: true,
@@ -183,24 +234,8 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
             </Col>
             <Col span={12}>
               <Form.Item
-                label="仓库编号"
-                name="code"
-                rules={[
-                  {
-                    required: true,
-                    message: `请输入仓库编号`,
-                  },
-                ]}
-              >
-                <Input maxLength={150} />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={24}>
-            <Col span={12}>
-              <Form.Item
                 label="仓库类型"
-                name="type1"
+                name="warehouseType"
                 rules={[
                   {
                     required: true,
@@ -208,13 +243,15 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
                   },
                 ]}
               >
-                <DictSelect authorword="company_register" />
+                <DictSelect authorword="warehouse_type" />
               </Form.Item>
             </Col>
+          </Row>
+          <Row gutter={24}>
             <Col span={12}>
               <Form.Item
                 label="所属企业"
-                name="type2"
+                name="logistics"
                 rules={[
                   {
                     required: true,
@@ -222,16 +259,19 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
                   },
                 ]}
               >
-                <DictSelect authorword="company_register" />
+                <Select labelInValue>
+                  {companyList.map((item: any) => (
+                    <Option key={item.id} value={item.id}>
+                      {item.fullName}
+                    </Option>
+                  ))}
+                </Select>
               </Form.Item>
             </Col>
-          </Row>
-
-          <Row gutter={24}>
-            <Col span={24}>
+            <Col span={12}>
               <Form.Item
                 label="仓库地址"
-                name="name"
+                name="warehouseAddress"
                 rules={[
                   {
                     required: true,

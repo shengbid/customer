@@ -8,3 +8,4 @@ export * from './customer'
 export * from './leader'
 export * from './approval'
 export * from './credit'
+export * from './basic/warehouse' // 仓库管理
