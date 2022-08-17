@@ -112,7 +112,7 @@ const ImportProduct: React.FC<addModalProps> = ({
   const submit = async () => {
     setConfirmLoading(true)
     try {
-      await addMutilProduct(dataSource)
+      await addMutilProduct({ jxGoodManageList: dataSource })
     } catch (error) {
       setConfirmLoading(false)
       return
