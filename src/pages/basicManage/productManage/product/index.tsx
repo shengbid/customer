@@ -133,7 +133,7 @@ const ListManage: React.FC = () => {
             authorword="system:user:import"
             key="import"
             actionUrl="/system/goodManage/importData"
-            downUrl="/system/goodManage"
+            downUrl="/system/goodManage/importTemplate"
             title={'商品列表'}
             handleSuccess={handleSuccess}
           />,

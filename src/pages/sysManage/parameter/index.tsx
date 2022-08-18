@@ -191,7 +191,7 @@ const RoleManage: React.FC = () => {
             title={intl.formatMessage({
               id: 'sys.params.name',
             })}
-            url="config"
+            url="/system/config/export"
           />,
         ]}
         tableAlertRender={false}

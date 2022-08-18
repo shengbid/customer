@@ -115,7 +115,6 @@ const CompletePage: React.FC = (props: any) => {
                 params={{ envelopeId: item.envelopeId }}
                 title=""
                 authorword="monitor:operlog:query"
-                all
                 exportText="下载文件"
               />
               <Button

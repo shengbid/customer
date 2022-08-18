@@ -222,7 +222,7 @@ const RoleManage: React.FC = () => {
             title={intl.formatMessage({
               id: 'sys.operate.name',
             })}
-            url="/monitor/operlog"
+            url="/system/monitor/operlog/export"
           />,
         ]}
         tableAlertRender={false}

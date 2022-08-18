@@ -151,7 +151,7 @@ const RoleManage: React.FC = () => {
             title={intl.formatMessage({
               id: 'sys.operate.name',
             })}
-            url="/monitor/logininfor"
+            url="/system/monitor/logininfor/export"
           />,
         ]}
         tableAlertRender={false}

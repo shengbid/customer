@@ -199,7 +199,7 @@ const RoleManage: React.FC = () => {
             title={intl.formatMessage({
               id: 'sys.timedTask.log',
             })}
-            url="/schedule/job/log"
+            url="/system/schedule/job/log/export"
           />,
         ]}
         tableAlertRender={false}
