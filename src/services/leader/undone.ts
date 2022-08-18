@@ -24,7 +24,7 @@ export async function getdoneList(params: undoneListParamProps) {
 }
 /** 获取抄送列表 */
 export async function geRecepetList(params: undoneListParamProps) {
-  return request<{ rows: undoneListProps[]; total: number; countWd: number }>(`${url}/selectCs`, {
+  return request<{ rows: undoneListProps[]; total: number; extra: number }>(`${url}/selectCs`, {
     params: paramsToPageParams(params),
   })
 }

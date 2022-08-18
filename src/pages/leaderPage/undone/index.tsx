@@ -2,8 +2,8 @@ import MenuProTable from '@/components/ComProtable/MenuProTable'
 import type { undoneListProps, undoneListParamProps, doneListProps } from '@/services/types'
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import { Typography, Tabs, Badge } from 'antd'
-import { searchdoneList, searchUndoneList, geRecepetList } from '@/services'
-import React, { useState, useRef } from 'react'
+import { searchdoneList, searchUndoneList, geRecepetList, updateRecepetStatus } from '@/services'
+import React, { useState, useRef, useEffect } from 'react'
 // import { StatisticCard } from '@ant-design/pro-card'
 import { useIntl, history } from 'umi'
 import AddModal from './components/addModal'
@@ -20,7 +20,7 @@ const Undone: React.FC = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [info, setInfo] = useState<any>()
   const [dbCount, setdbCount] = useState<number>(0)
-  const [ybCount] = useState<number>(0)
+  const [csCount, setCSCount] = useState<number>(0)
   const [processTypes, setProcessTypes] = useState<any[]>([])
 
   const getList = async (param: undoneListParamProps) => {
@@ -47,18 +47,23 @@ const Undone: React.FC = () => {
   // 获取抄送列表
   const getReceptList = async (param: undoneListParamProps) => {
     // console.log(param)
-    const { rows, total } = await geRecepetList(param)
-    // setybCount(total)
+    const { rows, total, extra } = await geRecepetList(param)
+    setCSCount(extra)
     return {
       data: rows,
       total,
     }
   }
 
+  useEffect(() => {
+    getReceptList()
+  }, [])
+
   const columns: ProColumns<undoneListProps>[] = [
     {
       title: '任务编号',
       dataIndex: 'processNo',
+      width: 150,
     },
     {
       title: '任务类型',
@@ -69,6 +74,7 @@ const Undone: React.FC = () => {
     {
       title: '任务名称',
       dataIndex: 'taskTotalName',
+      width: '25%',
     },
     {
       title: '任务类型',
@@ -134,6 +140,7 @@ const Undone: React.FC = () => {
     {
       title: '任务编号',
       dataIndex: 'processNo',
+      width: 150,
     },
     {
       title: '任务类型',
@@ -144,6 +151,7 @@ const Undone: React.FC = () => {
     {
       title: '任务名称',
       dataIndex: 'taskTotalName',
+      width: '18%',
     },
     {
       title: '任务类型',
@@ -170,6 +178,12 @@ const Undone: React.FC = () => {
       dataIndex: 'startTime',
       hideInSearch: true,
       valueType: 'dateTime',
+      render: (_, recored) => {
+        if (activeKey === 'tab2') {
+          return <>{recored.createTime}</>
+        }
+        return <>{recored.startTime}</>
+      },
     },
     {
       title: '完成时间',
@@ -183,10 +197,11 @@ const Undone: React.FC = () => {
     {
       title: '状态',
       key: 'status',
-      width: 160,
+      width: 130,
       dataIndex: 'status',
       hideInSearch: true,
       hideInTable: activeKey === 'tab3',
+      render: (val) => (Number(val) === 0 ? <>未读</> : <>已读</>),
     },
     {
       title: intl.formatMessage({
@@ -201,6 +216,9 @@ const Undone: React.FC = () => {
           onClick={async () => {
             setInfo(recored)
             // setModalVisible(true)
+            if (activeKey === 'tab2') {
+              await updateRecepetStatus({ id: recored.id, status: recored.status })
+            }
             history.push({
               pathname: '/leaderPage/undone/approval',
               query: {
@@ -211,9 +229,10 @@ const Undone: React.FC = () => {
                 // instanceId: recored.instanceId,
                 // formKey: recored.formKey,
                 title: recored.taskTotalName,
-                taskNumber: recored.instanceId,
+                taskNumber: activeKey === 'tab2' ? recored.processInstanceId : recored.instanceId,
               },
             })
+
             sessionStorage.setItem('preUrl', '/leaderPage/undone')
           }}
         >
@@ -265,7 +284,7 @@ const Undone: React.FC = () => {
             actionRef={actionRef}
           />
         </TabPane>
-        <TabPane tab={<Badge count={ybCount}>抄送给我</Badge>} key="tab2">
+        <TabPane tab={<Badge count={csCount}>抄送给我</Badge>} key="tab2">
           <MenuProTable<any> rowKey="id" request={getReceptList} columns={columns2} />
         </TabPane>
         <TabPane tab="我的已办" key="tab3">
