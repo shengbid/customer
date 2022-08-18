@@ -1,5 +1,6 @@
 import React from 'react'
 import CreditApproval from './creditApproval'
+import FinanceApproval from './financeApproval'
 import ComCard from '@/components/ComPage/ComCard'
 
 interface detailProps {
@@ -20,7 +21,11 @@ const BusinessDetail: React.FC<detailProps> = ({ activityParams, creditParams })
       </ComCard>
     )
   }
-  return <></>
+  return (
+    <ComCard title="详情信息">
+      <FinanceApproval businessKey={activityParams.businessKey} />
+    </ComCard>
+  )
 }
 
 export default BusinessDetail
