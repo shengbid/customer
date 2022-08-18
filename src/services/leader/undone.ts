@@ -29,9 +29,9 @@ export async function geRecepetList(params: undoneListParamProps) {
   })
 }
 /** 改变抄送状态 */
-export async function updateRecepetStatus(params: { id: string; status: string }) {
+export async function updateRecepetStatus(data: { id: string; status: string }) {
   return request(`${url}/csEdit`, {
-    params,
+    data,
     method: 'put',
   })
 }
