@@ -24,8 +24,15 @@ export async function getdoneList(params: undoneListParamProps) {
 }
 /** 获取抄送列表 */
 export async function geRecepetList(params: undoneListParamProps) {
-  return request<{ rows: undoneListProps[]; total: number }>(`${url}/selectCs`, {
+  return request<{ rows: undoneListProps[]; total: number; countWd: number }>(`${url}/selectCs`, {
     params: paramsToPageParams(params),
+  })
+}
+/** 改变抄送状态 */
+export async function updateRecepetStatus(params: { id: string; status: string }) {
+  return request(`${url}/csEdit`, {
+    params,
+    method: 'put',
   })
 }
 

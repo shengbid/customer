@@ -29,10 +29,12 @@ export interface doneListProps {
   taskNodeName: string // name
   fqrNickname: string
   startTime: string //
+  createTime: string //
   endTime: string
   instanceId: string
+  processInstanceId: string
   formkey: string
-  formKey: string
+  status: string
 }
 export interface doneListParamProps extends pageLimitProps {
   rwlx: any
