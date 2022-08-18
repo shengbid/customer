@@ -2,7 +2,7 @@ import MenuProTable from '@/components/ComProtable/MenuProTable'
 import type { undoneListProps, undoneListParamProps, doneListProps } from '@/services/types'
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import { Typography, Tabs, Badge } from 'antd'
-import { searchdoneList, searchUndoneList } from '@/services'
+import { searchdoneList, searchUndoneList, geRecepetList } from '@/services'
 import React, { useState, useRef } from 'react'
 // import { StatisticCard } from '@ant-design/pro-card'
 import { useIntl, history } from 'umi'
@@ -14,7 +14,7 @@ const { TabPane } = Tabs
 const { Link } = Typography
 
 const Undone: React.FC = () => {
-  // const [setActiveKey] = useState<React.Key | undefined>('tab1')
+  const [activeKey, setActiveKey] = useState<React.Key | undefined>('tab1')
   const intl = useIntl()
   const actionRef = useRef<ActionType>()
   const [modalVisible, setModalVisible] = useState<boolean>(false)
@@ -38,6 +38,16 @@ const Undone: React.FC = () => {
     // console.log(param)
     // const { rows, total } = await getdoneList(param)
     const { rows, total } = await searchdoneList(param)
+    // setybCount(total)
+    return {
+      data: rows,
+      total,
+    }
+  }
+  // 获取抄送列表
+  const getReceptList = async (param: undoneListParamProps) => {
+    // console.log(param)
+    const { rows, total } = await geRecepetList(param)
     // setybCount(total)
     return {
       data: rows,
@@ -168,6 +178,15 @@ const Undone: React.FC = () => {
       dataIndex: 'endTime',
       hideInSearch: true,
       valueType: 'dateTime',
+      hideInTable: activeKey === 'tab2',
+    },
+    {
+      title: '状态',
+      key: 'status',
+      width: 160,
+      dataIndex: 'status',
+      hideInSearch: true,
+      hideInTable: activeKey === 'tab3',
     },
     {
       title: intl.formatMessage({
@@ -237,7 +256,7 @@ const Undone: React.FC = () => {
           }}
         />
       </StatisticCard.Group> */}
-      <Tabs type="card" className="tab-bages">
+      <Tabs type="card" className="tab-bages" onChange={setActiveKey}>
         <TabPane tab={<Badge count={dbCount}>我的待办</Badge>} key="tab1">
           <MenuProTable<any>
             rowKey="id"
@@ -247,7 +266,7 @@ const Undone: React.FC = () => {
           />
         </TabPane>
         <TabPane tab={<Badge count={ybCount}>抄送给我</Badge>} key="tab2">
-          <MenuProTable<any> rowKey="id" request={getdoList} columns={columns} />
+          <MenuProTable<any> rowKey="id" request={getReceptList} columns={columns2} />
         </TabPane>
         <TabPane tab="我的已办" key="tab3">
           <MenuProTable<any> rowKey="taskId" request={getdoList} columns={columns2} />

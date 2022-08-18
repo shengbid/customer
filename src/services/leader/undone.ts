@@ -22,6 +22,12 @@ export async function getdoneList(params: undoneListParamProps) {
     params: paramsToPageParams(params),
   })
 }
+/** 获取抄送列表 */
+export async function geRecepetList(params: undoneListParamProps) {
+  return request<{ rows: undoneListProps[]; total: number }>(`${url}/selectCs`, {
+    params: paramsToPageParams(params),
+  })
+}
 
 /** 查询已办办列表 */
 export async function searchdoneList(params: undoneListParamProps) {
