@@ -10,12 +10,7 @@ interface inputProps {
 }
 
 // 整数输入框
-const PointInput: React.FC<inputProps> = ({
-  value,
-  onChange,
-  max = 99999.99,
-  addonAfter = '月',
-}) => {
+const PointInput: React.FC<inputProps> = ({ value, onChange, max = 99999.99, addonAfter }) => {
   return (
     <InputNumber
       addonAfter={addonAfter}
