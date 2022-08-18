@@ -201,7 +201,7 @@ const RoleManage: React.FC = () => {
         //     title={intl.formatMessage({
         //       id: 'sys.post.name',
         //     })}
-        //     url="/system/post/export"
+        //     url="/post/export"
         //   />,
         //   <MenuMultiDelButton
         //     authorword="system:post:remove"
