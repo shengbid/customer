@@ -102,12 +102,12 @@ const ListManage: React.FC = () => {
       width: 90,
       hideInSearch: true,
     },
-    {
-      title: '入库单号',
-      key: 'createTime',
-      dataIndex: 'createTime',
-      // hideInSearch: true,
-    },
+    // {
+    //   title: '入库单号',
+    //   key: 'createTime',
+    //   dataIndex: 'createTime',
+    //   // hideInSearch: true,
+    // },
     {
       title: '批次号',
       key: 'createTime',
