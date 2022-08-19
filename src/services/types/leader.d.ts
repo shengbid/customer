@@ -14,9 +14,9 @@ export interface undoneListProps {
   formKey: string
 }
 export interface undoneListParamProps extends pageLimitProps {
-  rwlx: any
-  processNo: string
-  taskTotalName: string // name
+  rwlx?: any
+  processNo?: string
+  taskTotalName?: string // name
 }
 // 已办
 export interface doneListProps {

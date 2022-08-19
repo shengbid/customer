@@ -141,7 +141,7 @@ const PropertyPanel: React.FC<{ bpmnModeler: any }> = ({ bpmnModeler }) => {
   const setUserTask = async (businessObject: any) => {
     // console.log(businessObject)
     const attrs = businessObject.$attrs ? businessObject.$attrs : {}
-    let recipientGroups = attrs.recipientGroups ? attrs.recipientGroups : []
+    let recipientGroups = attrs['activiti:recipientGroups'] ? attrs['activiti:recipientGroups'] : []
     let candidateGroups = businessObject?.candidateGroups ? businessObject?.candidateGroups : []
 
     const oldSaveProperties = { ...saveProperties }
@@ -177,9 +177,9 @@ const PropertyPanel: React.FC<{ bpmnModeler: any }> = ({ bpmnModeler }) => {
     }
 
     newRecipientTask.recipientUsersName = ''
-    if (attrs.recipientUsers) {
-      newRecipientTask.recipientUsers = attrs.recipientUsers
-      const newArr = attrs.recipientUsers.split(',')
+    if (attrs['activiti:recipientUsers']) {
+      newRecipientTask.recipientUsers = attrs['activiti:recipientUsers']
+      const newArr = attrs['activiti:recipientUsers'].split(',')
       newRecipientTask.recipientUsersSelectedArr = []
 
       rows.forEach((item: userProps) => {
@@ -199,9 +199,9 @@ const PropertyPanel: React.FC<{ bpmnModeler: any }> = ({ bpmnModeler }) => {
       // 用户角色
       candidateGroups = businessObject?.candidateGroups.split(',')
     }
-    if (attrs?.recipientGroups && !isArray(attrs?.recipientGroups)) {
+    if (attrs['activiti:recipientGroups'] && !isArray(attrs['activiti:recipientGroups'])) {
       // 抄送人角色
-      recipientGroups = businessObject?.recipientGroups.split(',')
+      recipientGroups = attrs['activiti:recipientGroups'].split(',')
     }
 
     setUserTaskArr({

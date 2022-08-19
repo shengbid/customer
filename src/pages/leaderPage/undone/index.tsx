@@ -56,7 +56,7 @@ const Undone: React.FC = () => {
   }
 
   useEffect(() => {
-    getReceptList()
+    getReceptList({ pageNum: 1, pageSize: 10 })
   }, [])
 
   const columns: ProColumns<undoneListProps>[] = [
