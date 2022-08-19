@@ -166,20 +166,6 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
           <Row gutter={24}>
             <Col span={12}>
               <Form.Item
-                label="商品REF码"
-                name="goodRef"
-                rules={[
-                  {
-                    required: true,
-                    message: `请输入商品REF码`,
-                  },
-                ]}
-              >
-                <Input placeholder="请输入商品REF码, 如果有多个以逗号(半角)隔开" maxLength={150} />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
                 label="商品HScode"
                 name="goodHscode"
                 rules={[
@@ -192,6 +178,20 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
                 <Input maxLength={150} />
               </Form.Item>
             </Col>
+            <Col span={12}>
+              <Form.Item
+                label="商品REF码"
+                name="goodRef"
+                rules={[
+                  {
+                    required: false,
+                    message: `请输入商品REF码`,
+                  },
+                ]}
+              >
+                <Input placeholder="请输入商品REF码, 如果有多个以逗号(半角)隔开" maxLength={150} />
+              </Form.Item>
+            </Col>
           </Row>
 
           <Row gutter={24}>
@@ -201,12 +201,26 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
                 name="goodSku"
                 rules={[
                   {
-                    required: true,
+                    required: false,
                     message: `请输入商品SKU NO`,
                   },
                 ]}
               >
                 <Input placeholder="请输入商品SKU NO, 如果有多个以逗号(半角)隔开" maxLength={150} />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="商品单位"
+                name="unit"
+                rules={[
+                  {
+                    required: false,
+                    message: `请输入商品单位`,
+                  },
+                ]}
+              >
+                <Input placeholder="请输入商品单位, 例如: 个" maxLength={150} />
               </Form.Item>
             </Col>
           </Row>
