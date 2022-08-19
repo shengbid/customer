@@ -122,7 +122,7 @@ const SignContract = ({}, ref: any) => {
         <Form name="basic" form={form} autoComplete="off" layout="vertical">
           <Row gutter={24}>
             <Col span={8}>
-              <Form.Item label="签署现场拍摄视频">
+              <Form.Item label="现场拍摄视频">
                 <ComUpload isDetail value={infoData.creditReport} />
               </Form.Item>
             </Col>
@@ -133,7 +133,7 @@ const SignContract = ({}, ref: any) => {
                 rules={[
                   {
                     required: true,
-                    message: `请选择运输方式`,
+                    message: `请选择授信生效日`,
                   },
                 ]}
               >
@@ -147,7 +147,7 @@ const SignContract = ({}, ref: any) => {
                 rules={[
                   {
                     required: true,
-                    message: `请选择运输方式`,
+                    message: `请选择授信到期日`,
                   },
                 ]}
               >
