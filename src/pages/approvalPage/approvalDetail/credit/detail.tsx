@@ -5,6 +5,7 @@ import CreditDetail from '../../businessDetail/creditDetail'
 import SurveyReportDetail from '../../businessDetail/creditDetail/surveyReport/detail'
 import ContractDetail from '../../businessDetail/creditDetail/contract/detail'
 import RealteDetail from '../../businessDetail/creditDetail/relatedForm/detail'
+import SignContract from '../../businessDetail/creditDetail/signContract'
 
 const { Panel } = ComCollapse
 
@@ -36,14 +37,13 @@ const ApprovalDom: React.FC<approvalDomProps> = ({ formName, id, creditParams })
         </ComCard>
       </>
     ),
-
     credit3: (
       <ComCard title="审核信息">
         <SurveyReportDetail creditParams={creditParams} />
       </ComCard>
     ),
-
     credit5: <ContractDetail creditParams={creditParams} />,
+    credit7: <SignContract />,
   }
 
   return approvalDom[formName] ? approvalDom[formName] : <></>
