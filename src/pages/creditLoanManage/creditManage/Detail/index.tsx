@@ -8,6 +8,7 @@ import DictShow from '@/components/ComSelect/dictShow'
 import styles from './index.less'
 import { history } from 'umi'
 import ComPageContanier from '@/components/ComPage/ComPagContanier'
+import { toApprovalDetailPage } from '@/utils/approval'
 
 const { Link } = Typography
 
@@ -49,13 +50,9 @@ const Detail: React.FC = (props: any) => {
         <Link
           key="approval"
           onClick={async () => {
-            history.push({
-              pathname: '/leaderPage/undone/approval',
-              query: {
-                taskNumber: recored.taskNumber,
-                detail: 'detail',
-                title: `${companyName}-授信审核`,
-              },
+            toApprovalDetailPage('credit', {
+              title: `${companyName}-授信审核`,
+              taskNumber: recored.taskNumber,
             })
             // console.log(props.location)
             const search =

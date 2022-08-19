@@ -8,9 +8,8 @@ import React, { useState, useRef, useEffect } from 'react'
 import { useIntl, history } from 'umi'
 import AddModal from './components/addModal'
 import DictSelect from '@/components/ComSelect'
-// import { FileImageOutlined } from '@ant-design/icons'
+import { toApprovalDetailPage } from '@/utils/approval'
 const { TabPane } = Tabs
-// const { Divider } = StatisticCard
 const { Link } = Typography
 
 const Undone: React.FC = () => {
@@ -219,20 +218,10 @@ const Undone: React.FC = () => {
             if (activeKey === 'tab2') {
               await updateRecepetStatus({ id: recored.id, status: recored.status })
             }
-            history.push({
-              pathname: '/leaderPage/undone/approval',
-              query: {
-                detail: 'detail',
-                // id: recored.id,
-                // businessKey: recored.businessKey,
-                // taskNodeName: recored.taskNodeName,
-                // instanceId: recored.instanceId,
-                // formKey: recored.formKey,
-                title: recored.taskTotalName,
-                taskNumber: activeKey === 'tab2' ? recored.processInstanceId : recored.instanceId,
-              },
+            toApprovalDetailPage(recored.formKey, {
+              title: recored.taskTotalName,
+              taskNumber: activeKey === 'tab2' ? recored.processInstanceId : recored.instanceId,
             })
-
             sessionStorage.setItem('preUrl', '/leaderPage/undone')
           }}
         >

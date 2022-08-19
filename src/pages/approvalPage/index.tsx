@@ -27,7 +27,7 @@ const ApprovalPage: React.FC = (props: any) => {
   const [activityParams, setActivityParams] = useState<any>({})
 
   const { query } = props.location
-  const { taskNumber, detail, title } = query
+  const { taskNumber, title } = query
   // 根据任务id获取流程参数
   const getActivitParams = async () => {
     const { data } = await getActivityParams(taskNumber)
@@ -141,7 +141,6 @@ const ApprovalPage: React.FC = (props: any) => {
         <ApprovalDom
           id={activityParams.instanceId}
           formName={activityParams.formKey}
-          detail={detail}
           creditParams={{
             ...creditParams,
             taskID: activityParams.id,
@@ -151,8 +150,8 @@ const ApprovalPage: React.FC = (props: any) => {
         />
       ) : null}
 
-      {/* 审核通用表单 */}
-      {!detail && activityParams.id ? (
+      {/* 审核按钮通用表单 */}
+      {activityParams.id ? (
         <ApprovalForm
           confirmLoading={confirmLoading}
           handleSubmit={approval}

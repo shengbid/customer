@@ -33,7 +33,7 @@ export interface doneListProps {
   endTime: string
   instanceId: string
   processInstanceId: string
-  formkey: string
+  formKey: string
   status: string
 }
 export interface doneListParamProps extends pageLimitProps {

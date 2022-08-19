@@ -24,9 +24,8 @@ const CreditApproval: React.FC<creditApprovalprops> = ({
 }) => {
   const reports = ['credit1', 'credit2', 'credit3', 'credit8']
 
-  // const contracts = ['credit1', 'credit2', 'credit3', 'credit4', 'credit5']
   return (
-    <Tabs type="card">
+    <Tabs type="card" defaultActiveKey="3">
       {formName !== 'credit1' && formName !== 'credit8' && (
         <TabPane tab="授信申请信息" key="1">
           <CreditDetail id={id} isDetail={true} />
@@ -38,6 +37,7 @@ const CreditApproval: React.FC<creditApprovalprops> = ({
           <ReportDetail creditParams={creditParams} />
         </TabPane>
       ) : null}
+
       <TabPane tab="审核记录" key="3">
         <ApprovalHistory id={businessKey} />
       </TabPane>

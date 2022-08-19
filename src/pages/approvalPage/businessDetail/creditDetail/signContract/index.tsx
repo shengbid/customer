@@ -2,7 +2,7 @@ import { useState, useImperativeHandle, forwardRef } from 'react'
 import CardTitle from '@/components/ComPage/CardTitle'
 import ComEditTable from '@/components/ComProtable/ComEditTable'
 import type { signContractProps } from '@/services/types'
-import { Form } from 'antd'
+import { Form, Row, Col, DatePicker } from 'antd'
 import type { ProColumns } from '@ant-design/pro-table'
 import RequiredTilte from '@/components/RequiredLabel'
 import DictSelect from '@/components/ComSelect'
@@ -21,14 +21,15 @@ const SignContract = ({}, ref: any) => {
   ])
   const [editableKeys, setEditableRowKeys] = useState<any[]>([1])
   const [mpForm] = Form.useForm()
+  const [form] = Form.useForm()
 
   useImperativeHandle(ref, () => ({
     // 暴露给父组件的方法
     getBusinessData: async () => {
       try {
         await mpForm.validateFields()
-        const businessData = dataSource
-        return { businessData }
+        const cusContractList = dataSource
+        return { businessData: { cusContractList } }
       } catch (error) {
         return ''
       }
@@ -118,8 +119,44 @@ const SignContract = ({}, ref: any) => {
   return (
     <>
       <CardTitle title="合同信息">
-        <div>签署现场拍摄视频</div>
-        <ComUpload isDetail value={infoData.creditReport} />
+        <Form name="basic" form={form} autoComplete="off" layout="vertical">
+          <Row gutter={24}>
+            <Col span={8}>
+              <Form.Item label="签署现场拍摄视频">
+                <ComUpload isDetail value={infoData.creditReport} />
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item
+                label="授信生效日"
+                name="creditBecomDate"
+                rules={[
+                  {
+                    required: true,
+                    message: `请选择运输方式`,
+                  },
+                ]}
+              >
+                <DatePicker style={{ width: '100%' }} />
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item
+                label="授信到期日"
+                name="creditExpireDate"
+                rules={[
+                  {
+                    required: true,
+                    message: `请选择运输方式`,
+                  },
+                ]}
+              >
+                <DatePicker style={{ width: '100%' }} />
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+
         <ComEditTable<signContractProps>
           columns={columns}
           rowKey="id"
