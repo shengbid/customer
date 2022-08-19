@@ -30,3 +30,10 @@ export async function deleteLoanCustomer(id: number | string) {
     params: { id },
   })
 }
+
+/** 获取客户合同列表 */
+export async function getLoanCustomerContractList(params: any) {
+  return request(`/cus/credit/HtxxList`, {
+    params,
+  })
+}

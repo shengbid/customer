@@ -14,6 +14,7 @@ export interface customerListProps {
   code?: string
   createTime?: string
   status: string
+  taskNumber: string
 }
 
 // 借款客户详情

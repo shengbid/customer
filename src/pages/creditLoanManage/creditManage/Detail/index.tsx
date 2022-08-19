@@ -9,6 +9,7 @@ import styles from './index.less'
 import { history } from 'umi'
 import ComPageContanier from '@/components/ComPage/ComPagContanier'
 import { toApprovalDetailPage } from '@/utils/approval'
+import CreditInfo from '@/pages/customerManage/loan/CreditInfo'
 
 const { Link } = Typography
 
@@ -93,6 +94,7 @@ const Detail: React.FC = (props: any) => {
       tabList={tabList}
       onTabClick={setActiveKey}
     >
+      {activeKey === '1' ? <CreditInfo enterpriseId={enterpriseId} /> : null}
       {activeKey === '2' ? (
         <ComCard title="授信审核记录">
           <SimpleProtable key="id" columns={columns} request={getDetail} />
