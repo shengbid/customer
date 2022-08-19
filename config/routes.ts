@@ -60,6 +60,18 @@ export default [
             component: './approvalPage',
           },
           {
+            path: '/leaderPage/undone/approvaldetail',
+            // name: '已办,抄送',
+            hideInBreadcrumb: true,
+            component: './approvalPage/approvalDetail',
+          },
+          {
+            path: '/leaderPage/undone/creditdetail',
+            // name: '授信审批已办,抄送',
+            hideInBreadcrumb: true,
+            component: './approvalPage/approvalDetail/credit',
+          },
+          {
             path: '/leaderPage/leave',
             name: '请假流程',
             access: 'hasMenu',
