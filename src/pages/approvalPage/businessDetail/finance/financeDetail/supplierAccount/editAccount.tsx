@@ -41,7 +41,7 @@ const EditAccount: React.FC<editProps> = ({
     {
       title: <RequiredLabel label="账号" />,
       dataIndex: 'barCode',
-      width: '20%',
+      width: '18%',
       editable: false,
     },
     {

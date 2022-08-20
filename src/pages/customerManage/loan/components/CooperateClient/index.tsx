@@ -5,6 +5,7 @@ import RequiredLabel from '@/components/RequiredLabel'
 import ComCard from '@/components/ComPage/ComCard'
 import DictSelect from '@/components/ComSelect'
 import { Form } from 'antd'
+
 interface infoProps {
   enterpriseId: string
 }
@@ -13,8 +14,11 @@ const CooperateClient: React.FC<infoProps> = ({ enterpriseId }) => {
   const [tableData] = useState<any[]>()
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([])
   const [dataSource, setDataSource] = useState<any[]>()
+  const [editableKeys2, setEditableRowKeys2] = useState<React.Key[]>([])
+  const [dataSource2, setDataSource2] = useState<any[]>()
 
   const [tableForm] = Form.useForm()
+  const [supplierForm] = Form.useForm()
 
   const columns = [
     {
@@ -34,6 +38,42 @@ const CooperateClient: React.FC<infoProps> = ({ enterpriseId }) => {
       title: <RequiredLabel label="所属仓库企业" />,
       dataIndex: 'barCode',
       editable: false,
+    },
+  ]
+
+  const columns2 = [
+    {
+      title: <RequiredLabel label="账户名称" />,
+      dataIndex: 'barCode',
+      width: '20%',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '此项是必填项',
+          },
+        ],
+      },
+    },
+    {
+      title: <RequiredLabel label="账号" />,
+      dataIndex: 'barCode',
+      width: '17%',
+    },
+    {
+      title: <RequiredLabel label="收款银行" />,
+      dataIndex: 'barCode',
+      width: '17%',
+    },
+    {
+      title: <RequiredLabel label="银行地址" />,
+      dataIndex: 'barCode',
+      width: '25%',
+    },
+    {
+      title: <RequiredLabel label="SWIFT Code" />,
+      dataIndex: 'barCode',
+      width: '16%',
     },
   ]
 
@@ -62,6 +102,31 @@ const CooperateClient: React.FC<infoProps> = ({ enterpriseId }) => {
             onChange: (editableKeyss: any, editableRows: any[]) => {
               setEditableRowKeys(editableKeyss)
               setDataSource(editableRows)
+            },
+          }}
+        />
+      </ComCard>
+      <ComCard title="合作供应商及收款账户">
+        <ComEditTable<any>
+          rowKey="key"
+          columns={columns2}
+          value={dataSource2}
+          recordCreatorProps={{
+            newRecordType: 'dataSource',
+            record: () => ({
+              key: Date.now(),
+            }),
+          }}
+          editable={{
+            type: 'multiple',
+            form: supplierForm,
+            editableKeys: editableKeys2,
+            onValuesChange: (record: any, recordList: any) => {
+              setDataSource2(recordList)
+            },
+            onChange: (editableKeyss: any, editableRows: any[]) => {
+              setEditableRowKeys2(editableKeyss)
+              setDataSource2(editableRows)
             },
           }}
         />
