@@ -8,7 +8,7 @@ import ComCollapse from '@/components/ComPage/ComCollapse'
 import ViewBpmn from '@/components/Bpmn/ViewBpmn'
 import { approvalSave, getProcessIds, getCreditDetail, getActivityParams } from '@/services'
 import BusinessDetail from './businessDetail'
-import ApprovalDom from './components/approvalDom'
+// import ApprovalDom from './components/approvalDom'
 import type { surveyParamProps } from '@/services/types'
 import { omit } from 'lodash'
 
@@ -133,11 +133,15 @@ const ApprovalPage: React.FC = (props: any) => {
       </div>
       {/* 详情与审批历史 */}
       {activityParams.formKey ? (
-        <BusinessDetail creditParams={creditParams} activityParams={activityParams} />
+        <BusinessDetail
+          approvalDomRef={approvalDomRef}
+          creditParams={creditParams}
+          activityParams={activityParams}
+        />
       ) : null}
 
       {/* 审核业务表单 */}
-      {activityParams.formKey ? (
+      {/* {activityParams.formKey ? (
         <ApprovalDom
           id={activityParams.instanceId}
           formName={activityParams.formKey}
@@ -148,7 +152,7 @@ const ApprovalPage: React.FC = (props: any) => {
           }}
           approvalDomRef={approvalDomRef}
         />
-      ) : null}
+      ) : null} */}
 
       {/* 审核按钮通用表单 */}
       {activityParams.id ? (
