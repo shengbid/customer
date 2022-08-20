@@ -7,6 +7,7 @@ import { getLoanCustomerList, deleteLoanCustomer } from '@/services'
 import DictSelect from '@/components/ComSelect'
 import AddModal from './components/addModal'
 import { useIntl, history } from 'umi'
+import { formatAmount } from '@/utils/base'
 
 // const { MenuAddButton } = MenuProTable
 const { Link } = Typography
@@ -133,12 +134,13 @@ const ListManage: React.FC = () => {
       hideInSearch: true,
     },
     {
-      title: '商品估值(美元)',
+      title: '商品估值',
       key: 'code',
       dataIndex: 'code',
-      valueType: 'digit',
+      // valueType: 'digit',
       width: 127,
       hideInSearch: true,
+      render: (val) => formatAmount(val),
     },
     {
       title: '状态',

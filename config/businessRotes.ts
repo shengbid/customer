@@ -13,13 +13,13 @@ export default [
       },
       {
         path: '/customerManage/loan',
-        name: '借款客户管理',
+        name: '借款企业管理',
         access: 'hasMenu',
         component: './customerManage/loan',
       },
       {
         path: '/customerManage/loan/detail',
-        name: '借款客户管理详情',
+        name: '借款企业管理详情',
         // access: 'hasMenu',
         component: './customerManage/loan/Detail',
       },
@@ -153,7 +153,7 @@ export default [
       {
         path: '/basicManage/warehouseManage',
         name: '仓储管理',
-        access: 'hasMenu',
+        // access: 'hasMenu',
         routes: [
           {
             path: '/basicManage/warehouseManage',
@@ -162,7 +162,7 @@ export default [
           {
             path: '/basicManage/warehouseManage/warehouse',
             name: '仓储管理',
-            access: 'hasMenu',
+            // access: 'hasMenu',
             component: './basicManage/warehouseManage/warehouse',
           },
         ],

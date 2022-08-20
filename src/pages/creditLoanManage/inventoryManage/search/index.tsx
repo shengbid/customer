@@ -4,6 +4,7 @@ import type { cooperateListProps, cooperateListParamProps } from '@/services/typ
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import { getLoanCustomerList } from '@/services'
 import DictSelect from '@/components/ComSelect'
+import { formatAmount } from '@/utils/base'
 
 const ListManage: React.FC = () => {
   const actionRef = useRef<ActionType>()
@@ -115,20 +116,22 @@ const ListManage: React.FC = () => {
       hideInSearch: true,
     },
     {
-      title: '公允单价(美元)',
+      title: '公允单价',
       key: 'code',
       dataIndex: 'code',
-      valueType: 'digit',
+      // valueType: 'digit',
       width: 110,
       hideInSearch: true,
+      render: (val) => formatAmount(val),
     },
     {
-      title: '库存估值(美元)',
+      title: '库存估值',
       key: 'code',
       dataIndex: 'code',
-      valueType: 'digit',
+      // valueType: 'digit',
       width: 127,
       hideInSearch: true,
+      render: (val) => formatAmount(val),
     },
     {
       title: '单位',

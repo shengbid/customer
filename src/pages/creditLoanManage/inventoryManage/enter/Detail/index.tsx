@@ -11,6 +11,7 @@ import ComEditTable from '@/components/ComProtable/ComEditTable'
 import RequiredLabel from '@/components/RequiredLabel'
 import ComUpload from '@/components/ComUpload'
 import DictSelect from '@/components/ComSelect'
+import { formatAmount } from '@/utils/base'
 import RuleModal from '../components/ruleModal'
 
 const { Link } = Typography
@@ -98,28 +99,31 @@ const Detail: React.FC = (props: any) => {
       width: 100,
     },
     {
-      title: '采购单价(美元)',
+      title: '采购单价',
       key: 'code',
       dataIndex: 'code',
-      valueType: 'digit',
+      // valueType: 'digit',
       width: 125,
       hideInSearch: true,
+      render: (val) => formatAmount(val),
     },
     {
-      title: '公允单价(美元)',
+      title: '公允单价',
       key: 'code',
       dataIndex: 'code',
-      valueType: 'digit',
+      // valueType: 'digit',
       width: 110,
       hideInSearch: true,
+      render: (val) => formatAmount(val),
     },
     {
-      title: '入库总价(美元)',
+      title: '入库总价',
       key: 'code',
       dataIndex: 'code',
-      valueType: 'digit',
+      // valueType: 'digit',
       width: 110,
       hideInSearch: true,
+      render: (val) => formatAmount(val),
     },
     {
       title: '单位',

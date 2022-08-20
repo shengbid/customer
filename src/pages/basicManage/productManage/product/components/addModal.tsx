@@ -127,7 +127,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
                   },
                 ]}
               >
-                <PointInput addonAfter={'美元'} />
+                <PointInput addonBefore="$" />
               </Form.Item>
             </Col>
           </Row>
@@ -144,7 +144,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
                   },
                 ]}
               >
-                <PointInput addonAfter={'美元'} />
+                <PointInput addonBefore="$" />
               </Form.Item>
             </Col>
             <Col span={12}>

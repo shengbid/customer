@@ -1,6 +1,6 @@
 import React from 'react'
 import { Tabs } from 'antd'
-import ApprovalHistory from '../../components/approvalHistroy'
+import ApprovalHistory from '../../../components/approvalHistroy'
 
 const { TabPane } = Tabs
 

@@ -8,7 +8,7 @@ import ViewBpmn from '@/components/Bpmn/ViewBpmn'
 import type { surveyParamProps } from '@/services/types'
 import ComCard from '@/components/ComPage/ComCard'
 import ApprovalDom from './detail'
-import CreditApproval from '../../businessDetail/creditApproval'
+import CreditApproval from '../../businessDetail/credit/creditApproval'
 import styles from '../../index.less'
 
 const { Panel } = ComCollapse

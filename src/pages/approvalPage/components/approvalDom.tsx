@@ -1,14 +1,14 @@
 import React from 'react'
 import ComCard from '@/components/ComPage/ComCard'
 import ComCollapse from '@/components/ComPage/ComCollapse'
-import CreditDetail from '../businessDetail/creditDetail'
-import RelatedDetail from '../businessDetail/creditDetail/relatedForm'
-import SurveyReport from '../businessDetail/creditDetail/surveyReport'
-import SurveyReportDetail from '../businessDetail/creditDetail/surveyReport/detail'
-import Contract from '../businessDetail/creditDetail/contract'
-import ContractDetail from '../businessDetail/creditDetail/contract/detail'
+import CreditDetail from '../businessDetail/credit/creditDetail'
+import RelatedDetail from '../businessDetail/credit/creditDetail/relatedForm'
+import SurveyReport from '../businessDetail/credit/creditDetail/surveyReport'
+import SurveyReportDetail from '../businessDetail/credit/creditDetail/surveyReport/detail'
+import Contract from '../businessDetail/credit/creditDetail/contract'
+import ContractDetail from '../businessDetail/credit/creditDetail/contract/detail'
 // import SignContract from '../businessDetail/creditDetail/signContract'
-import RealteDetail from '../businessDetail/creditDetail/relatedForm/detail'
+import RealteDetail from '../businessDetail/credit/creditDetail/relatedForm/detail'
 
 const { Panel } = ComCollapse
 

@@ -110,7 +110,7 @@ const SurveyReport = ({ creditParams }: any, ref: any) => {
       renderFormItem: () => <DictSelect authorword="warehouse_type" />,
     },
     {
-      title: <RequiredTilte label="额度(美元)" />,
+      title: <RequiredTilte label="额度" />,
       dataIndex: 'amount',
       formItemProps: {
         rules: [
@@ -120,7 +120,7 @@ const SurveyReport = ({ creditParams }: any, ref: any) => {
           },
         ],
       },
-      renderFormItem: () => <ComInputNumber />,
+      renderFormItem: () => <ComInputNumber addonAfter="美元" />,
     },
     {
       title: <RequiredTilte label="代理服务费(%)" />,
@@ -202,7 +202,7 @@ const SurveyReport = ({ creditParams }: any, ref: any) => {
             </Col>
             <Col span={6}>
               <Form.Item
-                label="授信总额度(美元)"
+                label="授信总额度"
                 name="amount3"
                 rules={[
                   {
@@ -211,7 +211,7 @@ const SurveyReport = ({ creditParams }: any, ref: any) => {
                   },
                 ]}
               >
-                <ComInputNumber />
+                <ComInputNumber addonAfter="美元" />
               </Form.Item>
             </Col>
             <Col span={6}>

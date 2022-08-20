@@ -5,6 +5,7 @@ import SimpleProtable from '@/components/ComProtable/SimpleProTable'
 import type { ProColumns } from '@ant-design/pro-table'
 import { Typography, message } from 'antd'
 import { addMutilProduct } from '@/services'
+import { formatAmount } from '@/utils/base'
 
 const { Link } = Typography
 
@@ -58,24 +59,25 @@ const ImportProduct: React.FC<addModalProps> = ({
       title: '商品HScode',
       key: 'goodHscode',
       dataIndex: 'goodHscode',
-      valueType: 'digit',
       hideInSearch: true,
     },
     {
-      title: '最近采购单价(美元)',
+      title: '最近采购单价',
       key: 'purchasePrice',
       dataIndex: 'purchasePrice',
-      valueType: 'digit',
+      // valueType: 'digit',
       width: 125,
       hideInSearch: true,
+      render: (val) => formatAmount(val),
     },
     {
-      title: '公允单价(美元)',
+      title: '公允单价',
       key: 'fairPrice',
       dataIndex: 'fairPrice',
-      valueType: 'digit',
+      // valueType: 'digit',
       width: 110,
       hideInSearch: true,
+      render: (val) => formatAmount(val),
     },
     {
       title: '保质期(月)',

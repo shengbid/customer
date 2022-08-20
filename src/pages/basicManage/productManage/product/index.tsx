@@ -8,6 +8,7 @@ import AddModal from './components/addModal'
 import { useIntl } from 'umi'
 import ImportFile from '@/components/ComUpload/importFile'
 import ImportProduct from './components/importProduct'
+import { formatAmount } from '@/utils/base'
 
 const { MenuAddButton } = MenuProTable
 const { Link } = Typography
@@ -43,20 +44,22 @@ const ListManage: React.FC = () => {
       dataIndex: 'barCode',
     },
     {
-      title: '最近采购价(美元)',
+      title: '最近采购价',
       key: 'purchasePrice',
       dataIndex: 'purchasePrice',
-      valueType: 'digit',
+      // valueType: 'digit',
       width: 127,
       hideInSearch: true,
+      render: (val) => formatAmount(val),
     },
     {
-      title: '公允价(美元)',
+      title: '公允价',
       key: 'fairPrice',
       dataIndex: 'fairPrice',
-      valueType: 'digit',
+      // valueType: 'digit',
       width: 110,
       hideInSearch: true,
+      render: (val) => formatAmount(val),
     },
     {
       title: '保质期(月)',

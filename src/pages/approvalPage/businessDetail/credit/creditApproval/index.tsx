@@ -1,6 +1,6 @@
 import React from 'react'
 import { Tabs } from 'antd'
-import ApprovalHistory from '../../components/approvalHistroy'
+import ApprovalHistory from '../../../components/approvalHistroy'
 import CreditDetail from '../creditDetail'
 import RealteDetail from '../creditDetail/relatedForm/detail'
 import ReportDetail from '../creditDetail/surveyReport/detail'

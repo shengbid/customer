@@ -1,6 +1,6 @@
 import React from 'react'
-import CreditApproval from './creditApproval'
-import FinanceApproval from './financeApproval'
+import CreditApproval from './credit/creditApproval'
+import FinanceApproval from './finance/financeApproval'
 import ComCard from '@/components/ComPage/ComCard'
 
 interface detailProps {
