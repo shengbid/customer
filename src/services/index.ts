@@ -27,3 +27,5 @@ export * from './credit/approve' // 授信
 
 export * from './basicManage/warehouse' // 仓库管理
 export * from './basicManage/product' // 商品管理
+
+export * from './contract' // 合同管理

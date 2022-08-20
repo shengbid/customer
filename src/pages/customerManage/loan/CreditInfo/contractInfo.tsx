@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import ComCard from '@/components/ComPage/ComCard'
 import SimpleProtable from '@/components/ComProtable/SimpleProTable'
-import type { contractListProps } from '@/services/types'
+import type { creditContractListProps } from '@/services/types'
 import type { ProColumns } from '@ant-design/pro-table'
 import { getLoanCustomerContractList } from '@/services'
 import ComUpload from '@/components/ComUpload'
@@ -10,11 +10,11 @@ interface infoProps {
   enterpriseId: number
 }
 const ContractDetail: React.FC<infoProps> = ({ enterpriseId }) => {
-  const [dataSource, setDataSource] = useState<contractListProps[]>([])
+  const [dataSource, setDataSource] = useState<creditContractListProps[]>([])
 
   const getDetail = async () => {
-    const { data } = await getLoanCustomerContractList({ enterpriseId })
-    if (data) setDataSource(data)
+    const { rows } = await getLoanCustomerContractList({ enterpriseId })
+    if (rows) setDataSource(rows)
   }
 
   useEffect(() => {
@@ -23,7 +23,7 @@ const ContractDetail: React.FC<infoProps> = ({ enterpriseId }) => {
     }
   }, [enterpriseId])
 
-  const columns: ProColumns<contractListProps>[] = [
+  const columns: ProColumns<creditContractListProps>[] = [
     {
       title: '协议名称',
       key: 'contractName',
