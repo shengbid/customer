@@ -97,7 +97,7 @@ const Detail: React.FC = (props: any) => {
       {activeKey === '1' ? <CreditInfo enterpriseId={enterpriseId} /> : null}
       {activeKey === '2' ? (
         <ComCard title="授信审核记录">
-          <SimpleProtable rowKey="id" columns={columns} request={getDetail} />
+          <SimpleProtable rowKey="id" isPagination={false} columns={columns} request={getDetail} />
         </ComCard>
       ) : null}
     </ComPageContanier>
