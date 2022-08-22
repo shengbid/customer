@@ -84,6 +84,7 @@ const CooperateClient: React.FC<infoProps> = ({ enterpriseId }) => {
       <ComCard title="合作仓库">
         <ComEditTable<any>
           rowKey="key"
+          className="nopaddingtable"
           columns={columns}
           value={dataSource}
           recordCreatorProps={{
@@ -109,6 +110,7 @@ const CooperateClient: React.FC<infoProps> = ({ enterpriseId }) => {
       <ComCard title="合作供应商及收款账户">
         <ComEditTable<any>
           rowKey="key"
+          className="nopaddingtable"
           columns={columns2}
           value={dataSource2}
           recordCreatorProps={{
