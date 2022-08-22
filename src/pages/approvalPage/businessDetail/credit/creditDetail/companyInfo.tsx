@@ -162,7 +162,12 @@ const CompanyInfo: React.FC<infoProps> = ({ infoData, handleUpdate, isDetail = f
           )
         }
       >
-        <SimpleProtable key="id" columns={columns2} isPagination={false} dataSource={tableData} />
+        <SimpleProtable
+          rowKey="id"
+          columns={columns2}
+          isPagination={false}
+          dataSource={tableData}
+        />
       </CardTitle>
 
       {/* 修改企业经营信息 */}

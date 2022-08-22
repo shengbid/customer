@@ -67,7 +67,7 @@ const ApprovalHistory: React.FC<{ id: string }> = ({ id }) => {
   return (
     // <ComCard title="审批记录">
     <Spin spinning={spinning}>
-      <SimpleProtable key="id" columns={columns} request={getList} />
+      <SimpleProtable rowKey="id" columns={columns} request={getList} />
     </Spin>
     // </ComCard>
   )

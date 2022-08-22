@@ -99,7 +99,7 @@ const Logistics: React.FC<infoProps> = ({ infoData, enterpriseId, title = 'ç‰©æµ
           </Button>
         }
       >
-        <SimpleProtable key="id" columns={columns} dataSource={dataSource || []} />
+        <SimpleProtable rowKey="id" columns={columns} dataSource={dataSource || []} />
       </ComCard>
 
       <AddCooperate

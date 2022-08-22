@@ -64,7 +64,7 @@ const Detail: React.FC<detailProps> = ({ isEdit = true, creditParams }) => {
           ) : null
         }
       >
-        <SimpleProtable key="id" columns={columns} dataSource={dataSource || []} />
+        <SimpleProtable rowKey="id" columns={columns} dataSource={dataSource || []} />
       </CardTitle>
 
       {/* 修改供应商收款账户 */}

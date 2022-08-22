@@ -241,7 +241,7 @@ const AddModal: React.FC<addProps> = ({
           <h3 style={{ fontWeight: 'bold' }}>签署信息</h3>
 
           {signType === 1 ? (
-            <SimpleProtable key="id" columns={columns} dataSource={dataSource || []} />
+            <SimpleProtable rowKey="id" columns={columns} dataSource={dataSource || []} />
           ) : (
             <EditableProTable<any>
               rowKey="fileType"

@@ -58,10 +58,10 @@ const Detail: React.FC = () => {
           <DictShow dictValue={infoData.businessTypeList} dictkey="cus_zyyw" />
         </DescriptionsItem>
         <DescriptionsItem label="采购申请书" span={3}>
-          <SimpleProtable key="id" columns={columns} dataSource={dataSource || []} />
+          <SimpleProtable rowKey="id" columns={columns} dataSource={dataSource || []} />
         </DescriptionsItem>
         <DescriptionsItem label="采购合同" span={3}>
-          <SimpleProtable key="id" columns={columns} dataSource={dataSource || []} />
+          <SimpleProtable rowKey="id" columns={columns} dataSource={dataSource || []} />
         </DescriptionsItem>
       </Descriptions>
     </CardTitle>

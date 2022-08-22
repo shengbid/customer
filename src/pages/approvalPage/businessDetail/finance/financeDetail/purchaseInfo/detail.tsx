@@ -126,7 +126,7 @@ const PurchaseInfo = ({ creditParams }: any) => {
   return (
     <>
       <CardTitle title="采购信息">
-        <SimpleProtable key="id" columns={columns} dataSource={dataSource || []} />
+        <SimpleProtable rowKey="id" columns={columns} dataSource={dataSource || []} />
 
         <Descriptions>
           <DescriptionsItem label="预计交货时间">{infoData.sellProduct}</DescriptionsItem>

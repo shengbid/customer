@@ -128,7 +128,7 @@ const RealteDetail: React.FC<relateProps> = ({ isEdit = false, creditParams }) =
           ) : null
         }
       >
-        <SimpleProtable key="id" columns={columns} dataSource={dataSource || []} />
+        <SimpleProtable rowKey="id" columns={columns} dataSource={dataSource || []} />
       </CardTitle>
       <CardTitle
         title="关联企业"
@@ -140,7 +140,7 @@ const RealteDetail: React.FC<relateProps> = ({ isEdit = false, creditParams }) =
           ) : null
         }
       >
-        <SimpleProtable key="id" columns={columns2} dataSource={dataSource2 || []} />
+        <SimpleProtable rowKey="id" columns={columns2} dataSource={dataSource2 || []} />
       </CardTitle>
 
       {/* 修改关联股东信息 */}

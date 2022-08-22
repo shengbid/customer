@@ -65,7 +65,7 @@ const ContractDetail: React.FC<infoProps> = ({ enterpriseId }) => {
   return (
     <>
       <ComCard title="合同信息">
-        <SimpleProtable key="id" columns={columns} dataSource={dataSource || []} />
+        <SimpleProtable rowKey="id" columns={columns} dataSource={dataSource || []} />
       </ComCard>
     </>
   )

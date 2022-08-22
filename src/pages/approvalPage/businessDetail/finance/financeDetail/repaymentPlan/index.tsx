@@ -39,7 +39,7 @@ const Detail: React.FC = () => {
 
   return (
     <CardTitle title="还款计划">
-      <SimpleProtable key="id" columns={columns} dataSource={dataSource || []} />
+      <SimpleProtable rowKey="id" columns={columns} dataSource={dataSource || []} />
     </CardTitle>
   )
 }

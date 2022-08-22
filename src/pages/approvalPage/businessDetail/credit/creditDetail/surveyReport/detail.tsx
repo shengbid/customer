@@ -80,7 +80,7 @@ const RealteDetail: React.FC<{ creditParams: surveyParamProps }> = ({ creditPara
   return (
     <>
       <CardTitle title="尽调报告和审贷会审批表">
-        <SimpleProtable key="id" columns={columns} dataSource={dataSource || []} />
+        <SimpleProtable rowKey="id" columns={columns} dataSource={dataSource || []} />
       </CardTitle>
 
       <CardTitle title="授信方案">
@@ -93,7 +93,7 @@ const RealteDetail: React.FC<{ creditParams: surveyParamProps }> = ({ creditPara
           </DescriptionsItem>
         </Descriptions>
         <SimpleProtable
-          key="id"
+          rowKey="id"
           columns={columns2}
           dataSource={infoData.businessDetailsList || []}
         />
