@@ -92,10 +92,9 @@ const ApprovalPage: React.FC = (props: any) => {
     // return
     setConfirmLoading(true)
     try {
-      await approvalSave(activityParams.id, {
+      await approvalSave(activityParams.taskId, {
         ...values,
-        ...omit(activityParams, ['createdDate', 'createTime', 'id']),
-        taskNodeName: activityParams.name,
+        ...omit(activityParams, ['endTime', 'createTime', 'id']),
         attatchmentDatas,
         businessData,
       })
@@ -155,11 +154,11 @@ const ApprovalPage: React.FC = (props: any) => {
       ) : null} */}
 
       {/* 审核按钮通用表单 */}
-      {activityParams.id ? (
+      {activityParams.taskId ? (
         <ApprovalForm
           confirmLoading={confirmLoading}
           handleSubmit={approval}
-          BpmnInfo={{ id: activityParams.id }}
+          BpmnInfo={{ id: activityParams.taskId }}
         />
       ) : null}
       {/* 流程图 */}

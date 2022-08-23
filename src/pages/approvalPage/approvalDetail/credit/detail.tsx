@@ -5,7 +5,7 @@ import CreditDetail from '../../businessDetail/credit/creditDetail'
 import SurveyReportDetail from '../../businessDetail/credit/creditDetail/surveyReport/detail'
 import ContractDetail from '../../businessDetail/credit/creditDetail/contract/detail'
 import RealteDetail from '../../businessDetail/credit/creditDetail/relatedForm/detail'
-import SignContract from '../../businessDetail/credit/creditDetail/signContract'
+import SignContract from '../../businessDetail/credit/creditDetail/signContract/detail'
 
 const { Panel } = ComCollapse
 

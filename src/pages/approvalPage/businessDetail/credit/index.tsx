@@ -8,7 +8,7 @@ import SurveyReport from './creditDetail/surveyReport'
 import SurveyReportDetail from './creditDetail/surveyReport/detail'
 import Contract from './creditDetail/contract'
 import ContractDetail from './creditDetail/contract/detail'
-// import SignContract from '../businessDetail/creditDetail/signContract'
+import SignContract from './creditDetail/signContract'
 import RealteDetail from './creditDetail/relatedForm/detail'
 
 const { Panel } = ComCollapse
@@ -30,7 +30,7 @@ const CreditDom: React.FC<detailProps> = ({
       <>
         <ComCollapse defaultActiveKey={['1']}>
           <Panel header="授信基础信息" key="1">
-            <CreditDetail id={activityParams.id} isDetail={detail} />
+            <CreditDetail id={activityParams.instanceId} isDetail={detail} />
           </Panel>
         </ComCollapse>
         <ComCard style={{ marginTop: 12 }} title="关联信息">
@@ -42,7 +42,7 @@ const CreditDom: React.FC<detailProps> = ({
       <>
         <ComCollapse defaultActiveKey={['1']}>
           <Panel header="授信基础信息" key="1">
-            <CreditDetail id={activityParams.id} isDetail={detail} />
+            <CreditDetail id={activityParams.instanceId} isDetail={detail} />
           </Panel>
         </ComCollapse>
         <ComCard style={{ marginTop: 12 }} title="关联信息">
@@ -71,7 +71,11 @@ const CreditDom: React.FC<detailProps> = ({
         <Contract title="签署现场拍摄视频" ref={approvalDomRef} />
       </ComCard>
     ),
-    credit7: <ComCard title="审核信息">{/* <SignContract ref={approvalDomRef} /> */}</ComCard>,
+    credit7: (
+      <ComCard title="审核信息">
+        <SignContract ref={approvalDomRef} />
+      </ComCard>
+    ),
   }
 
   return (

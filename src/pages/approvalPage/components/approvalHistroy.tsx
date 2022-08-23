@@ -6,10 +6,12 @@ import type { ProColumns } from '@ant-design/pro-table'
 import type { approvalHistoryProps } from '@/services/types'
 import ComUpload from '@/components/ComUpload'
 import { leaveHistory } from '@/services'
+import { useEffect } from 'react'
 
 // 审核记录
 const ApprovalHistory: React.FC<{ id: string }> = ({ id }) => {
   const [spinning, setSpinning] = useState<boolean>(true)
+  const [tableData, setTableData] = useState<any[]>([])
 
   const obj = {
     jumpFlow: '驳回',
@@ -59,15 +61,21 @@ const ApprovalHistory: React.FC<{ id: string }> = ({ id }) => {
   const getList = async () => {
     const { data } = await leaveHistory(id)
     setSpinning(false)
-    return {
-      data,
+    if (data) {
+      setTableData(data)
     }
   }
+
+  useEffect(() => {
+    if (id) {
+      getList()
+    }
+  }, [id])
 
   return (
     // <ComCard title="审批记录">
     <Spin spinning={spinning}>
-      <SimpleProtable isPagination={false} rowKey="id" columns={columns} request={getList} />
+      <SimpleProtable isPagination={false} rowKey="id" columns={columns} dataSource={tableData} />
     </Spin>
     // </ComCard>
   )

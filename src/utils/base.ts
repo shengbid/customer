@@ -106,7 +106,7 @@ export function formatAmount(val: any, type = false, unit = '$') {
 export const transferAmount = (val: string | number, unit = 1) => {
   if (val) {
     const unis = unit === 1 ? 10000 : 100000000
-    return formatAmount(Number(val) / unis)
+    return formatAmount(Number(val) / unis, false, '')
   }
   return 0
 }

@@ -1,17 +1,19 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Logistics from './logistics'
 import ComEditTable from '@/components/ComProtable/ComEditTable'
 import RequiredLabel from '@/components/RequiredLabel'
 import ComCard from '@/components/ComPage/ComCard'
 import DictSelect from '@/components/ComSelect'
 import { Form } from 'antd'
+import { getLoanCooperateSignList } from '@/services'
 
 interface infoProps {
   enterpriseId: string
 }
 
 const CooperateClient: React.FC<infoProps> = ({ enterpriseId }) => {
-  const [tableData] = useState<any[]>()
+  const [tableData, setTableData] = useState<any[]>()
+  const [tableData2, setTableData2] = useState<any[]>()
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([])
   const [dataSource, setDataSource] = useState<any[]>()
   const [editableKeys2, setEditableRowKeys2] = useState<React.Key[]>([])
@@ -19,6 +21,26 @@ const CooperateClient: React.FC<infoProps> = ({ enterpriseId }) => {
 
   const [tableForm] = Form.useForm()
   const [supplierForm] = Form.useForm()
+
+  // 获取物流列表
+  const getList = async () => {
+    const { data } = await getLoanCooperateSignList({ enterpriseId, partnerType: 1 })
+    if (data) {
+      setTableData(data)
+    }
+  }
+  // 获取仓储列表
+  const getList2 = async () => {
+    const { data } = await getLoanCooperateSignList({ enterpriseId, partnerType: 2 })
+    if (data) {
+      setTableData2(data)
+    }
+  }
+
+  useEffect(() => {
+    getList()
+    getList2()
+  }, [])
 
   const columns = [
     {
@@ -80,7 +102,7 @@ const CooperateClient: React.FC<infoProps> = ({ enterpriseId }) => {
   return (
     <>
       <Logistics infoData={tableData} enterpriseId={enterpriseId} title="物流" />
-      <Logistics infoData={tableData} enterpriseId={enterpriseId} title="仓储" />
+      <Logistics infoData={tableData2} enterpriseId={enterpriseId} title="仓储" />
       <ComCard title="合作仓库">
         <ComEditTable<any>
           rowKey="key"

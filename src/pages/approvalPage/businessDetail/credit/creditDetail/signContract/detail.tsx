@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Descriptions from '@/components/ComPage/Descriptions'
-import CardTitle from '@/components/ComPage/CardTitle'
+import ComCard from '@/components/ComPage/ComCard'
 import ComUpload from '@/components/ComUpload'
 import SimpleProtable from '@/components/ComProtable/SimpleProTable'
 import type { ProColumns } from '@ant-design/pro-table'
@@ -49,7 +49,7 @@ const Detail: React.FC = () => {
 
   return (
     <>
-      <CardTitle title="合同信息">
+      <ComCard title="合同信息">
         <Descriptions>
           <DescriptionsItem label="现场拍摄视频">
             <ComUpload isDetail value={infoData.creditReport} />
@@ -58,7 +58,7 @@ const Detail: React.FC = () => {
           <DescriptionsItem label="授信到期日">{infoData.sellProduct}</DescriptionsItem>
         </Descriptions>
         <SimpleProtable key="year" columns={columns} dataSource={dataSource || []} />
-      </CardTitle>
+      </ComCard>
     </>
   )
 }
