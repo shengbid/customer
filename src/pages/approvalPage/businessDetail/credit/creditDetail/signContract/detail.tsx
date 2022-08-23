@@ -4,20 +4,30 @@ import ComCard from '@/components/ComPage/ComCard'
 import ComUpload from '@/components/ComUpload'
 import SimpleProtable from '@/components/ComProtable/SimpleProTable'
 import type { ProColumns } from '@ant-design/pro-table'
-import { creditContractDetail } from '@/services'
-import DictSelect from '@/components/ComSelect'
+import { creditContractDetail, getLoanCustomerContractList } from '@/services'
+import { getDictData } from '@/utils/dictData'
 
 const { DescriptionsItem } = Descriptions
 
 interface infoProps {
   activityParams: any
+  creditParams: any
 }
 
-const Detail: React.FC<infoProps> = ({ activityParams }) => {
+const Detail: React.FC<infoProps> = ({ creditParams, activityParams }) => {
   const [infoData, setInfoData] = useState<any>({})
   const [dataSource, setDataSource] = useState<any[]>([])
   const [fileList, setFileList] = useState<any[]>([])
   const [contractTypeData, setContractTypeData] = useState<any>()
+
+  const getDict = async () => {
+    const obj = await getDictData('contract_type')
+    setContractTypeData(obj)
+  }
+
+  useEffect(() => {
+    getDict()
+  }, [])
 
   const getDetail = async () => {
     const { data } = await creditContractDetail({
@@ -26,6 +36,21 @@ const Detail: React.FC<infoProps> = ({ activityParams }) => {
     })
     setFileList(data)
   }
+
+  const getContract = async () => {
+    const { rows } = await getLoanCustomerContractList({
+      enterpriseId: creditParams.enterpriseId,
+      bizCode: 1,
+      bizNo: activityParams.instanceId,
+    })
+    if (rows) setDataSource(rows)
+  }
+
+  useEffect(() => {
+    if (activityParams && activityParams.taskId && creditParams && creditParams.enterpriseId) {
+      getContract()
+    }
+  }, [activityParams, creditParams])
 
   useEffect(() => {
     if (activityParams && activityParams.taskId) {
@@ -57,18 +82,6 @@ const Detail: React.FC<infoProps> = ({ activityParams }) => {
       render: (_, recored) => <>{contractTypeData[recored.contractType]}</>,
     },
     {
-      title: '合同类型',
-      key: 'contractType',
-      dataIndex: 'contractType',
-      hideInTable: true,
-      renderFormItem: (_, { type }) => {
-        if (type === 'form') {
-          return null
-        }
-        return <DictSelect authorword="contract_type" getDictData={setContractTypeData} />
-      },
-    },
-    {
       title: '签署时间',
       dataIndex: 'signTime',
       width: '15%',
@@ -79,7 +92,15 @@ const Detail: React.FC<infoProps> = ({ activityParams }) => {
       dataIndex: 'time',
       width: '35%',
       ellipsis: true,
-      render: (_, recored: any) => (recored.files ? <ComUpload /> : <>-</>),
+      render: (_, recored: any) =>
+        recored.fileName ? (
+          <ComUpload
+            isDetail
+            value={[{ fileName: recored.fileName, fileUrl: recored.fileUrl }] || []}
+          />
+        ) : (
+          '-'
+        ),
     },
   ]
 

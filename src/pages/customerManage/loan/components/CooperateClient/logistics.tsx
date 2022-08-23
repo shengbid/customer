@@ -11,14 +11,16 @@ const { Link } = Typography
 
 interface infoProps {
   infoData: any
-  title?: string
+  type: number
   enterpriseId: string
 }
 
 // 合作物流企业
-const Logistics: React.FC<infoProps> = ({ infoData, enterpriseId, title = '物流' }) => {
+const Logistics: React.FC<infoProps> = ({ infoData, enterpriseId, type }) => {
   const [dataSource, setDataSource] = useState<reportFileProps[]>([])
   const [modalVisible, setModalVisible] = useState<boolean>(false)
+
+  const title = type === 1 ? '物流' : '仓储'
 
   useEffect(() => {
     if (infoData && infoData.length) {
@@ -51,6 +53,7 @@ const Logistics: React.FC<infoProps> = ({ infoData, enterpriseId, title = '物�
     {
       title: '签署企业/收件人及状态',
       dataIndex: 'fileType',
+      width: '17%',
     },
     {
       title: '签署状态',
@@ -70,7 +73,7 @@ const Logistics: React.FC<infoProps> = ({ infoData, enterpriseId, title = '物�
     },
     {
       title: '操作',
-      width: 170,
+      width: 130,
       key: 'option',
       valueType: 'option',
       render: () => [
@@ -79,7 +82,7 @@ const Logistics: React.FC<infoProps> = ({ infoData, enterpriseId, title = '物�
           删除
         </Link>,
         <Link key="detail" onClick={() => {}}>
-          去签署
+          重新签署
         </Link>,
       ],
     },
@@ -103,7 +106,7 @@ const Logistics: React.FC<infoProps> = ({ infoData, enterpriseId, title = '物�
       </ComCard>
 
       <AddCooperate
-        title={`新建合作${title}企业`}
+        type={type}
         modalVisible={modalVisible}
         info={enterpriseId}
         handleCancel={() => {

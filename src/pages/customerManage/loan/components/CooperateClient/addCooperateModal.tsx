@@ -1,47 +1,81 @@
 import React, { useState, useEffect } from 'react'
-import { Modal, Button, Form, Input, message, Spin, Row, Col, Radio, DatePicker } from 'antd'
+import {
+  Modal,
+  Button,
+  Form,
+  Input,
+  message,
+  Spin,
+  Row,
+  Col,
+  Radio,
+  DatePicker,
+  Select,
+} from 'antd'
 import type { addModalProps } from '@/services/types'
-import { addLoanCustomer } from '@/services'
-import DictSelect from '@/components/ComSelect'
+import {
+  addCooperatelogisticsList,
+  getDocusignTemplates,
+  getCooperatelogisticsList,
+  getSignerListByTemplateId,
+} from '@/services'
 import { useIntl } from 'umi'
 import type { ProColumns } from '@ant-design/pro-table'
 import SimpleProtable from '@/components/ComProtable/SimpleProTable'
 import { EditableProTable } from '@ant-design/pro-table'
 import ComUpload from '@/components/ComUpload'
 import RequiredLabel from '@/components/RequiredLabel'
+import moment from 'moment'
+import { dateFormat } from '@/utils/base'
+import { omit } from 'lodash'
 
 const { RangePicker } = DatePicker
 
+const { Option } = Select
+
 interface addProps extends addModalProps {
-  title: string
+  type: number
 }
-const AddModal: React.FC<addProps> = ({
-  title,
-  modalVisible,
-  handleSubmit,
-  handleCancel,
-  info,
-}) => {
+const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handleCancel, info }) => {
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
   const [dataSource, setDataSource] = useState<any[]>([])
   const [dataSource2, setDataSource2] = useState<any[]>([
     {
-      fileType: '1',
-      typeName: '三方运输协议',
-      contractName: '',
-      contractNo: '',
-      files: [],
+      contractType: 3,
     },
   ])
-  const [editableKeys, setEditableRowKeys] = useState<any[]>(['1'])
+  const [editableKeys, setEditableRowKeys] = useState<any[]>([3])
+  const [templateList, setTemplateList] = useState<any[]>([])
   const [signType, setSignType] = useState<number>(1)
+  const [companyList, setCompanyList] = useState<any[]>([])
+  const [companyInfo, setCompanyInfo] = useState<any>({})
   const [spinning] = useState<boolean>(false)
   const [form] = Form.useForm()
   const [tableForm] = Form.useForm()
+  const title = type === 1 ? `新建物流合作企业` : '新建仓储合作企业'
+  // 获取合同模板
+  const getTemplateList = async () => {
+    const { rows } = await getDocusignTemplates()
+    if (rows) {
+      setTemplateList(rows)
+    }
+  }
+
+  // 获取企业列表
+  const getCompany = async () => {
+    const { rows } = await getCooperatelogisticsList(type === 1 ? 'logistics' : 'bonded')
+    if (rows) {
+      setCompanyList(rows)
+    }
+  }
 
   useEffect(() => {
-    if (modalVisible && info) {
-      setDataSource([])
+    if (modalVisible) {
+      getTemplateList()
+      getCompany()
+      if (info) {
+        setDataSource([])
+      }
     }
   }, [modalVisible, info])
 
@@ -57,23 +91,21 @@ const AddModal: React.FC<addProps> = ({
   const columns: ProColumns<any>[] = [
     {
       title: '收件人名字',
-      key: 'fileName',
-      dataIndex: 'fileName',
+      dataIndex: 'enterpriseName',
       width: '28%',
       ellipsis: true,
     },
     {
       title: '签署角色',
-      dataIndex: 'fileType',
+      dataIndex: 'docuSignRoleName',
     },
     {
       title: '邮箱',
-      dataIndex: 'fileType',
+      dataIndex: 'email',
     },
     {
       title: '手机号码',
-      dataIndex: 'createdTime',
-      valueType: 'dateTime',
+      dataIndex: 'phoneNumber',
     },
   ]
 
@@ -90,8 +122,9 @@ const AddModal: React.FC<addProps> = ({
     },
     {
       title: '合同类型',
-      dataIndex: 'typeName',
+      dataIndex: 'contractType',
       width: '17%',
+      render: () => <span>三方运输协议</span>,
       editable: false,
     },
     {
@@ -135,7 +168,43 @@ const AddModal: React.FC<addProps> = ({
     console.log(values)
     setConfirmLoading(true)
     try {
-      await addLoanCustomer(values)
+      if (signType === 2) {
+        await tableForm.validateFields()
+        values.offlineContractAdd = dataSource2.map((item: any) => {
+          return {
+            ...item,
+            signWay: 2,
+            recipientList: [
+              {
+                role: 3,
+                enterpriseId: companyInfo.value,
+                enterpriseName: companyInfo.children,
+              },
+            ],
+            fileName: item.fileList[0].fileName,
+            fileUrl: item.fileList[0].fileUrl,
+          }
+        })
+      } else {
+        let flag = false
+        dataSource.some((item: any) => {
+          if (!item.email) {
+            flag = true
+          }
+        })
+        if (flag) {
+          message.warning('企业签约人信息不完善,请先去完善企业签约经办人信息!')
+          setConfirmLoading(false)
+          return
+        }
+      }
+      await addCooperatelogisticsList({
+        ...omit(values, ['rangeData']),
+        enterpriseId: info,
+        partnerType: type,
+        validStartDate: moment(values.rangeData[0]).format(dateFormat),
+        validEndDate: moment(values.rangeData[1]).format(dateFormat),
+      })
       setConfirmLoading(false)
     } catch (error) {
       setConfirmLoading(false)
@@ -150,8 +219,28 @@ const AddModal: React.FC<addProps> = ({
     form.resetFields()
   }
 
+  // 选择签署类型
   const onChange = (e: any) => {
     setSignType(e.target.value)
+  }
+
+  // 选择合同模板
+  const onChangeTemplate = async (value: any) => {
+    if (!companyInfo.value) {
+      message.warning('请先选择企业')
+      form.setFieldsValue({ templateId: '' })
+      return
+    }
+    const { data } = await getSignerListByTemplateId({
+      templateId: value,
+      loanEnterpriseId: info,
+      partnerEnterpriseId: companyInfo.value,
+    })
+    setDataSource(data)
+  }
+  // 选择合作企业
+  const selectCompany = (value: any, options: any) => {
+    setCompanyInfo(options)
   }
 
   const cancel = () => {
@@ -164,7 +253,7 @@ const AddModal: React.FC<addProps> = ({
       title={title}
       maskClosable={false}
       destroyOnClose
-      width={800}
+      width={1000}
       visible={modalVisible}
       footer={false}
       onCancel={cancel}
@@ -172,7 +261,7 @@ const AddModal: React.FC<addProps> = ({
       <Spin spinning={spinning}>
         <Form
           name="basic"
-          initialValues={{ signtype: 1 }}
+          initialValues={{ signWay: 1 }}
           onFinish={handleOk}
           form={form}
           autoComplete="off"
@@ -190,7 +279,7 @@ const AddModal: React.FC<addProps> = ({
             <Col span={12}>
               <Form.Item
                 label="企业"
-                name="name"
+                name="partnerEnterpriseId"
                 rules={[
                   {
                     required: true,
@@ -200,13 +289,19 @@ const AddModal: React.FC<addProps> = ({
                   },
                 ]}
               >
-                <DictSelect authorword="company_register" />
+                <Select onChange={selectCompany}>
+                  {companyList.map((item) => (
+                    <Option key={item.id} value={item.id}>
+                      {item.fullName}
+                    </Option>
+                  ))}
+                </Select>
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item
                 label="有效日期"
-                name="date"
+                name="rangeData"
                 rules={[
                   {
                     required: true,
@@ -222,7 +317,7 @@ const AddModal: React.FC<addProps> = ({
             <Col span={12}>
               <Form.Item
                 label="签署方式"
-                name="signtype"
+                name="signWay"
                 rules={[
                   {
                     required: true,
@@ -241,10 +336,34 @@ const AddModal: React.FC<addProps> = ({
           <h3 style={{ fontWeight: 'bold' }}>签署信息</h3>
 
           {signType === 1 ? (
-            <SimpleProtable rowKey="id" columns={columns} dataSource={dataSource || []} />
+            <>
+              <Row gutter={24}>
+                <Col span={12}>
+                  <Form.Item
+                    label="合同模板"
+                    name="templateId"
+                    rules={[
+                      {
+                        required: true,
+                        message: `请选择合同模板`,
+                      },
+                    ]}
+                  >
+                    <Select onChange={onChangeTemplate}>
+                      {templateList.map((item) => (
+                        <Option key={item.id} value={item.id}>
+                          {item.docusignTemplateName}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </Col>
+              </Row>
+              <SimpleProtable rowKey="id" columns={columns} dataSource={dataSource || []} />
+            </>
           ) : (
             <EditableProTable<any>
-              rowKey="fileType"
+              rowKey="contractType"
               className="nopaddingtable"
               maxLength={5}
               // 关闭默认的新建按钮

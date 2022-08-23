@@ -51,7 +51,7 @@ const ApprovalDom: React.FC<approvalDomProps> = ({
     credit5: (
       <ContractDetail businessKey={activityParams.businessKey} taskID={activityParams.taskId} />
     ),
-    credit7: <SignContract activityParams={activityParams} />,
+    credit7: <SignContract creditParams={creditParams} activityParams={activityParams} />,
   }
 
   return approvalDom[formName] ? approvalDom[formName] : <></>

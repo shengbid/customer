@@ -101,8 +101,8 @@ const CooperateClient: React.FC<infoProps> = ({ enterpriseId }) => {
 
   return (
     <>
-      <Logistics infoData={tableData} enterpriseId={enterpriseId} title="物流" />
-      <Logistics infoData={tableData2} enterpriseId={enterpriseId} title="仓储" />
+      <Logistics infoData={tableData} enterpriseId={enterpriseId} type={1} />
+      <Logistics infoData={tableData2} enterpriseId={enterpriseId} type={2} />
       <ComCard title="合作仓库">
         <ComEditTable<any>
           rowKey="key"

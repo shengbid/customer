@@ -52,10 +52,3 @@ export async function editLoanSigner(data: any) {
     data,
   })
 }
-
-/** 获取借款企业合作物流,合作仓储列表 */
-export async function getLoanCooperateSignList(params: any) {
-  return request(`/cus/partner/listByEnterprise`, {
-    params,
-  })
-}
