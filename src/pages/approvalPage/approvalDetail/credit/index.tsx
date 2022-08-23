@@ -94,6 +94,7 @@ const ApprovalDetail: React.FC = (props: any) => {
 
       <ApprovalDom
         creditParams={creditParams}
+        activityParams={activityParams}
         formName={activityParams.formKey}
         id={activityParams.instanceId}
       />

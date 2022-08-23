@@ -13,8 +13,14 @@ interface approvalDomProps {
   formName: string
   id: string
   creditParams: any
+  activityParams: any
 }
-const ApprovalDom: React.FC<approvalDomProps> = ({ formName, id, creditParams }) => {
+const ApprovalDom: React.FC<approvalDomProps> = ({
+  formName,
+  id,
+  creditParams,
+  activityParams,
+}) => {
   const approvalDom = {
     credit1: (
       <>
@@ -42,8 +48,10 @@ const ApprovalDom: React.FC<approvalDomProps> = ({ formName, id, creditParams })
         <SurveyReportDetail creditParams={creditParams} />
       </ComCard>
     ),
-    credit5: <ContractDetail creditParams={creditParams} />,
-    credit7: <SignContract />,
+    credit5: (
+      <ContractDetail businessKey={activityParams.businessKey} taskID={activityParams.taskId} />
+    ),
+    credit7: <SignContract activityParams={activityParams} />,
   }
 
   return approvalDom[formName] ? approvalDom[formName] : <></>

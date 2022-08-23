@@ -88,15 +88,15 @@ export interface reportFileProps {
 // 合同文件
 export interface signContractProps {
   id: number | string
-  name: string
-  number?: string
-  fileType: string
-  typeName?: string
-  time: string
+  contractName?: string
+  contractNo?: string
+  contractType?: string
+  signTime?: string
   fileList: fileListOptionProps[]
 }
 // 获取尽调报告参数
 export interface surveyParamProps {
   infoId?: number | string
   enterpriseId: number | string
+  enterpriseName?: string
 }

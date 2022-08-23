@@ -6,7 +6,7 @@ import type { ProColumns } from '@ant-design/pro-table'
 import { surveyReportDetail } from '@/services'
 import ComUpload from '@/components/ComUpload'
 import Descriptions from '@/components/ComPage/Descriptions'
-import { transferAmount } from '@/utils/base'
+import { transferAmount, formatAmount } from '@/utils/base'
 
 const { DescriptionsItem } = Descriptions
 
@@ -61,9 +61,10 @@ const RealteDetail: React.FC<{ creditParams: surveyParamProps }> = ({ creditPara
       dataIndex: 'year',
     },
     {
-      title: '额度(美元)',
+      title: '额度',
       key: 'year',
       dataIndex: 'year',
+      render: (val) => formatAmount(val),
     },
     {
       title: '代理服务费(%)',
@@ -87,7 +88,9 @@ const RealteDetail: React.FC<{ creditParams: surveyParamProps }> = ({ creditPara
         <Descriptions>
           <DescriptionsItem label="客户质押率(%)">{infoData.rate}</DescriptionsItem>
           <DescriptionsItem label="授信期限(月)">{infoData.sellProduct}</DescriptionsItem>
-          <DescriptionsItem label="授信总额度(美元)">{infoData.sellProduct}</DescriptionsItem>
+          <DescriptionsItem label="授信总额度">
+            {formatAmount(infoData.sellProduct)}
+          </DescriptionsItem>
           <DescriptionsItem label="客户申请金额(万元)">
             {transferAmount(infoData.applyQuota)}
           </DescriptionsItem>

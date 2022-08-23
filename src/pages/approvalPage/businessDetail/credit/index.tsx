@@ -65,7 +65,9 @@ const CreditDom: React.FC<detailProps> = ({
         <Contract title="授信准备合同" ref={approvalDomRef} />
       </ComCard>
     ),
-    credit5: <ContractDetail creditParams={creditParams} />,
+    credit5: (
+      <ContractDetail businessKey={activityParams.businessKey} taskID={activityParams.taskId} />
+    ),
     credit6: (
       <ComCard title="审核信息">
         <Contract title="签署现场拍摄视频" ref={approvalDomRef} />
@@ -73,7 +75,11 @@ const CreditDom: React.FC<detailProps> = ({
     ),
     credit7: (
       <ComCard title="审核信息">
-        <SignContract ref={approvalDomRef} />
+        <SignContract
+          creditParams={creditParams}
+          activityParams={activityParams}
+          ref={approvalDomRef}
+        />
       </ComCard>
     ),
   }

@@ -96,17 +96,21 @@ export function formatAmount(val: any, type = false, unit = '$') {
   }
   if (type && !dotVal) dotVal = '.00'
 
-  if (val < 0) {
-    return `-${unit}${arr.join(',')}${dotVal}`
+  let moneyUnit = unit
+  if (unit === 'rmb') {
+    moneyUnit = '¥'
   }
-  return unit + arr.join(',') + dotVal
+  if (val < 0) {
+    return `-${moneyUnit}${arr.join(',')}${dotVal}`
+  }
+  return moneyUnit + arr.join(',') + dotVal
 }
 
 // 转换金额
-export const transferAmount = (val: string | number, unit = 1) => {
+export const transferAmount = (val: string | number, unit = 1, monenyUnit = 'rmb') => {
   if (val) {
     const unis = unit === 1 ? 10000 : 100000000
-    return formatAmount(Number(val) / unis, false, '')
+    return formatAmount(Number(val) / unis, false, monenyUnit)
   }
   return 0
 }

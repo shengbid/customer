@@ -4,19 +4,22 @@ import ComUpload from '@/components/ComUpload'
 import { creditContractDetail } from '@/services'
 
 interface detailProps {
-  creditParams: any
+  taskID: string
+  businessKey: string
 }
-const ContractDetail: React.FC<detailProps> = ({ creditParams }) => {
+const ContractDetail: React.FC<detailProps> = ({ taskID, businessKey }) => {
   const [fileList, setFileList] = useState<any[]>([])
 
   const getDetail = async () => {
-    const { data } = await creditContractDetail(creditParams)
+    const { data } = await creditContractDetail({ taskID, businessKey })
     setFileList(data)
   }
 
   useEffect(() => {
-    getDetail()
-  }, [])
+    if (taskID) {
+      getDetail()
+    }
+  }, [taskID])
 
   // const infoData = {
   //   creditReport: [

@@ -47,6 +47,7 @@ const ApprovalPage: React.FC = (props: any) => {
     setCreditParams({
       infoId: data.id,
       enterpriseId: data.enterpriseId,
+      enterpriseName: data.enterpriseName,
     })
   }
 
@@ -86,7 +87,7 @@ const ApprovalPage: React.FC = (props: any) => {
       } else if (data.businessData) {
         businessData = data.businessData
       }
-      // console.log(attatchmentDatas, businessData, data)
+      console.log(businessData)
     }
 
     // return

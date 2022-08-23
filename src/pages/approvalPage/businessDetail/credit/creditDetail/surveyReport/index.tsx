@@ -10,7 +10,7 @@ import ComEditTable from '@/components/ComProtable/ComEditTable'
 import DictSelect from '@/components/ComSelect'
 import ComInputNumber from '@/components/Input/InputNumber'
 import IntegerInputNumber from '@/components/Input/integerInput'
-import { formatAmount } from '@/utils/base'
+import { transferAmount } from '@/utils/base'
 
 const SurveyReport = ({ creditParams }: any, ref: any) => {
   const [dataSource, setDataSource] = useState<reportFileProps[]>([
@@ -43,7 +43,7 @@ const SurveyReport = ({ creditParams }: any, ref: any) => {
   const [form] = Form.useForm()
 
   useEffect(() => {
-    setOptions([])
+    setOptions([{ label: '测试1', value: 1, children: [{ label: '测试11', value: 11 }] }])
   }, [])
 
   useImperativeHandle(ref, () => ({
@@ -120,7 +120,7 @@ const SurveyReport = ({ creditParams }: any, ref: any) => {
           },
         ],
       },
-      renderFormItem: () => <ComInputNumber addonAfter="美元" />,
+      renderFormItem: () => <ComInputNumber addonBefore="$" />,
     },
     {
       title: <RequiredTilte label="代理服务费(%)" />,
@@ -211,7 +211,7 @@ const SurveyReport = ({ creditParams }: any, ref: any) => {
                   },
                 ]}
               >
-                <ComInputNumber addonAfter="美元" />
+                <ComInputNumber addonBefore="$" />
               </Form.Item>
             </Col>
             <Col span={6}>
@@ -225,7 +225,7 @@ const SurveyReport = ({ creditParams }: any, ref: any) => {
                   },
                 ]}
               >
-                <span>{formatAmount(777)}</span>
+                <span>{transferAmount(77700)}</span>
               </Form.Item>
             </Col>
           </Row>
