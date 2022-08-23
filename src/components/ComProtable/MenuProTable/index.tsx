@@ -58,6 +58,7 @@ export default function MenuProTable<T>(props: ProTableProps<T, any> & FunctionP
       form={{
         labelAlign: 'left',
       }}
+      revalidateOnFocus={false}
       search={{
         labelWidth: 'auto',
         optionRender: ({ searchText, resetText }, { form }) => [

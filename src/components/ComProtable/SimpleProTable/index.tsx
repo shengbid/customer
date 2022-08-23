@@ -42,6 +42,7 @@ export default function ProjectProTable<T>(props: ProTableProps<T, any> & Functi
       form={{
         labelAlign: 'left',
       }}
+      revalidateOnFocus={false}
       pagination={
         isPagination
           ? {
