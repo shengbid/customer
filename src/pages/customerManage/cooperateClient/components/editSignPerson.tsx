@@ -3,7 +3,7 @@ import { Modal, Form, Input, Button, message } from 'antd'
 import { useIntl } from 'umi'
 import PhoneInput from '@/components/Input/phoneInput'
 import ComUpload from '@/components/ComUpload'
-import { editCooperateSigner } from '@/services'
+import { editCooperateSigner, editLoanSigner } from '@/services'
 import { emailReg } from '@/utils/reg'
 
 interface personProps {
@@ -38,6 +38,12 @@ const EditSignPerson: React.FC<personProps> = ({ modalVisible, infoData, handleC
           hzEnterpriseId: infoData.companyId,
         })
       } else {
+        await editLoanSigner({
+          ...values,
+          fileName: values.files[0].fileName,
+          fileUrl: values.files[0].fileUrl,
+          enterpriseId: infoData.companyId,
+        })
       }
     } catch (error) {
       setConfirmLoading(false)

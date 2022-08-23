@@ -5,7 +5,7 @@ import Descriptions from '@/components/ComPage/Descriptions'
 import ComUpload from '@/components/ComUpload'
 import DictShow from '@/components/ComSelect/dictShow'
 import EditSignPerson from './editSignPerson'
-import { getCooperateSigner } from '@/services'
+import { getCooperateSigner, getLoanSigner } from '@/services'
 
 const { DescriptionsItem } = Descriptions
 
@@ -37,8 +37,18 @@ const SignPerson: React.FC<infoProps> = ({ companyId, type }) => {
 
   // 获取借款企业签约经办人信息
   const getSignerDetail2 = async () => {
-    const { data } = await getCooperateSigner(companyId)
-    if (data) setSignerData(data)
+    const { data } = await getLoanSigner(companyId)
+    if (data) {
+      if (data.fileUrl) {
+        data.files = [
+          {
+            fileName: data.fileName,
+            fileUrl: data.fileUrl,
+          },
+        ]
+      }
+      setSignerData(data)
+    }
   }
 
   const getDetails = () => {

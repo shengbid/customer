@@ -37,3 +37,25 @@ export async function getLoanCustomerContractList(params: any) {
     params,
   })
 }
+
+/** 获取签约人信息 */
+export async function getLoanSigner(id: number | string) {
+  return request(`/cus/enterprise/getJbrDetails`, {
+    params: { id },
+  })
+}
+
+/** 修改签约人信息 */
+export async function editLoanSigner(data: any) {
+  return request(`/cus/enterprise/jbrEdit`, {
+    method: 'put',
+    data,
+  })
+}
+
+/** 获取借款企业合作物流,合作仓储列表 */
+export async function getLoanCooperateSignList(params: any) {
+  return request(`/cus/partner/listByEnterprise`, {
+    params,
+  })
+}
