@@ -5,6 +5,7 @@ import { history } from 'umi'
 import CooperateClient from '../components/CooperateClient'
 import CreditBasic from '../components/CreditBasic'
 import CreditInfo from '../CreditInfo'
+import PledgeRule from '@/pages/riskMonitoring/ruleCenter/collateralRules'
 
 const Detail: React.FC = (props: any) => {
   const [activeKey, setActiveKey] = useState<string>('1')
@@ -20,7 +21,11 @@ const Detail: React.FC = (props: any) => {
       key: '2',
     },
     {
-      tab: '合作客户',
+      tab: '押品质押规则',
+      key: '6',
+    },
+    {
+      tab: '合作企业',
       key: '7',
     },
   ]
@@ -37,6 +42,7 @@ const Detail: React.FC = (props: any) => {
     >
       {activeKey === '1' ? <CreditBasic status={status} companyId={enterpriseId} /> : null}
       {activeKey === '2' && status !== '01' ? <CreditInfo enterpriseId={enterpriseId} /> : null}
+      {activeKey === '6' ? <PledgeRule enterpriseId={enterpriseId} /> : null}
       {activeKey === '7' ? <CooperateClient enterpriseId={enterpriseId} /> : null}
     </ComPageContanier>
   )

@@ -4,11 +4,18 @@ import ComInputNumber from '@/components/Input/InputNumber'
 import ComCard from '@/components/ComPage'
 import styles from './index.less'
 
+interface infoProps {
+  type?: number
+  enterpriseId?: number
+}
+
 // 押品质押规则配置
-const CollateralRules: React.FC = () => {
+const CollateralRules: React.FC<infoProps> = (props: any) => {
   const [spinning, setSpinning] = useState<boolean>(false)
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
   const [form] = Form.useForm()
+
+  const { type } = props
 
   useEffect(() => {
     setSpinning(false)
@@ -22,12 +29,14 @@ const CollateralRules: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.tip}>
-        <p>本页面的押品质押规则为系统默认规则。</p>
-        <p>
-          运营或风控人员可以在「客户管理-押品质押规则」页面修改针对某个用户的质押规则，修改后将以客户当期的规则计算押品估值。
-        </p>
-      </div>
+      {type === 1 ? (
+        <div className={styles.tip}>
+          <p>本页面的押品质押规则为系统默认规则。</p>
+          <p>
+            运营或风控人员可以在「客户管理-押品质押规则」页面修改针对某个用户的质押规则，修改后将以客户当期的规则计算押品估值。
+          </p>
+        </div>
+      ) : null}
       <Spin spinning={spinning}>
         <Form
           name="basic"
