@@ -8,6 +8,8 @@ import RequiredTilte from '@/components/RequiredLabel'
 import DictSelect from '@/components/ComSelect'
 import ComUpload from '@/components/ComUpload'
 import { creditContractDetail } from '@/services'
+import moment from 'moment'
+import { dateFormat } from '@/utils/base'
 
 const SignContract = ({ activityParams, creditParams }: any, ref: any) => {
   const [dataSource, setDataSource] = useState<signContractProps[]>([
@@ -43,7 +45,12 @@ const SignContract = ({ activityParams, creditParams }: any, ref: any) => {
             fileUrl: item.fileList[0].fileUrl,
           }
         })
-        return { businessData: { cusContractList, CusCreditReq: form.getFieldsValue() } }
+        const values = form.getFieldsValue()
+        const cusCreditReq = {
+          creditBecomDate: moment(values.creditBecomDate).format(dateFormat),
+          creditExpireDate: moment(values.creditExpireDate).format(dateFormat),
+        }
+        return { businessData: { cusContractList, cusCreditReq } }
       } catch (error) {
         return ''
       }
