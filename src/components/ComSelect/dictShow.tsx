@@ -36,7 +36,7 @@ const DictShow: React.FC<dictprops> = ({ dictValue, dictkey, dictData }) => {
 
   useEffect(() => {
     if (dictValue) {
-      console.log(dictValue, dictData)
+      // console.log(dictValue, dictData)
       if (dictData) {
         let arr: any = dictValue
         if (!isArray(dictValue)) {
