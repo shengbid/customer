@@ -38,10 +38,10 @@ const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handle
   const [signType, setSignType] = useState<number>(1)
   const [companyList, setCompanyList] = useState<any[]>([])
   const [companyInfo, setCompanyInfo] = useState<any>({})
-  const [spinning] = useState<boolean>(false)
+  const [spinning, setSpinning] = useState<boolean>(true)
+  const [title, setTitle] = useState<string>('')
   const [form] = Form.useForm()
   const [tableForm] = Form.useForm()
-  const title = type === 1 ? `新建物流合作企业` : '新建仓储合作企业'
 
   const pathRoute = `${window.location.href}`
 
@@ -54,36 +54,56 @@ const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handle
 
   useEffect(() => {
     getDict()
+    if (info.partnerEnterpriseId) {
+      setTitle('重新发起签署')
+    } else {
+      setTitle(type === 1 ? `新建物流合作企业` : '新建仓储合作企业')
+    }
   }, [])
 
   // 获取合同模板
   const getTemplateList = async () => {
-    const { rows } = await getDocusignTemplates({ templateType: 3 })
-    if (rows) {
-      setTemplateList(rows)
+    setSpinning(true)
+    try {
+      const { rows } = await getDocusignTemplates({ templateType: 3 })
+      if (rows) {
+        setTemplateList(rows)
+      }
+    } catch (error) {
+      setSpinning(false)
+      return
     }
+    setSpinning(false)
   }
 
   // 获取企业列表
   const getCompany = async () => {
-    const { rows } = await getCooperatelogisticsList(type === 1 ? 'logistics' : 'warehouse')
-    if (rows) {
-      setCompanyList(rows)
+    setSpinning(true)
+    try {
+      const { rows } = await getCooperatelogisticsList(type === 1 ? 'logistics' : 'warehouse')
+      if (rows) {
+        setCompanyList(rows)
+      }
+    } catch (error) {
+      setSpinning(false)
+      return
     }
+    setSpinning(false)
   }
 
   useEffect(() => {
     if (modalVisible) {
       getTemplateList()
       getCompany()
-      if (info) {
+      if (info.partnerEnterpriseId) {
+        console.log(info)
         setDataSource([])
       }
     }
   }, [modalVisible, info])
 
   const intl = useIntl()
-  const text = info
+  const text = info.partnerEnterpriseId
     ? intl.formatMessage({
         id: 'pages.btn.edit',
       })
@@ -158,23 +178,8 @@ const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handle
     },
   ]
 
-  // const getDetail = async () => {
-  //   setSpinning(true)
-  //   const { data } = await postDetail(info)
-  //   setSpinning(false)
-  //   if (data) {
-  //     form.setFieldsValue({ ...data })
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   if (modalVisible && info) {
-  //     getDetail()
-  //   }
-  // }, [modalVisible])
-
   const handleOk = async (values: any) => {
-    console.log(values)
+    // console.log(values)
     setConfirmLoading(true)
     try {
       if (signType === 2) {
@@ -209,7 +214,7 @@ const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handle
       }
       await addCooperatelogistics({
         ...omit(values, ['rangeData']),
-        enterpriseId: info,
+        enterpriseId: info.enterpriseId,
         partnerType: type,
         returnUrl: pathRoute,
         validStartDate: moment(values.rangeData[0]).format(dateFormat),
@@ -243,7 +248,7 @@ const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handle
     }
     const { data } = await getSignerListByTemplateId({
       templateId: value,
-      loanEnterpriseId: info,
+      loanEnterpriseId: info.enterpriseId,
       partnerEnterpriseId: companyInfo.value,
     })
     setDataSource(data)

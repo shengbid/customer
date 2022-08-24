@@ -12,11 +12,12 @@ import {
   cooperateSupplierList,
   editCooperateSupplier,
 } from '@/services'
+import { omit } from 'lodash'
 
 const { Option } = Select
 
 interface infoProps {
-  enterpriseId: string
+  enterpriseId: number
 }
 
 const CooperateClient: React.FC<infoProps> = ({ enterpriseId }) => {
@@ -35,14 +36,28 @@ const CooperateClient: React.FC<infoProps> = ({ enterpriseId }) => {
   const getList = async () => {
     const { data } = await getLoanCooperateSignList({ enterpriseId, partnerType: 1 })
     if (data) {
-      setTableData(data)
+      setTableData(
+        data.map((item: any) => {
+          return {
+            ...item,
+            ...omit(item.contractInfoRes, ['id']),
+          }
+        }),
+      )
     }
   }
   // 获取仓储列表
   const getList2 = async () => {
     const { data } = await getLoanCooperateSignList({ enterpriseId, partnerType: 2 })
     if (data) {
-      setTableData2(data)
+      setTableData2(
+        data.map((item: any) => {
+          return {
+            ...item,
+            ...omit(item.contractInfoRes, ['id']),
+          }
+        }),
+      )
     }
   }
 
@@ -55,9 +70,16 @@ const CooperateClient: React.FC<infoProps> = ({ enterpriseId }) => {
   }
   // 获取供应商列表
   const getSupplierList = async () => {
-    const { rows } = await cooperateSupplierList()
-    if (rows) {
-      setDataSource2(rows)
+    const { data } = await cooperateSupplierList({ enterpriseId })
+    if (data) {
+      setDataSource2(
+        data.map((item: any) => {
+          return {
+            ...item,
+            key: item.id,
+          }
+        }),
+      )
     }
   }
 
@@ -72,10 +94,7 @@ const CooperateClient: React.FC<infoProps> = ({ enterpriseId }) => {
   const delteRecored = async (ids: number) => {
     await deleteCooperateSupplier(ids)
     message.success('删除成功!')
-    const tableDataSource = formRef.current?.getFieldValue('table')
-    formRef.current?.setFieldsValue({
-      table: tableDataSource.filter((item: any) => item.id !== ids),
-    })
+    getSupplierList()
   }
 
   // const columns = [
@@ -129,6 +148,7 @@ const CooperateClient: React.FC<infoProps> = ({ enterpriseId }) => {
           ))}
         </Select>
       ),
+      render: (_, recored: any) => <>{recored.supplierName}</>,
     },
     {
       title: <RequiredLabel label="账号" />,
@@ -190,7 +210,7 @@ const CooperateClient: React.FC<infoProps> = ({ enterpriseId }) => {
         <a
           key="editable"
           onClick={() => {
-            action?.startEditable?.(record.id)
+            action?.startEditable?.(record.key)
           }}
         >
           编辑
@@ -212,8 +232,18 @@ const CooperateClient: React.FC<infoProps> = ({ enterpriseId }) => {
 
   return (
     <>
-      <Logistics infoData={tableData} enterpriseId={enterpriseId} type={1} />
-      <Logistics infoData={tableData2} enterpriseId={enterpriseId} type={2} />
+      <Logistics
+        infoData={tableData}
+        handleSuccess={() => getList()}
+        enterpriseId={enterpriseId}
+        type={1}
+      />
+      <Logistics
+        infoData={tableData2}
+        handleSuccess={() => getList2()}
+        enterpriseId={enterpriseId}
+        type={2}
+      />
 
       {/* <ComCard title="合作仓库">
         <ComEditTable<any>
@@ -263,18 +293,17 @@ const CooperateClient: React.FC<infoProps> = ({ enterpriseId }) => {
             actionRender: (row, config, defaultDom) => {
               return [defaultDom.save, defaultDom.cancel]
             },
-            onSave: async (rowKey, data, row) => {
-              if (row.id) {
-                await editCooperateSupplier({ ...row, enterpriseId })
+            onSave: async (rowKey, data) => {
+              if (data.id) {
+                await editCooperateSupplier({ ...data, enterpriseId })
               } else {
-                await addCooperateSupplier({ ...row, enterpriseId })
+                await addCooperateSupplier({ ...data, enterpriseId })
               }
               message.success('保存成功!')
+              getSupplierList()
             },
-            onChange: (editableKeyss: any, editableRows: any[]) => {
-              setEditableRowKeys2(editableKeyss)
-              setDataSource2(editableRows)
-            },
+            onCancel: getSupplierList,
+            onChange: setEditableRowKeys2,
           }}
         />
       </ComCard>

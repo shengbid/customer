@@ -41,8 +41,10 @@ export async function deleteCooperatelogistics(ids: number) {
 }
 
 /** 供应商列表 */
-export async function cooperateSupplierList() {
-  return request<{ rows: any[] }>(`/cus/supplier/add`, {})
+export async function cooperateSupplierList(params: { enterpriseId: number }) {
+  return request<{ data: any[] }>(`/cus/supplier/listByEnterprise`, {
+    params,
+  })
 }
 /** 新增供应商 */
 export async function addCooperateSupplier(data: any) {
@@ -62,6 +64,18 @@ export async function editCooperateSupplier(data: any) {
 export async function deleteCooperateSupplier(ids: number) {
   return request(`/cus/supplier/remove`, {
     params: { ids },
+  })
+}
+/** 获取docusign签署地址 */
+export async function getDocusignSignUrl(params: { contractId: number; returnUrl: string }) {
+  return request(`/cus/agreement/createRecipientView`, {
+    params,
+  })
+}
+/** 下载docusign文件 */
+export async function downloadDocusignFile(params: { contractId: number }) {
+  return request(`/cus/agreement/downloadDoc`, {
+    params,
   })
 }
 
