@@ -25,6 +25,7 @@ const SignContract = ({ activityParams, creditParams }: any, ref: any) => {
     // 暴露给父组件的方法
     getBusinessData: async () => {
       try {
+        await form.validateFields()
         await mpForm.validateFields()
         const cusContractList = dataSource.map((item) => {
           return {
@@ -42,7 +43,7 @@ const SignContract = ({ activityParams, creditParams }: any, ref: any) => {
             fileUrl: item.fileList[0].fileUrl,
           }
         })
-        return { businessData: { cusContractList } }
+        return { businessData: { cusContractList, CusCreditReq: form.getFieldsValue() } }
       } catch (error) {
         return ''
       }
