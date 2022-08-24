@@ -153,7 +153,7 @@ export default [
       {
         path: '/basicManage/warehouseManage',
         name: '仓储管理',
-        // access: 'hasMenu',
+        access: 'hasMenu',
         routes: [
           {
             path: '/basicManage/warehouseManage',
@@ -162,7 +162,7 @@ export default [
           {
             path: '/basicManage/warehouseManage/warehouse',
             name: '仓储管理',
-            // access: 'hasMenu',
+            access: 'hasMenu',
             component: './basicManage/warehouseManage/warehouse',
           },
         ],
