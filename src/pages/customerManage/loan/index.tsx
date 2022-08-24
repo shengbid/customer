@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react'
 import MenuProTable from '@/components/ComProtable/MenuProTable'
 import type { customerListProps, customerListParamProps } from '@/services/types'
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
-import { message, Tooltip, Typography } from 'antd'
+import { message, Tooltip, Typography, Popconfirm } from 'antd'
 import { getLoanCustomerList, deleteLoanCustomer } from '@/services'
 import DictSelect from '@/components/ComSelect'
 import AddModal from './components/addModal'
@@ -131,9 +131,17 @@ const RoleManage: React.FC = () => {
             </Text>
           </Tooltip>
         ) : (
-          <Link key="delete" onClick={() => delteRecored(recored.id)}>
-            删除
-          </Link>
+          <Popconfirm
+            key="delete"
+            title="是否确认删除?"
+            onConfirm={() => {
+              delteRecored(recored.id)
+            }}
+            okText="确定"
+            cancelText="取消"
+          >
+            <Link>删除</Link>
+          </Popconfirm>
         ),
       ],
     },

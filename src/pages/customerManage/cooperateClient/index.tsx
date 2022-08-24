@@ -43,8 +43,8 @@ const RoleManage: React.FC = () => {
     },
     {
       title: '企业类型',
-      key: 'enterpriseTypes',
-      dataIndex: 'enterpriseTypes',
+      key: 'enterpriseType',
+      dataIndex: 'enterpriseType',
       hideInTable: true,
       renderFormItem: (_, { type }) => {
         if (type === 'form') {

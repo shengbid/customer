@@ -1,11 +1,19 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Logistics from './logistics'
-import ComEditTable from '@/components/ComProtable/ComEditTable'
+import { EditableProTable } from '@ant-design/pro-table'
 import RequiredLabel from '@/components/RequiredLabel'
 import ComCard from '@/components/ComPage/ComCard'
-import DictSelect from '@/components/ComSelect'
-import { Form } from 'antd'
-import { getLoanCooperateSignList } from '@/services'
+import { Form, Select, message, Popconfirm } from 'antd'
+import {
+  getLoanCooperateSignList,
+  getCooperatelogisticsList,
+  addCooperateSupplier,
+  deleteCooperateSupplier,
+  cooperateSupplierList,
+  editCooperateSupplier,
+} from '@/services'
+
+const { Option } = Select
 
 interface infoProps {
   enterpriseId: string
@@ -14,13 +22,14 @@ interface infoProps {
 const CooperateClient: React.FC<infoProps> = ({ enterpriseId }) => {
   const [tableData, setTableData] = useState<any[]>()
   const [tableData2, setTableData2] = useState<any[]>()
-  const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([])
-  const [dataSource, setDataSource] = useState<any[]>()
+  // const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([])
+  // const [dataSource, setDataSource] = useState<any[]>()
   const [editableKeys2, setEditableRowKeys2] = useState<React.Key[]>([])
-  const [dataSource2, setDataSource2] = useState<any[]>()
+  const [dataSource2, setDataSource2] = useState<any[]>([])
+  const [companyList, setCompanyList] = useState<any[]>([])
 
-  const [tableForm] = Form.useForm()
   const [supplierForm] = Form.useForm()
+  const formRef = useRef<any>()
 
   // 获取物流列表
   const getList = async () => {
@@ -37,36 +46,71 @@ const CooperateClient: React.FC<infoProps> = ({ enterpriseId }) => {
     }
   }
 
+  // 获取供应商企业列表
+  const getSupplierCompanyList = async () => {
+    const { rows } = await getCooperatelogisticsList('supplier')
+    if (rows) {
+      setCompanyList(rows)
+    }
+  }
+  // 获取供应商列表
+  const getSupplierList = async () => {
+    const { rows } = await cooperateSupplierList()
+    if (rows) {
+      setDataSource2(rows)
+    }
+  }
+
   useEffect(() => {
     getList()
     getList2()
+    getSupplierList()
+    getSupplierCompanyList()
   }, [])
 
-  const columns = [
-    {
-      title: <RequiredLabel label="仓库名称" />,
-      dataIndex: 'barCode',
-      formItemProps: {
-        rules: [
-          {
-            required: true,
-            message: '此项是必填项',
-          },
-        ],
-      },
-      renderFormItem: () => <DictSelect authorword="warehouse_type" />,
-    },
-    {
-      title: <RequiredLabel label="所属仓库企业" />,
-      dataIndex: 'barCode',
-      editable: false,
-    },
-  ]
+  // 删除
+  const delteRecored = async (ids: number) => {
+    await deleteCooperateSupplier(ids)
+    message.success('删除成功!')
+    const tableDataSource = formRef.current?.getFieldValue('table')
+    formRef.current?.setFieldsValue({
+      table: tableDataSource.filter((item: any) => item.id !== ids),
+    })
+  }
+
+  // const columns = [
+  //   {
+  //     title: <RequiredLabel label="仓库名称" />,
+  //     dataIndex: 'warehouseName',
+  //     formItemProps: {
+  //       rules: [
+  //         {
+  //           required: true,
+  //           message: '此项是必填项',
+  //         },
+  //       ],
+  //     },
+  //     renderFormItem: () => (
+  //       <Select onChange={selectWare}>
+  //         {wareList.map((item) => (
+  //           <Option key={item.id} value={item.id}>
+  //             {item.fullName}
+  //           </Option>
+  //         ))}
+  //       </Select>
+  //     ),
+  //   },
+  //   {
+  //     title: <RequiredLabel label="所属仓库企业" />,
+  //     dataIndex: 'barCode',
+  //     editable: false,
+  //   },
+  // ]
 
   const columns2 = [
     {
       title: <RequiredLabel label="账户名称" />,
-      dataIndex: 'barCode',
+      dataIndex: 'supplierId',
       width: '20%',
       formItemProps: {
         rules: [
@@ -76,26 +120,93 @@ const CooperateClient: React.FC<infoProps> = ({ enterpriseId }) => {
           },
         ],
       },
+      renderFormItem: () => (
+        <Select>
+          {companyList.map((item) => (
+            <Option key={item.id} value={item.id}>
+              {item.fullName}
+            </Option>
+          ))}
+        </Select>
+      ),
     },
     {
       title: <RequiredLabel label="账号" />,
-      dataIndex: 'barCode',
+      dataIndex: 'account',
       width: '17%',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '此项是必填项',
+          },
+        ],
+      },
     },
     {
       title: <RequiredLabel label="收款银行" />,
-      dataIndex: 'barCode',
+      dataIndex: 'dueBank',
       width: '17%',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '此项是必填项',
+          },
+        ],
+      },
     },
     {
       title: <RequiredLabel label="银行地址" />,
-      dataIndex: 'barCode',
+      dataIndex: 'bankAddress',
       width: '25%',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '此项是必填项',
+          },
+        ],
+      },
     },
     {
       title: <RequiredLabel label="SWIFT Code" />,
-      dataIndex: 'barCode',
+      dataIndex: 'swiftCode',
       width: '16%',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '此项是必填项',
+          },
+        ],
+      },
+    },
+    {
+      title: '操作',
+      valueType: 'option',
+      width: 120,
+      render: (text: any, record: any, _: any, action: any) => [
+        <a
+          key="editable"
+          onClick={() => {
+            action?.startEditable?.(record.id)
+          }}
+        >
+          编辑
+        </a>,
+        <Popconfirm
+          key="delete"
+          title="是否确认删除?"
+          onConfirm={() => {
+            delteRecored(record.id)
+          }}
+          okText="确定"
+          cancelText="取消"
+        >
+          <a>删除</a>
+        </Popconfirm>,
+      ],
     },
   ]
 
@@ -103,7 +214,8 @@ const CooperateClient: React.FC<infoProps> = ({ enterpriseId }) => {
     <>
       <Logistics infoData={tableData} enterpriseId={enterpriseId} type={1} />
       <Logistics infoData={tableData2} enterpriseId={enterpriseId} type={2} />
-      <ComCard title="合作仓库">
+
+      {/* <ComCard title="合作仓库">
         <ComEditTable<any>
           rowKey="key"
           className="nopaddingtable"
@@ -128,11 +240,13 @@ const CooperateClient: React.FC<infoProps> = ({ enterpriseId }) => {
             },
           }}
         />
-      </ComCard>
+      </ComCard> */}
+
       <ComCard title="合作供应商及收款账户">
-        <ComEditTable<any>
+        <EditableProTable<any>
           rowKey="key"
           className="nopaddingtable"
+          formRef={formRef}
           columns={columns2}
           value={dataSource2}
           recordCreatorProps={{
@@ -141,12 +255,21 @@ const CooperateClient: React.FC<infoProps> = ({ enterpriseId }) => {
               key: Date.now(),
             }),
           }}
+          onChange={setDataSource2}
           editable={{
-            type: 'multiple',
+            // type: 'multiple',
             form: supplierForm,
             editableKeys: editableKeys2,
-            onValuesChange: (record: any, recordList: any) => {
-              setDataSource2(recordList)
+            actionRender: (row, config, defaultDom) => {
+              return [defaultDom.save, defaultDom.cancel]
+            },
+            onSave: async (rowKey, data, row) => {
+              if (row.id) {
+                await editCooperateSupplier({ ...row, enterpriseId })
+              } else {
+                await addCooperateSupplier({ ...row, enterpriseId })
+              }
+              message.success('保存成功!')
             },
             onChange: (editableKeyss: any, editableRows: any[]) => {
               setEditableRowKeys2(editableKeyss)

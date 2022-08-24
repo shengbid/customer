@@ -1,20 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import {
-  Modal,
-  Button,
-  Form,
-  Input,
-  message,
-  Spin,
-  Row,
-  Col,
-  Radio,
-  DatePicker,
-  Select,
-} from 'antd'
+import { Modal, Button, Form, message, Spin, Row, Col, Radio, DatePicker, Select } from 'antd'
 import type { addModalProps } from '@/services/types'
 import {
-  addCooperatelogisticsList,
+  addCooperatelogistics,
   getDocusignTemplates,
   getCooperatelogisticsList,
   getSignerListByTemplateId,
@@ -28,6 +16,7 @@ import RequiredLabel from '@/components/RequiredLabel'
 import moment from 'moment'
 import { dateFormat } from '@/utils/base'
 import { omit } from 'lodash'
+import { getDictData } from '@/utils/dictData'
 
 const { RangePicker } = DatePicker
 
@@ -53,9 +42,23 @@ const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handle
   const [form] = Form.useForm()
   const [tableForm] = Form.useForm()
   const title = type === 1 ? `新建物流合作企业` : '新建仓储合作企业'
+
+  const pathRoute = `${window.location.href}`
+
+  const [phoneData, setPhoneData] = useState<any>()
+
+  const getDict = async () => {
+    const obj = await getDictData('phone_code')
+    setPhoneData(obj)
+  }
+
+  useEffect(() => {
+    getDict()
+  }, [])
+
   // 获取合同模板
   const getTemplateList = async () => {
-    const { rows } = await getDocusignTemplates()
+    const { rows } = await getDocusignTemplates({ templateType: 3 })
     if (rows) {
       setTemplateList(rows)
     }
@@ -63,7 +66,7 @@ const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handle
 
   // 获取企业列表
   const getCompany = async () => {
-    const { rows } = await getCooperatelogisticsList(type === 1 ? 'logistics' : 'bonded')
+    const { rows } = await getCooperatelogisticsList(type === 1 ? 'logistics' : 'warehouse')
     if (rows) {
       setCompanyList(rows)
     }
@@ -106,6 +109,12 @@ const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handle
     {
       title: '手机号码',
       dataIndex: 'phoneNumber',
+      render: (val, recored) => (
+        <span>
+          {phoneData[recored.phoneArea]}
+          {val}
+        </span>
+      ),
     },
   ]
 
@@ -198,10 +207,11 @@ const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handle
           return
         }
       }
-      await addCooperatelogisticsList({
+      await addCooperatelogistics({
         ...omit(values, ['rangeData']),
         enterpriseId: info,
         partnerType: type,
+        returnUrl: pathRoute,
         validStartDate: moment(values.rangeData[0]).format(dateFormat),
         validEndDate: moment(values.rangeData[1]).format(dateFormat),
       })
@@ -272,9 +282,9 @@ const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handle
               id: 'customer.loan.baseInfo',
             })}
           </h3>
-          <Form.Item label="id" name="id" style={{ display: 'none' }}>
+          {/* <Form.Item label="id" name="id" style={{ display: 'none' }}>
             <Input />
-          </Form.Item>
+          </Form.Item> */}
           <Row gutter={24}>
             <Col span={12}>
               <Form.Item
@@ -384,9 +394,7 @@ const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handle
 
           <div className="modal-btns" style={{ marginTop: 24 }}>
             <Button type="primary" htmlType="submit" loading={confirmLoading}>
-              {intl.formatMessage({
-                id: 'pages.btn.confirm',
-              })}
+              预览并签署合同
             </Button>
             <Button onClick={cancel} className="cancel-btn">
               {intl.formatMessage({

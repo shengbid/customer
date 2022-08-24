@@ -80,7 +80,7 @@ export interface relateCompanyProps {
 }
 // 尽调报告文件
 export interface reportFileProps {
-  id: number | string
+  id: number
   fileType: string
   typeName?: string
   fileList: fileListOptionProps[]
