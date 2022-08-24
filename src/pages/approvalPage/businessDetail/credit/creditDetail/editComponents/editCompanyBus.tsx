@@ -122,7 +122,7 @@ const EditCompany: React.FC<compnayProps> = ({ modalVisible, handleCancel, infoD
         name="basic"
         labelCol={{ span: 4 }}
         wrapperCol={{ span: 18 }}
-        initialValues={{ phoneArea: '1' }}
+        initialValues={{ phoneArea: '+86' }}
         form={form}
         autoComplete="off"
         scrollToFirstError

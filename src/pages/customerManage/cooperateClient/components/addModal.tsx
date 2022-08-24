@@ -49,7 +49,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
       <Spin spinning={spinning}>
         <Form
           name="basic"
-          initialValues={{ phoneArea: '1' }}
+          initialValues={{ phoneArea: '+86' }}
           onFinish={handleOk}
           form={form}
           autoComplete="off"

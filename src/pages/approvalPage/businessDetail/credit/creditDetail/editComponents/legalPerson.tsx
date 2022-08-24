@@ -64,7 +64,7 @@ const LegalPerson: React.FC<reralProps> = ({ handleCancel, info }) => {
       name="basic"
       // labelCol={{ span: 6 }}
       // wrapperCol={{ span: 18 }}
-      initialValues={{ phoneArea: '1', identity: 'qyfr' }}
+      initialValues={{ phoneArea: '+86', identity: 'qyfr' }}
       form={form}
       autoComplete="off"
       scrollToFirstError

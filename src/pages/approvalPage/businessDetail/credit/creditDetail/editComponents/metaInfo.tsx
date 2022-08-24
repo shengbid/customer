@@ -66,7 +66,7 @@ const MetalPersonInfo: React.FC<reralProps> = ({ handleCancel, info }) => {
     <Form
       name="basic"
       layout="vertical"
-      initialValues={{ phoneArea: '1', identity: 'qyfr' }}
+      initialValues={{ phoneArea: '+86', identity: 'qyfr' }}
       form={form}
       autoComplete="off"
       scrollToFirstError
