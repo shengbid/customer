@@ -16,7 +16,7 @@ const ApprovalDetail: React.FC = (props: any) => {
   const [higLigthData, setHigLigthData] = useState<any>([])
   const [activityParams, setActivityParams] = useState<any>({})
 
-  const { taskNumber } = (query = props.location.query)
+  const { taskNumber } = props.location.query
 
   // 获取流程高亮信息
   const getProcess = async () => {
