@@ -1,9 +1,9 @@
 import React, { useState, useRef } from 'react'
 import MenuProTable from '@/components/ComProtable/MenuProTable'
-import type { cooperateListProps, cooperateListParamProps } from '@/services/types'
+import type { inventoryDeliveryListProps, inventoryDeliveryListParamProps } from '@/services/types'
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import { message, Typography, Popconfirm } from 'antd'
-import { getLoanCustomerList, deleteLoanCustomer } from '@/services'
+import { getInventoryDeliveryList, deleteLoanCustomer } from '@/services'
 import DictSelect from '@/components/ComSelect'
 import AddModal from './components/addModal'
 import { useIntl } from 'umi'
@@ -29,7 +29,7 @@ const ListManage: React.FC = () => {
     actionRef.current?.reload()
   }
 
-  const columns: ProColumns<cooperateListProps>[] = [
+  const columns: ProColumns<inventoryDeliveryListProps>[] = [
     {
       title: '出库单号',
       key: 'fullName',
@@ -149,9 +149,9 @@ const ListManage: React.FC = () => {
     },
   ]
 
-  const getList = async (param: cooperateListParamProps) => {
+  const getList = async (param: inventoryDeliveryListParamProps) => {
     console.log(param)
-    const { rows, total } = await getLoanCustomerList(param)
+    const { rows, total } = await getInventoryDeliveryList(param)
     return {
       data: rows,
       total,
@@ -166,7 +166,7 @@ const ListManage: React.FC = () => {
 
   return (
     <>
-      <MenuProTable<cooperateListProps>
+      <MenuProTable<inventoryDeliveryListProps>
         request={getList}
         rowKey="id"
         scroll={{ x: 1200 }}

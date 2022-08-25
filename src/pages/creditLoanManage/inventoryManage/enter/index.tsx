@@ -1,9 +1,9 @@
 import React, { useState, useRef } from 'react'
 import MenuProTable from '@/components/ComProtable/MenuProTable'
-import type { cooperateListProps, cooperateListParamProps } from '@/services/types'
+import type { inventoryEnterListProps, inventoryEnterListParamProps } from '@/services/types'
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
-import { message, Typography, Popconfirm } from 'antd'
-import { getLoanCustomerList, deleteLoanCustomer } from '@/services'
+import { /*message, Popconfirm,*/ Typography } from 'antd'
+import { getInventoryEnterList } from '@/services'
 import DictSelect from '@/components/ComSelect'
 import AddModal from './components/addModal'
 import { useIntl, history } from 'umi'
@@ -20,21 +20,21 @@ const ListManage: React.FC = () => {
   const [statusData, setStatusData] = useState<any>([])
 
   // 删除
-  const delteRecored = async (ids: number | string) => {
-    await deleteLoanCustomer(ids)
-    message.success(
-      intl.formatMessage({
-        id: 'pages.form.delete',
-      }),
-    )
-    actionRef.current?.reload()
-  }
+  // const delteRecored = async (ids: number | string) => {
+  //   await deleteLoanCustomer(ids)
+  //   message.success(
+  //     intl.formatMessage({
+  //       id: 'pages.form.delete',
+  //     }),
+  //   )
+  //   actionRef.current?.reload()
+  // }
 
-  const columns: ProColumns<cooperateListProps>[] = [
+  const columns: ProColumns<inventoryEnterListProps>[] = [
     {
       title: '质押申请编号',
-      key: 'fullName',
-      dataIndex: 'fullName',
+      key: 'pledgeApplyNumber',
+      dataIndex: 'pledgeApplyNumber',
       hideInSearch: true,
     },
     {
@@ -175,7 +175,7 @@ const ListManage: React.FC = () => {
             history.push({
               pathname: '/creditLoanManage/inventoryManage/enter/detail',
               query: {
-                id: recored.id,
+                id: String(recored.id),
                 type: '1',
               },
             })
@@ -189,7 +189,7 @@ const ListManage: React.FC = () => {
             history.push({
               pathname: '/creditLoanManage/inventoryManage/enter/detail',
               query: {
-                id: recored.id,
+                id: String(recored.id),
               },
             })
           }
@@ -210,7 +210,7 @@ const ListManage: React.FC = () => {
             history.push({
               pathname: '/creditLoanManage/inventoryManage/enter/detail',
               query: {
-                id: recored.id,
+                id: String(recored.id),
                 type: '3',
               },
             })
@@ -218,24 +218,24 @@ const ListManage: React.FC = () => {
         >
           查看
         </Link>,
-        <Popconfirm
-          key="delete"
-          title="是否确认删除?"
-          onConfirm={() => {
-            delteRecored(recored.id)
-          }}
-          okText="确定"
-          cancelText="取消"
-        >
-          <Link>删除</Link>
-        </Popconfirm>,
+        // <Popconfirm
+        //   key="delete"
+        //   title="是否确认删除?"
+        //   onConfirm={() => {
+        //     delteRecored(recored.id)
+        //   }}
+        //   okText="确定"
+        //   cancelText="取消"
+        // >
+        //   <Link>删除</Link>
+        // </Popconfirm>,
       ],
     },
   ]
 
-  const getList = async (param: cooperateListParamProps) => {
+  const getList = async (param: inventoryEnterListParamProps) => {
     console.log(param)
-    const { rows, total } = await getLoanCustomerList(param)
+    const { rows, total } = await getInventoryEnterList(param)
     return {
       data: rows,
       total,
@@ -250,7 +250,7 @@ const ListManage: React.FC = () => {
 
   return (
     <>
-      <MenuProTable<cooperateListProps>
+      <MenuProTable<inventoryEnterListProps>
         request={getList}
         rowKey="id"
         columns={columns}

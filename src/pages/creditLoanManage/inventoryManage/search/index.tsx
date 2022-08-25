@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react'
 import MenuProTable from '@/components/ComProtable/MenuProTable'
-import type { cooperateListProps, cooperateListParamProps } from '@/services/types'
+import type { inventorySearchListProps, inventorySearchListParamProps } from '@/services/types'
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
-import { getLoanCustomerList } from '@/services'
+import { getInventorySearchList } from '@/services'
 import DictSelect from '@/components/ComSelect'
 import { formatAmount } from '@/utils/base'
 
@@ -10,7 +10,7 @@ const ListManage: React.FC = () => {
   const actionRef = useRef<ActionType>()
   const [statusData, setStatusData] = useState<any>([])
 
-  const columns: ProColumns<cooperateListProps>[] = [
+  const columns: ProColumns<inventorySearchListProps>[] = [
     {
       title: '企业名称',
       key: 'fullName',
@@ -141,9 +141,9 @@ const ListManage: React.FC = () => {
     },
   ]
 
-  const getList = async (param: cooperateListParamProps) => {
+  const getList = async (param: inventorySearchListParamProps) => {
     console.log(param)
-    const { rows, total } = await getLoanCustomerList(param)
+    const { rows, total } = await getInventorySearchList(param)
     return {
       data: rows,
       total,
@@ -152,7 +152,7 @@ const ListManage: React.FC = () => {
 
   return (
     <>
-      <MenuProTable<cooperateListProps>
+      <MenuProTable<inventorySearchListProps>
         request={getList}
         rowKey="id"
         scroll={{ x: 1400 }}
