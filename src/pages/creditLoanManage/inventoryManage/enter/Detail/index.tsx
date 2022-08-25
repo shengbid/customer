@@ -12,6 +12,7 @@ import RequiredLabel from '@/components/RequiredLabel'
 import ComUpload from '@/components/ComUpload'
 import DictSelect from '@/components/ComSelect'
 import { formatAmount } from '@/utils/base'
+import { getInventoryEnterDetail } from '@/services'
 import RuleModal from '../components/ruleModal'
 
 const { Link } = Typography
@@ -29,9 +30,16 @@ const Detail: React.FC = (props: any) => {
   const [title, setTitle] = useState<string>('转在仓库存详情')
   const [tableForm] = Form.useForm()
 
-  const { type } = props.location.query
+  const { type, id } = props.location.query
+
+  // 获取详情
+  const getDetail = async () => {
+    const { data } = await getInventoryEnterDetail(id)
+    setBasicData(data)
+  }
 
   useEffect(() => {
+    getDetail()
     if (type === '1') {
       setTitle('转在途库存详情')
     } else if (type === '3') {
@@ -212,26 +220,26 @@ const Detail: React.FC = (props: any) => {
     >
       <ComCard title="基础信息" style={{ marginTop: 12 }}>
         <Descriptions>
-          <DescriptionsItem label="货主企业">{basicData.frName}</DescriptionsItem>
-          <DescriptionsItem label="申请编号">{basicData.frName}</DescriptionsItem>
-          <DescriptionsItem label="入库仓库">
-            <DictShow dictValue={basicData.identityType} dictkey="cus_sfzlx" />
-          </DescriptionsItem>
+          <DescriptionsItem label="货主企业">{basicData.enterpriseName}</DescriptionsItem>
+          <DescriptionsItem label="申请编号">{basicData.pledgeApplyNumber}</DescriptionsItem>
+          <DescriptionsItem label="入库仓库">{basicData.warehouseName}</DescriptionsItem>
           <DescriptionsItem label="质押类型">
-            <DictShow dictValue={basicData.identityType} dictkey="cus_sfzlx" />
+            <DictShow dictValue={basicData.pledgeType} dictkey="pledge_type" />
           </DescriptionsItem>
           <DescriptionsItem label="库存类型">
-            <DictShow dictValue={basicData.identityType} dictkey="cus_sfzlx" />
+            <DictShow dictValue={basicData.stockType} dictkey="stock_type" />
           </DescriptionsItem>
-          <DescriptionsItem label="关联融资单号">{basicData.identityNumber}</DescriptionsItem>
+          <DescriptionsItem label="关联融资单号">{basicData.financOrder}</DescriptionsItem>
           {type === '3' ? (
             <>
-              <DescriptionsItem label="实际入仓时间">{basicData.identityNumber}</DescriptionsItem>
-              <DescriptionsItem label="转在仓时间">{basicData.identityNumber}</DescriptionsItem>
-              <DescriptionsItem label="转在仓状态">{basicData.identityNumber}</DescriptionsItem>
+              {/* <DescriptionsItem label="实际入仓时间">{basicData.identityNumber}</DescriptionsItem> */}
+              <DescriptionsItem label="转在仓时间">{basicData.inWarehouseDate}</DescriptionsItem>
+              <DescriptionsItem label="转在仓状态">
+                <DictShow dictValue={basicData.inWarehouseStatus} dictkey="in_warehouse_status" />
+              </DescriptionsItem>
             </>
           ) : (
-            <DescriptionsItem label="创建时间">{basicData.identityNumber}</DescriptionsItem>
+            <DescriptionsItem label="创建时间">{basicData.createTime}</DescriptionsItem>
           )}
         </Descriptions>
       </ComCard>

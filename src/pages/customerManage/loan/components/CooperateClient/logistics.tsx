@@ -136,7 +136,7 @@ const Logistics: React.FC<infoProps> = ({ infoData, enterpriseId, type, handleSu
         >
           <Link>删除</Link>
         </Popconfirm>,
-        recored.cooperationStatus === 1 ? (
+        recored.cooperationStatus === 30 ? (
           <Link
             key="detail"
             onClick={() => {

@@ -58,10 +58,10 @@ export const idTestReg = (value: string) => {
 }
 export const phoneTestReg = (value: string) => {
   return {
-    1: REGS.TELEPHONE_REG.test(value),
-    2: REGS.TELEPHONE_HK_REG.test(value),
-    3: REGS.TELEPHONE_HK_REG.test(value),
-    4: REGS.TELEPHONE_KOREA_REG.test(value),
+    '+86': REGS.TELEPHONE_REG.test(value),
+    '+852': REGS.TELEPHONE_HK_REG.test(value),
+    '+853': REGS.TELEPHONE_HK_REG.test(value),
+    '+82': REGS.TELEPHONE_KOREA_REG.test(value),
   }
 }
 

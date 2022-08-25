@@ -271,6 +271,10 @@ const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handle
   // 选择签署类型
   const onChange = (e: any) => {
     setSignType(e.target.value)
+    if (e.target.value === 2) {
+      setDataSource2([{ contractType: 3 }])
+      setEditableRowKeys([3])
+    }
   }
 
   // 选择合同模板
@@ -295,6 +299,7 @@ const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handle
   const cancel = () => {
     handleCancel()
     form.resetFields()
+    setDataSource([])
   }
 
   return (

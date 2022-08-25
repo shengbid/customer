@@ -1,16 +1,17 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import MenuProTable from '@/components/ComProtable/MenuProTable'
 import type { inventoryEnterListProps, inventoryEnterListParamProps } from '@/services/types'
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
-import { /*message, Popconfirm,*/ Typography } from 'antd'
-import { getInventoryEnterList } from '@/services'
+import { /*message, Popconfirm,*/ Typography, Select } from 'antd'
+import { getInventoryEnterList, getWareHouseSelectList } from '@/services'
 import DictSelect from '@/components/ComSelect'
 import AddModal from './components/addModal'
 import { useIntl, history } from 'umi'
 import { formatAmount } from '@/utils/base'
+import { getDictData } from '@/utils/dictData'
 
-// const { MenuAddButton } = MenuProTable
 const { Link } = Typography
+const { Option } = Select
 
 const ListManage: React.FC = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false)
@@ -18,6 +19,35 @@ const ListManage: React.FC = () => {
   const intl = useIntl()
   const actionRef = useRef<ActionType>()
   const [statusData, setStatusData] = useState<any>([])
+  const [auditStatus, setAuditStatus] = useState<any>([])
+  const [pledgeType, setPledgeType] = useState<any>([])
+  const [stockType, setStockType] = useState<any>([])
+  const [wareList, setWareList] = useState<any>([])
+
+  const getDict = async () => {
+    const obj = await getDictData('in_warehouse_status')
+    setStatusData(obj)
+  }
+  const getDict2 = async () => {
+    const obj = await getDictData('pledge_audit_status')
+    setAuditStatus(obj)
+  }
+  useEffect(() => {
+    getDict()
+    getDict2()
+  }, [])
+
+  // 获取仓库列表
+  const getWareList = async () => {
+    const { data } = await getWareHouseSelectList()
+    if (data) {
+      setWareList(data)
+    }
+  }
+
+  useEffect(() => {
+    getWareList()
+  }, [])
 
   // 删除
   // const delteRecored = async (ids: number | string) => {
@@ -39,44 +69,39 @@ const ListManage: React.FC = () => {
     },
     {
       title: '货主名称',
-      key: 'fullName',
-      dataIndex: 'fullName',
+      key: 'enterpriseName',
+      dataIndex: 'enterpriseName',
     },
     {
-      title: '关联融资单号',
-      key: 'fullName',
-      dataIndex: 'fullName',
+      title: '仓库名称',
+      key: 'warehouseName',
+      dataIndex: 'warehouseName',
+      hideInTable: true,
+      renderFormItem: () => (
+        <Select>
+          {wareList.map((item: any) => (
+            <Option key={item.id} value={item.id}>
+              {item.fullName}
+            </Option>
+          ))}
+        </Select>
+      ),
     },
     {
       title: '仓库',
-      key: 'enterpriseType',
-      dataIndex: 'enterpriseType',
-      hideInTable: true,
-      renderFormItem: (_, { type }) => {
-        if (type === 'form') {
-          return null
-        }
-        return (
-          <DictSelect
-            authorword="credit_status"
-            getDictData={(data: any) => {
-              setStatusData(data)
-            }}
-          />
-        )
-      },
+      key: 'warehouseName',
+      dataIndex: 'warehouseName',
+      hideInSearch: true,
     },
     {
-      title: '仓库类型',
-      key: 'enterpriseType',
-      dataIndex: 'enterpriseType',
-      hideInSearch: true,
-      render: (_, recored) => statusData[recored.enterpriseType],
+      title: '关联融资单号',
+      key: 'financOrder',
+      dataIndex: 'financOrder',
     },
     {
       title: '质押类型',
-      key: 'enterpriseType',
-      dataIndex: 'enterpriseType',
+      key: 'pledgeType',
+      dataIndex: 'pledgeType',
       hideInTable: true,
       renderFormItem: (_, { type }) => {
         if (type === 'form') {
@@ -84,9 +109,9 @@ const ListManage: React.FC = () => {
         }
         return (
           <DictSelect
-            authorword="credit_status"
+            authorword="pledge_type"
             getDictData={(data: any) => {
-              setStatusData(data)
+              setPledgeType(data)
             }}
           />
         )
@@ -94,15 +119,15 @@ const ListManage: React.FC = () => {
     },
     {
       title: '质押类型',
-      key: 'enterpriseType',
-      dataIndex: 'enterpriseType',
+      key: 'pledgeType',
+      dataIndex: 'pledgeType',
       hideInSearch: true,
-      render: (_, recored) => statusData[recored.enterpriseType],
+      render: (_, recored) => pledgeType[recored.pledgeType],
     },
     {
       title: '库存类型',
-      key: 'enterpriseType',
-      dataIndex: 'enterpriseType',
+      key: 'stockType',
+      dataIndex: 'stockType',
       hideInTable: true,
       renderFormItem: (_, { type }) => {
         if (type === 'form') {
@@ -110,9 +135,9 @@ const ListManage: React.FC = () => {
         }
         return (
           <DictSelect
-            authorword="credit_status"
+            authorword="stock_type"
             getDictData={(data: any) => {
-              setStatusData(data)
+              setStockType(data)
             }}
           />
         )
@@ -120,23 +145,23 @@ const ListManage: React.FC = () => {
     },
     {
       title: '库存类型',
-      key: 'enterpriseType',
-      dataIndex: 'enterpriseType',
+      key: 'stockType',
+      dataIndex: 'stockType',
       hideInSearch: true,
-      render: (_, recored) => statusData[recored.enterpriseType],
+      render: (_, recored) => stockType[recored.stockType],
     },
     {
       title: '入库总数',
-      key: 'code',
-      dataIndex: 'code',
+      key: 'warehouseTotal',
+      dataIndex: 'warehouseTotal',
       valueType: 'digit',
       width: 110,
       hideInSearch: true,
     },
     {
       title: '商品估值',
-      key: 'code',
-      dataIndex: 'code',
+      key: 'goodValuation',
+      dataIndex: 'goodValuation',
       // valueType: 'digit',
       width: 127,
       hideInSearch: true,
@@ -144,15 +169,17 @@ const ListManage: React.FC = () => {
     },
     {
       title: '状态',
-      key: 'createTime',
-      dataIndex: 'createTime',
+      key: 'auditStatus',
+      dataIndex: 'auditStatus',
       hideInSearch: true,
+      render: (_, recored) => auditStatus[recored.auditStatus],
     },
     {
       title: '转在仓状态',
-      key: 'createTime',
-      dataIndex: 'createTime',
+      key: 'inWarehouseStatus',
+      dataIndex: 'inWarehouseStatus',
       hideInSearch: true,
+      render: (_, recored) => statusData[recored.auditStatus],
     },
     {
       title: '创建时间',
@@ -164,46 +191,52 @@ const ListManage: React.FC = () => {
       title: intl.formatMessage({
         id: 'pages.table.option',
       }),
-      width: 180,
+      width: 150,
       key: 'option',
       valueType: 'option',
       fixed: 'right',
       render: (_, recored) => [
-        <Link
-          key="edit"
-          onClick={() =>
-            history.push({
-              pathname: '/creditLoanManage/inventoryManage/enter/detail',
-              query: {
-                id: String(recored.id),
-                type: '1',
-              },
-            })
-          }
-        >
-          转在途
-        </Link>,
-        <Link
-          key="edit2"
-          onClick={() =>
-            history.push({
-              pathname: '/creditLoanManage/inventoryManage/enter/detail',
-              query: {
-                id: String(recored.id),
-              },
-            })
-          }
-        >
-          转在仓
-        </Link>,
-        <Link
-          key="edit3"
-          onClick={() => {
-            setModalVisible(true)
-          }}
-        >
-          质押
-        </Link>,
+        Number(recored.auditStatus) === 5 && recored.stockType === 'dqrkc' ? (
+          <Link
+            key="edit"
+            onClick={() =>
+              history.push({
+                pathname: '/creditLoanManage/inventoryManage/enter/detail',
+                query: {
+                  id: String(recored.id),
+                  type: '1',
+                },
+              })
+            }
+          >
+            转在途
+          </Link>
+        ) : null,
+        Number(recored.auditStatus) === 5 && recored.inWarehouseStatus === 'wzzczt' ? (
+          <Link
+            key="edit2"
+            onClick={() =>
+              history.push({
+                pathname: '/creditLoanManage/inventoryManage/enter/detail',
+                query: {
+                  id: String(recored.id),
+                },
+              })
+            }
+          >
+            转在仓
+          </Link>
+        ) : null,
+        Number(recored.auditStatus) === 3 ? (
+          <Link
+            key="edit3"
+            onClick={() => {
+              setModalVisible(true)
+            }}
+          >
+            质押
+          </Link>
+        ) : null,
         <Link
           key="detail"
           onClick={() =>

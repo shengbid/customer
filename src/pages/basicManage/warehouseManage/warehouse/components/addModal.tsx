@@ -108,7 +108,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
             validator: ({ field }: any, value: any) => {
               // 获取当前行数据
               const current = tableForm.getFieldValue(`${field.split('.')[0]}`) || {}
-              const idType = current.phoneArea ? Number(current.phoneArea) : 1
+              const idType = current.phoneArea ? current.phoneArea : '+86'
 
               if (!value) {
                 return Promise.reject(new Error('此项是必填项'))
