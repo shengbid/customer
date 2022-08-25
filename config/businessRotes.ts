@@ -65,6 +65,48 @@ export default [
         name: '授信管理详情',
         component: './creditLoanManage/creditManage/Detail',
       },
+
+      {
+        path: '/creditLoanManage/repay',
+        name: '还款管理',
+        access: 'hasMenu',
+        routes: [
+          {
+            path: '/creditLoanManage/repay',
+            component: './creditLoanManage/repay/audit',
+          },
+          {
+            path: '/creditLoanManage/repay/audit',
+            name: '还款审核记录',
+            access: 'hasMenu',
+            component: './creditLoanManage/repay/audit',
+          },
+        ],
+      },
+      {
+        path: '/creditLoanManage/financing',
+        name: '融资管理',
+        access: 'hasMenu',
+        routes: [
+          {
+            path: '/creditLoanManage/financing',
+            component: './creditLoanManage/financing/order',
+          },
+          {
+            path: '/creditLoanManage/financing/order',
+            name: '融资订单管理',
+            access: 'hasMenu',
+            component: './creditLoanManage/financing/order',
+          },
+          {
+            path: '/creditLoanManage/financing/audit',
+            name: '融资审核记录',
+            access: 'hasMenu',
+            component: './creditLoanManage/financing/audit',
+          },
+        ],
+      },
+
       {
         path: '/creditLoanManage/inventoryManage',
         name: '库存管理',
