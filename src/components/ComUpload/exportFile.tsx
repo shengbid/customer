@@ -61,14 +61,7 @@ const ExportFile: React.FC<exportProps> = ({
           }
         }
       } else {
-        FileSaver.saveAs(
-          res,
-          `${title}${
-            icon
-              ? intl.formatMessage({ id: 'pages.table.list' })
-              : intl.formatMessage({ id: 'pages.table.model' })
-          }`,
-        )
+        FileSaver.saveAs(res, title)
       }
       // FileSaver.saveAs(res, title)
     }
