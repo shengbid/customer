@@ -23,7 +23,7 @@ const ApprovalPage: React.FC = (props: any) => {
   const [activityParams, setActivityParams] = useState<any>({})
 
   const { query } = props.location
-  const { taskNumber, title } = query
+  const { taskNumber } = query
   // 根据任务id获取流程参数
   const getActivitParams = async () => {
     const { data } = await getActivityParams(taskNumber)
@@ -91,7 +91,7 @@ const ApprovalPage: React.FC = (props: any) => {
 
   return (
     <div>
-      <ProcessHeader title={title} infoData={activityParams} />
+      <ProcessHeader infoData={activityParams} />
 
       {/* 详情与审批历史 */}
       {activityParams.formKey ? (

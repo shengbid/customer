@@ -7,11 +7,10 @@ import { Button } from 'antd'
 const { DescriptionsItem } = ComDescriptions
 
 interface headerProps {
-  title: string
   infoData: any
 }
 
-const ProcessHeader: React.FC<headerProps> = ({ title, infoData }) => {
+const ProcessHeader: React.FC<headerProps> = ({ infoData }) => {
   const [headerInfo, setHeaderInfo] = useState<any>({})
 
   useEffect(() => {
@@ -23,7 +22,7 @@ const ProcessHeader: React.FC<headerProps> = ({ title, infoData }) => {
   return (
     <div className={styles.header}>
       <ComDescriptions
-        title={title}
+        title={headerInfo.taskTotalName}
         extra={
           <Button
             type="primary"

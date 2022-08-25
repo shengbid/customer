@@ -14,7 +14,7 @@ const ApprovalDetail: React.FC = (props: any) => {
   const [higLigthData, setHigLigthData] = useState<any>([])
   const [activityParams, setActivityParams] = useState<any>({})
 
-  const { taskNumber, title } = props.location.query
+  const { taskNumber } = (query = props.location.query)
 
   const params = {}
   // 获取流程高亮信息
@@ -41,7 +41,7 @@ const ApprovalDetail: React.FC = (props: any) => {
 
   return (
     <div>
-      <ProcessHeader title={title} infoData={activityParams} />
+      <ProcessHeader infoData={activityParams} />
 
       {/* 审批历史 */}
       <ComCard title="审核信息">

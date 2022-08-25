@@ -116,7 +116,6 @@ const Undone: React.FC = () => {
             // setModalVisible(true)
             toApprovalPage(recored.formKey, {
               taskNumber: recored.instanceId,
-              title: recored.taskTotalName,
             })
             // history.push({
             //   pathname: '/leaderPage/undone/approval',
@@ -223,7 +222,6 @@ const Undone: React.FC = () => {
               await updateRecepetStatus({ id: recored.id, status: recored.status })
             }
             toApprovalDetailPage(recored.formKey, {
-              title: recored.taskTotalName,
               taskNumber: activeKey === 'tab2' ? recored.processInstanceId : recored.instanceId,
             })
             sessionStorage.setItem('preUrl', '/leaderPage/undone')

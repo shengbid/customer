@@ -123,7 +123,6 @@ const CreditManage: React.FC = () => {
           disabled={Number(recored.auditStatus) !== 2}
           onClick={() => {
             toApprovalPage('crtedit', {
-              title: `${recored.enterpriseCreditName}-授信审核`,
               taskNumber: recored.taskNumber,
             })
             // const { data } = await getActivityParams(recored.taskNumber)
