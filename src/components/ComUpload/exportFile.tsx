@@ -1,28 +1,33 @@
 import React, { useState } from 'react'
 import { VerticalAlignBottomOutlined } from '@ant-design/icons'
-import { Button, notification } from 'antd'
+import { Button, notification, Typography, Spin } from 'antd'
 import { downloadFile, exportFile } from '@/services'
 import { loginOut } from '@/utils/base'
 import FileSaver from 'file-saver'
 import PermissionButton from '@/components/Permission'
 import { useIntl } from 'umi'
+
+const { Link } = Typography
 export interface exportProps {
   title: string
   url: string
-  authorword: string // 权限字符
+  authorword?: string // 权限字符
   icon?: boolean
   params?: any
   exportText?: string
+  btnDom?: any
+  tableDown?: boolean // 表格列的下载
 }
 
 // 导出模板
 const ExportFile: React.FC<exportProps> = ({
   title,
   url,
-  authorword,
-  icon = true,
+  authorword = '',
+  icon = false,
   exportText,
   params,
+  tableDown = false,
 }) => {
   const intl = useIntl()
   const [loading, setLoading] = useState<boolean>(false)
@@ -30,7 +35,7 @@ const ExportFile: React.FC<exportProps> = ({
   // 下载模板
   const download = async () => {
     setLoading(true)
-    const res = icon ? await exportFile(url, params) : await downloadFile(url)
+    const res = icon ? await exportFile(url, params) : await downloadFile(url, params)
     setLoading(false)
     if (res && res.size) {
       if (res.type === 'application/json') {
@@ -81,8 +86,14 @@ const ExportFile: React.FC<exportProps> = ({
       </PermissionButton>
     )
   }
-  return (
-    <Button type="link" loading={loading} onClick={download}>
+  return tableDown ? (
+    <Spin spinning={loading}>
+      <Link key="down" onClick={download}>
+        下载
+      </Link>
+    </Spin>
+  ) : (
+    <Button loading={loading} type="link" onClick={download}>
       {intl.formatMessage({ id: 'pages.btn.down' })}
     </Button>
   )
