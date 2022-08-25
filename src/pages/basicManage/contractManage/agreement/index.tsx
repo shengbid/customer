@@ -4,15 +4,16 @@ import type { contractListProps, contractListParamsProps } from '@/services/type
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import { Typography, Space } from 'antd'
 // import { history } from 'umi'
-import { getContractList, getDocusignSignUrl, downloadDocusignFile } from '@/services'
+import { getContractList, getDocusignSignUrl } from '@/services'
 import DictSelect from '@/components/ComSelect'
+import ExportFile from '@/components/ComUpload/exportFile'
 
 const { Link } = Typography
 // 合同协议管理列表
 const Agreement: React.FC = () => {
-  const [auditStatusData, setAuditStatusData] = useState<any>()
-  const [quatoStatusData, setQuatoStatusData] = useState<any>()
-  const [contractTypeData, setContractTypeData] = useState<any>()
+  const [auditStatusData, setAuditStatusData] = useState<any>({})
+  const [quatoStatusData, setQuatoStatusData] = useState<any>({})
+  const [contractTypeData, setContractTypeData] = useState<any>([])
   const actionRef = useRef<ActionType>()
 
   const getList = async (param: contractListParamsProps) => {
@@ -34,10 +35,6 @@ const Agreement: React.FC = () => {
   // 发起签署
   const toSign = async (recored: any) => {
     await getDocusignSignUrl({ contractId: recored.id, returnUrl: pathRoute })
-  }
-
-  const download = async (contractId: number) => {
-    await downloadDocusignFile({ contractId })
   }
 
   const columns: ProColumns<contractListProps>[] = [
@@ -149,9 +146,12 @@ const Agreement: React.FC = () => {
       valueType: 'option',
       render: (_, recored) => [
         recored.signStatus === 200 ? (
-          <Link key="approval" onClick={() => download(recored.id)}>
-            下载
-          </Link>
+          <ExportFile
+            url="/cus/agreement/downloadDoc"
+            params={{ contractId: recored.id }}
+            tableDown={true}
+            title={recored.contractName}
+          />
         ) : // <Link
         //   key="dis"
         //   onClick={cancellation}

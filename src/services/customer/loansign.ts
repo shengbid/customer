@@ -26,9 +26,16 @@ export async function getCooperatelogisticsList(enterpriseType: string) {
   })
 }
 
-/** 新增合作物流/仓储企业列表 */
+/** 新增合作物流/仓储企业 */
 export async function addCooperatelogistics(data: any) {
   return request(`/cus/partner/add`, {
+    method: 'post',
+    data,
+  })
+}
+/** 重新发起合作物流/仓储企业 */
+export async function retryCooperatelogistics(data: any) {
+  return request(`/cus/partner/edit`, {
     method: 'post',
     data,
   })
@@ -69,12 +76,6 @@ export async function deleteCooperateSupplier(ids: number) {
 /** 获取docusign签署地址 */
 export async function getDocusignSignUrl(params: { contractId: number; returnUrl: string }) {
   return request(`/cus/agreement/createRecipientView`, {
-    params,
-  })
-}
-/** 下载docusign文件 */
-export async function downloadDocusignFile(params: { contractId: number }) {
-  return request(`/cus/agreement/downloadDoc`, {
     params,
   })
 }

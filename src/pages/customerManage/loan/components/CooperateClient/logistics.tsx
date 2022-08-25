@@ -6,9 +6,9 @@ import type { reportFileProps } from '@/services/types'
 import type { ProColumns } from '@ant-design/pro-table'
 // import ComUpload from '@/components/ComUpload'
 import AddCooperate from './addCooperateModal'
-import { deleteCooperatelogistics, downloadDocusignFile } from '@/services'
+import { deleteCooperatelogistics } from '@/services'
 import { getDictData } from '@/utils/dictData'
-// import ExportFile from '@/components/ComUpload/exportFile'
+import ExportFile from '@/components/ComUpload/exportFile'
 
 const { Link } = Typography
 
@@ -23,7 +23,7 @@ interface infoProps {
 const Logistics: React.FC<infoProps> = ({ infoData, enterpriseId, type, handleSuccess }) => {
   const [dataSource, setDataSource] = useState<reportFileProps[]>([])
   const [modalVisible, setModalVisible] = useState<boolean>(false)
-  const [auditStatusData, setAuditStatusData] = useState<any>()
+  const [auditStatusData, setAuditStatusData] = useState<any>({})
   const [info, setInfo] = useState<any>({ enterpriseId })
 
   const coopreateStatus = {
@@ -52,10 +52,6 @@ const Logistics: React.FC<infoProps> = ({ infoData, enterpriseId, type, handleSu
     await deleteCooperatelogistics(ids)
     message.success('删除成功!')
     handleSuccess()
-  }
-
-  const download = async (contractId: number) => {
-    await downloadDocusignFile({ contractId })
   }
 
   const columns: ProColumns<any>[] = [
@@ -107,11 +103,13 @@ const Logistics: React.FC<infoProps> = ({ infoData, enterpriseId, type, handleSu
       width: '10%',
       ellipsis: true,
       render: (_, recored) =>
-        // <ExportFile title={recored.name} url="/cus/agreement/downloadDoc" />
         recored.signStatus === 200 ? (
-          <Link key="down" onClick={() => download(recored.contractId)}>
-            下载
-          </Link>
+          <ExportFile
+            title={recored.contractName}
+            params={{ contractId: recored.contractId }}
+            tableDown={true}
+            url="/cus/agreement/downloadDoc"
+          />
         ) : (
           '-'
         ),
@@ -133,7 +131,7 @@ const Logistics: React.FC<infoProps> = ({ infoData, enterpriseId, type, handleSu
         >
           <Link>删除</Link>
         </Popconfirm>,
-        recored.cooperationStatus === 30 ? (
+        recored.cooperationStatus === 1 ? (
           <Link
             key="detail"
             onClick={() => {

@@ -1,11 +1,24 @@
 import React, { useState, useEffect } from 'react'
-import { Modal, Button, Form, message, Spin, Row, Col, Radio, DatePicker, Select } from 'antd'
+import {
+  Modal,
+  Button,
+  Form,
+  message,
+  Spin,
+  Row,
+  Col,
+  Radio,
+  DatePicker,
+  Select,
+  Input,
+} from 'antd'
 import type { addModalProps } from '@/services/types'
 import {
   addCooperatelogistics,
   getDocusignTemplates,
   getCooperatelogisticsList,
   getSignerListByTemplateId,
+  retryCooperatelogistics,
 } from '@/services'
 import { useIntl } from 'umi'
 import type { ProColumns } from '@ant-design/pro-table'
@@ -52,15 +65,6 @@ const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handle
     setPhoneData(obj)
   }
 
-  useEffect(() => {
-    getDict()
-    if (info.partnerEnterpriseId) {
-      setTitle('重新发起签署')
-    } else {
-      setTitle(type === 1 ? `新建物流合作企业` : '新建仓储合作企业')
-    }
-  }, [])
-
   // 获取合同模板
   const getTemplateList = async () => {
     setSpinning(true)
@@ -95,15 +99,32 @@ const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handle
     if (modalVisible) {
       getTemplateList()
       getCompany()
-      if (info.partnerEnterpriseId) {
-        console.log(info)
-        setDataSource([])
+      getDict()
+    }
+  }, [modalVisible])
+
+  useEffect(() => {
+    if (modalVisible) {
+      if (info.partnerId) {
+        form.setFieldsValue({
+          partnerEnterpriseId: info.partnerId,
+          id: info.id,
+        })
+        setCompanyInfo({
+          value: info.partnerId,
+          label: info.partnerFullName,
+        })
+        if (info.partnerId) {
+          setTitle('重新发起签署')
+        } else {
+          setTitle(type === 1 ? `新建物流合作企业` : '新建仓储合作企业')
+        }
       }
     }
   }, [modalVisible, info])
 
   const intl = useIntl()
-  const text = info.partnerEnterpriseId
+  const text = info.partnerId
     ? intl.formatMessage({
         id: 'pages.btn.edit',
       })
@@ -212,14 +233,27 @@ const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handle
           return
         }
       }
-      await addCooperatelogistics({
-        ...omit(values, ['rangeData']),
-        enterpriseId: info.enterpriseId,
-        partnerType: type,
-        returnUrl: pathRoute,
-        validStartDate: moment(values.rangeData[0]).format(dateFormat),
-        validEndDate: moment(values.rangeData[1]).format(dateFormat),
-      })
+      if (info.partnerId) {
+        // 重新发起
+        await retryCooperatelogistics({
+          ...omit(values, ['rangeData']),
+          enterpriseId: info.enterpriseId,
+          partnerType: type,
+          returnUrl: pathRoute,
+          validStartDate: moment(values.rangeData[0]).format(dateFormat),
+          validEndDate: moment(values.rangeData[1]).format(dateFormat),
+        })
+      } else {
+        // 新增
+        await addCooperatelogistics({
+          ...omit(values, ['rangeData']),
+          enterpriseId: info.enterpriseId,
+          partnerType: type,
+          returnUrl: pathRoute,
+          validStartDate: moment(values.rangeData[0]).format(dateFormat),
+          validEndDate: moment(values.rangeData[1]).format(dateFormat),
+        })
+      }
       setConfirmLoading(false)
     } catch (error) {
       setConfirmLoading(false)
@@ -287,9 +321,9 @@ const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handle
               id: 'customer.loan.baseInfo',
             })}
           </h3>
-          {/* <Form.Item label="id" name="id" style={{ display: 'none' }}>
+          <Form.Item label="id" name="id" style={{ display: 'none' }}>
             <Input />
-          </Form.Item> */}
+          </Form.Item>
           <Row gutter={24}>
             <Col span={12}>
               <Form.Item
@@ -304,7 +338,7 @@ const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handle
                   },
                 ]}
               >
-                <Select onChange={selectCompany}>
+                <Select onChange={selectCompany} disabled={!!info.partnerId}>
                   {companyList.map((item) => (
                     <Option key={item.id} value={item.id}>
                       {item.fullName}
