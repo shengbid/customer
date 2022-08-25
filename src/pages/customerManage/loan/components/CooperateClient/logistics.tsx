@@ -9,6 +9,7 @@ import AddCooperate from './addCooperateModal'
 import { deleteCooperatelogistics } from '@/services'
 import { getDictData } from '@/utils/dictData'
 import ExportFile from '@/components/ComUpload/exportFile'
+import DownFile from '@/components/ComUpload/downFile'
 
 const { Link } = Typography
 
@@ -84,7 +85,7 @@ const Logistics: React.FC<infoProps> = ({ infoData, enterpriseId, type, handleSu
       render: (_, recored) => (
         <Space wrap>
           {recored.recipientsList.map((item: any) => (
-            <span key={item.enterpriseId} style={item.signStatus === 1 ? { color: 'red' } : {}}>
+            <span key={Math.random() * 10000} style={item.signStatus === 1 ? { color: 'red' } : {}}>
               {item.enterpriseName}
             </span>
           ))}
@@ -104,12 +105,16 @@ const Logistics: React.FC<infoProps> = ({ infoData, enterpriseId, type, handleSu
       ellipsis: true,
       render: (_, recored) =>
         recored.signStatus === 200 ? (
-          <ExportFile
-            title={recored.contractName}
-            params={{ contractId: recored.contractId }}
-            tableDown={true}
-            url="/cus/agreement/downloadDoc"
-          />
+          recored.signWay === 1 ? (
+            <ExportFile
+              title={recored.contractName}
+              params={{ contractId: recored.contractId }}
+              tableDown={true}
+              url="/cus/agreement/downloadDoc"
+            />
+          ) : (
+            <DownFile fileInfo={{ name: recored.fileName, fileUrl: recored.fileUrl }} />
+          )
         ) : (
           '-'
         ),

@@ -7,6 +7,7 @@ import { Typography, Space } from 'antd'
 import { getContractList, getDocusignSignUrl } from '@/services'
 import DictSelect from '@/components/ComSelect'
 import ExportFile from '@/components/ComUpload/exportFile'
+import DownFile from '@/components/ComUpload/downFile'
 
 const { Link } = Typography
 // 合同协议管理列表
@@ -113,7 +114,7 @@ const Agreement: React.FC = () => {
       render: (_, recored) => (
         <Space wrap>
           {recored.recipientsList.map((item: any) => (
-            <span key={item.enterpriseId} style={item.signStatus === 1 ? { color: 'red' } : {}}>
+            <span key={Math.random() * 10000} style={item.signStatus === 1 ? { color: 'red' } : {}}>
               {item.enterpriseName}
             </span>
           ))}
@@ -146,12 +147,16 @@ const Agreement: React.FC = () => {
       valueType: 'option',
       render: (_, recored) => [
         recored.signStatus === 200 ? (
-          <ExportFile
-            url="/cus/agreement/downloadDoc"
-            params={{ contractId: recored.id }}
-            tableDown={true}
-            title={recored.contractName}
-          />
+          recored.signWay === 1 ? (
+            <ExportFile
+              url="/cus/agreement/downloadDoc"
+              params={{ contractId: recored.id }}
+              tableDown={true}
+              title={recored.contractName}
+            />
+          ) : (
+            <DownFile fileInfo={{ name: recored.fileName, fileUrl: recored.fileUrl }} />
+          )
         ) : // <Link
         //   key="dis"
         //   onClick={cancellation}
