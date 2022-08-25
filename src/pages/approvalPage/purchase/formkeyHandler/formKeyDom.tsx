@@ -1,6 +1,11 @@
 import React from 'react'
 import ComCard from '@/components/ComPage/ComCard'
 import DetailApproval from '../approval'
+import PurchaseInfo from '../components/purchaseInfo'
+import ApplyDetail from '../components/applyDetail'
+import SupplierAccount from '../components/supplierAccount'
+import SignContract from '../components/signContract'
+import RepaymentPlan from '../components/repaymentPlan'
 
 interface detailProps {
   activityParams: any
@@ -8,12 +13,38 @@ interface detailProps {
   approvalDomRef: any
   detail?: string
 }
-const ApprovalDom: React.FC<detailProps> = ({ activityParams }) => {
+const CreditDom: React.FC<detailProps> = ({ activityParams, creditParams, approvalDomRef }) => {
   const approvalDom = {
-    purchase1: <></>,
-    purchase2: <></>,
-    purchase3: <></>,
-    purchase4: <></>,
+    purchase1: (
+      <>
+        <PurchaseInfo ref={approvalDomRef} creditParams={creditParams} />
+        <ApplyDetail />
+      </>
+    ),
+    purchase2: (
+      <>
+        <PurchaseInfo ref={approvalDomRef} creditParams={creditParams} />
+        <ApplyDetail />
+        <SupplierAccount creditParams={creditParams} />
+      </>
+    ),
+    purchase3: (
+      <>
+        <PurchaseInfo ref={approvalDomRef} creditParams={creditParams} />
+        <ApplyDetail />
+        <SupplierAccount creditParams={creditParams} />
+        <SignContract />
+      </>
+    ),
+    purchase4: (
+      <>
+        <SignContract />
+        <PurchaseInfo ref={approvalDomRef} creditParams={creditParams} />
+        <ApplyDetail />
+        <SupplierAccount creditParams={creditParams} />
+        <RepaymentPlan />
+      </>
+    ),
   }
 
   return (
@@ -28,4 +59,4 @@ const ApprovalDom: React.FC<detailProps> = ({ activityParams }) => {
   )
 }
 
-export default ApprovalDom
+export default CreditDom

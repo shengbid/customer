@@ -66,10 +66,16 @@ export default [
             component: './approvalPage/approvalDetail',
           },
           {
+            path: '/leaderPage/undone/credit',
+            // name: '授信审批待办',
+            hideInBreadcrumb: true,
+            component: './approvalPage/credit',
+          },
+          {
             path: '/leaderPage/undone/creditdetail',
             // name: '授信审批已办,抄送',
             hideInBreadcrumb: true,
-            component: './approvalPage/approvalDetail/credit',
+            component: './approvalPage/credit/detail',
           },
           {
             path: '/leaderPage/undone/purchase',
