@@ -17,26 +17,28 @@ const BusinessDetail: React.FC<detailProps> = ({
   creditParams,
   approvalDomRef,
 }) => {
-  if (activityParams.formKey.indexOf('credit') > -1) {
-    // 授信流程详情
-    return (
-      <CreditApproval
-        activityParams={activityParams}
-        creditParams={creditParams}
-        approvalDomRef={approvalDomRef}
-      />
-    )
-  } else if (activityParams.formKey.indexOf('purchase') > -1) {
-    // 代理采购流程
-    return (
-      <ComCard title="详情信息">
-        <FinanceApproval
+  if (activityParams.formKey) {
+    if (activityParams.formKey.indexOf('credit') > -1) {
+      // 授信流程详情
+      return (
+        <CreditApproval
+          activityParams={activityParams}
           creditParams={creditParams}
           approvalDomRef={approvalDomRef}
-          activityParams={activityParams}
         />
-      </ComCard>
-    )
+      )
+    } else if (activityParams.formKey.indexOf('purchase') > -1) {
+      // 代理采购流程
+      return (
+        <ComCard title="详情信息">
+          <FinanceApproval
+            creditParams={creditParams}
+            approvalDomRef={approvalDomRef}
+            activityParams={activityParams}
+          />
+        </ComCard>
+      )
+    }
   }
 
   return (

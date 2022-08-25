@@ -59,7 +59,7 @@ const ApprovalPage: React.FC = (props: any) => {
 
   useEffect(() => {
     if (activityParams.instanceId) {
-      if (activityParams.formKey.indexOf('credit') > -1) {
+      if (activityParams.formKey && activityParams.formKey.indexOf('credit') > -1) {
         getCredit()
       }
       getProcess()
