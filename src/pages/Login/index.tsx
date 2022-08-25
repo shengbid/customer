@@ -110,9 +110,9 @@ const Login: React.FC = () => {
         await fetchUserInfo()
         /** 此方法会跳转到 redirect 参数所在的位置 */
         if (!history) return
-        const { query } = history.location
-        const { redirect } = query as { redirect: string }
-        history.push(redirect || '/leaderPage')
+        // const { query } = history.location
+        // const { redirect } = query as { redirect: string }
+        history.push('/leaderPage')
         return
       }
 
