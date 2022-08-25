@@ -5,10 +5,10 @@ import { Typography, Tabs, Badge } from 'antd'
 import { searchdoneList, searchUndoneList, geRecepetList, updateRecepetStatus } from '@/services'
 import React, { useState, useRef, useEffect } from 'react'
 // import { StatisticCard } from '@ant-design/pro-card'
-import { useIntl, history } from 'umi'
+import { useIntl } from 'umi'
 import AddModal from './components/addModal'
 import DictSelect from '@/components/ComSelect'
-import { toApprovalDetailPage } from '@/utils/approval'
+import { toApprovalDetailPage, toApprovalPage } from '@/utils/approval'
 const { TabPane } = Tabs
 const { Link } = Typography
 
@@ -114,17 +114,21 @@ const Undone: React.FC = () => {
           onClick={async () => {
             setInfo(recored)
             // setModalVisible(true)
-            history.push({
-              pathname: '/leaderPage/undone/approval',
-              query: {
-                // id: recored.id,
-                // businessKey: recored.businessKey,
-                // taskNodeName: recored.name,
-                taskNumber: recored.instanceId,
-                // formKey: recored.formKey,
-                title: recored.taskTotalName,
-              },
+            toApprovalPage(recored.formKey, {
+              taskNumber: recored.instanceId,
+              title: recored.taskTotalName,
             })
+            // history.push({
+            //   pathname: '/leaderPage/undone/approval',
+            //   query: {
+            //     // id: recored.id,
+            //     // businessKey: recored.businessKey,
+            //     // taskNodeName: recored.name,
+            //     taskNumber: recored.instanceId,
+            //     // formKey: recored.formKey,
+            //     title: recored.taskTotalName,
+            //   },
+            // })
             sessionStorage.setItem('preUrl', '/leaderPage/undone')
           }}
         >

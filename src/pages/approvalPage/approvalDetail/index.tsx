@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import ComDescriptions from '@/components/ComPage/Descriptions'
 import { getProcessIds, getActivityParams } from '@/services'
-import { history } from 'umi'
-import { Button, Tabs } from 'antd'
+import { Tabs } from 'antd'
 import ComCollapse from '@/components/ComPage/ComCollapse'
 import ViewBpmn from '@/components/Bpmn/ViewBpmn'
 import ComCard from '@/components/ComPage/ComCard'
 import ApprovalHistory from '../components/approvalHistroy'
-import styles from '../index.less'
+import ProcessHeader from '../components/processHeader'
 
 const { TabPane } = Tabs
 
 const { Panel } = ComCollapse
-const { DescriptionsItem } = ComDescriptions
 
 // 详情抄送
 const ApprovalDetail: React.FC = (props: any) => {
@@ -44,27 +41,8 @@ const ApprovalDetail: React.FC = (props: any) => {
   }, [activityParams.instanceId])
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <ComDescriptions
-          title={title}
-          extra={
-            <Button
-              type="primary"
-              onClick={() => {
-                const url = sessionStorage.getItem('preUrl')
-                history.push(url ? url : '/leaderPage/undone')
-              }}
-            >
-              返回
-            </Button>
-          }
-        >
-          <DescriptionsItem label="创建时间">{activityParams.createTime}</DescriptionsItem>
-          <DescriptionsItem label="发起人">{activityParams.fqrNickname}</DescriptionsItem>
-          <DescriptionsItem label="流程编号">{activityParams.processNo}</DescriptionsItem>
-        </ComDescriptions>
-      </div>
+    <div>
+      <ProcessHeader title={title} infoData={activityParams} />
 
       {/* 详情与审批历史 */}
       <ComCard title="审核信息">

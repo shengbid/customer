@@ -4,9 +4,10 @@ import type { creditListProps, creditListParamProps } from '@/services/types'
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import { Typography, message, Popconfirm } from 'antd'
 import { history } from 'umi'
-import { editCeditQutoStatus, getCeditList, getActivityParams } from '@/services'
+import { editCeditQutoStatus, getCeditList } from '@/services'
 import DictSelect from '@/components/ComSelect'
 import { formatEmpty } from '@/utils/base'
+import { toApprovalPage } from '@/utils/approval'
 
 const { Link } = Typography
 
@@ -120,19 +121,23 @@ const CreditManage: React.FC = () => {
         <Link
           key="approval"
           disabled={Number(recored.auditStatus) !== 2}
-          onClick={async () => {
-            const { data } = await getActivityParams(recored.taskNumber)
-            history.push({
-              pathname: '/leaderPage/undone/approval',
-              query: {
-                id: data.id,
-                businessKey: data.businessKey,
-                taskNodeName: data.name,
-                instanceId: data.instanceId,
-                formKey: data.formKey,
-                title: `${recored.enterpriseCreditName}-授信审核-${data.name}`,
-              },
+          onClick={() => {
+            toApprovalPage('crtedit', {
+              title: `${recored.enterpriseCreditName}-授信审核`,
+              taskNumber: recored.taskNumber,
             })
+            // const { data } = await getActivityParams(recored.taskNumber)
+            // history.push({
+            //   pathname: '/leaderPage/undone/approval',
+            //   query: {
+            //     id: data.id,
+            //     businessKey: data.businessKey,
+            //     taskNodeName: data.name,
+            //     instanceId: data.instanceId,
+            //     formKey: data.formKey,
+            //     title: `${recored.enterpriseCreditName}-授信审核-${data.name}`,
+            //   },
+            // })
             sessionStorage.setItem('preUrl', '/creditLoanManage/creditManage')
           }}
         >

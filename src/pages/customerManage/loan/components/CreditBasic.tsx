@@ -1,9 +1,9 @@
 import React from 'react'
 // import { getCreditDetailById } from '@/services'
 // import { Button } from 'antd'
-import CreditInfo from '@/pages/approvalPage/businessDetail/credit/creditDetail'
+import CreditInfo from '@/pages/approvalPage/credit/components'
 import ComCard from '@/components/ComPage/ComCard'
-import RealteDetail from '@/pages/approvalPage/businessDetail/credit/creditDetail/relatedForm/detail'
+import RealteDetail from '@/pages/approvalPage/credit/components/relatedForm/detail'
 import SignPerson from '../../cooperateClient/components/SignPerson'
 interface basicProps {
   companyId: string
