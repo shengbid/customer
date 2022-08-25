@@ -1,19 +1,19 @@
 import React, { useState, useEffect, useRef, MutableRefObject } from 'react'
 import { message } from 'antd'
 import { history } from 'umi'
-import ApprovalForm from './components/approvalForm'
+import ApprovalForm from '../components/approvalForm'
 import ComCollapse from '@/components/ComPage/ComCollapse'
 import ViewBpmn from '@/components/Bpmn/ViewBpmn'
-import { approvalSave, getProcessIds, getCreditDetail, getActivityParams } from '@/services'
-import BusinessDetail from './businessDetail'
-import ProcessHeader from './components/processHeader'
+import { approvalSave, getProcessIds, getActivityParams } from '@/services'
+import ApprovalDom from './formkeyHandler/formKeyDom'
+import ProcessHeader from '../components/processHeader'
 import type { surveyParamProps } from '@/services/types'
 import { omit } from 'lodash'
 
 const { Panel } = ComCollapse
 
 const ApprovalPage: React.FC = (props: any) => {
-  const [creditParams, setCreditParams] = useState<surveyParamProps>({
+  const [creditParams] = useState<surveyParamProps>({
     infoId: '',
     enterpriseId: '',
   })
@@ -34,19 +34,6 @@ const ApprovalPage: React.FC = (props: any) => {
     getActivitParams()
   }, [])
 
-  // console.log(detail)
-
-  // 获取授信id和企业id
-  const getCredit = async () => {
-    const { data } = await getCreditDetail(activityParams.instanceId)
-    // const { data } = await getCreditDetail('11112222')
-    setCreditParams({
-      infoId: data.id,
-      enterpriseId: data.enterpriseId,
-      enterpriseName: data.enterpriseName,
-    })
-  }
-
   // 获取流程信息
   const getProcess = async () => {
     const { data } = await getProcessIds(activityParams.instanceId)
@@ -55,9 +42,6 @@ const ApprovalPage: React.FC = (props: any) => {
 
   useEffect(() => {
     if (activityParams.instanceId) {
-      if (activityParams.formKey && activityParams.formKey.indexOf('credit') > -1) {
-        getCredit()
-      }
       getProcess()
     }
   }, [activityParams.instanceId])
@@ -108,28 +92,15 @@ const ApprovalPage: React.FC = (props: any) => {
   return (
     <div>
       <ProcessHeader title={title} infoData={activityParams} />
+
       {/* 详情与审批历史 */}
       {activityParams.formKey ? (
-        <BusinessDetail
+        <ApprovalDom
           approvalDomRef={approvalDomRef}
           creditParams={creditParams}
           activityParams={activityParams}
         />
       ) : null}
-
-      {/* 审核业务表单 */}
-      {/* {activityParams.formKey ? (
-        <ApprovalDom
-          id={activityParams.instanceId}
-          formName={activityParams.formKey}
-          creditParams={{
-            ...creditParams,
-            taskID: activityParams.id,
-            businessKey: activityParams.businessKey,
-          }}
-          approvalDomRef={approvalDomRef}
-        />
-      ) : null} */}
 
       {/* 审核按钮通用表单 */}
       {activityParams.taskId ? (
@@ -139,6 +110,7 @@ const ApprovalPage: React.FC = (props: any) => {
           BpmnInfo={{ id: activityParams.taskId }}
         />
       ) : null}
+
       {/* 流程图 */}
       <ComCollapse>
         <Panel header="流程图" key="1">

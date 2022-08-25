@@ -72,6 +72,42 @@ export default [
             component: './approvalPage/approvalDetail/credit',
           },
           {
+            path: '/leaderPage/undone/purchase',
+            // name: '代理采购待办',
+            hideInBreadcrumb: true,
+            component: './approvalPage/purchase',
+          },
+          {
+            path: '/leaderPage/undone/purchasedetail',
+            // name: '代理采购已办,抄送',
+            hideInBreadcrumb: true,
+            component: './approvalPage/purchase/detail',
+          },
+          {
+            path: '/leaderPage/undone/inway',
+            // name: '在途质押待办',
+            hideInBreadcrumb: true,
+            component: './approvalPage/inway',
+          },
+          {
+            path: '/leaderPage/undone/inwaydetail',
+            // name: '在途质押已办,抄送',
+            hideInBreadcrumb: true,
+            component: './approvalPage/inway/detail',
+          },
+          {
+            path: '/leaderPage/undone/inWarehouse',
+            // name: '在仓质押待办',
+            hideInBreadcrumb: true,
+            component: './approvalPage/inWarehouse',
+          },
+          {
+            path: '/leaderPage/undone/inWarehousedetail',
+            // name: '在仓质押已办,抄送',
+            hideInBreadcrumb: true,
+            component: './approvalPage/inWarehouse/detail',
+          },
+          {
             path: '/leaderPage/leave',
             name: '请假流程',
             access: 'hasMenu',
