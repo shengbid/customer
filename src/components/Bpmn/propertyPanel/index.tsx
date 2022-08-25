@@ -772,8 +772,14 @@ const PropertyPanel: React.FC<{ bpmnModeler: any }> = ({ bpmnModeler }) => {
         }
         updateProperties({ [name]: value })
       }
-      if (item === 'candidateGroups' || item === 'formKey') {
+      if (item === 'candidateGroups') {
         setUserTask({ ...userTask, [item]: changedValues[item] })
+      }
+      if (item === 'formKey') {
+        setUserTaskArr({
+          ...userTask,
+          formKey: changedValues[item],
+        })
       }
       if (item === 'recipientGroups') {
         updateProperties({ 'activiti:recipientGroups': changedValues[item] })
