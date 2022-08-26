@@ -195,7 +195,7 @@ const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handle
           },
         ],
       },
-      renderFormItem: () => <ComUpload />,
+      renderFormItem: () => <ComUpload limit={1} />,
     },
   ]
 
@@ -207,7 +207,7 @@ const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handle
         await tableForm.validateFields()
         values.offlineContractAdd = dataSource2.map((item: any) => {
           return {
-            ...item,
+            ...omit(item, ['fileList']),
             signWay: 2,
             recipientList: [
               {
