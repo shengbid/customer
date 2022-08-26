@@ -4,7 +4,7 @@ import { EditableProTable } from '@ant-design/pro-table'
 import RequiredLabel from '@/components/RequiredLabel'
 import ComCard from '@/components/ComPage/ComCard'
 import type { ProColumns } from '@ant-design/pro-table'
-import { addCooperateSupplier, editCooperateSupplier } from '@/services'
+import { editCargoFile } from '@/services'
 import DictSelect from '@/components/ComSelect'
 import ComUpload from '@/components/ComUpload'
 import { getDictData } from '@/utils/dictData'
@@ -23,7 +23,7 @@ const EditCargo: React.FC<infoProps> = ({ infoData, handleSuccess, id }) => {
   const [contractTypeData, setContractTypeData] = useState<any>()
 
   const getDict = async () => {
-    const obj = await getDictData('contract_type')
+    const obj = await getDictData('stock_file_type')
     setContractTypeData(obj)
   }
 
@@ -33,13 +33,20 @@ const EditCargo: React.FC<infoProps> = ({ infoData, handleSuccess, id }) => {
 
   useEffect(() => {
     if (infoData && infoData.length) {
-      setDataSource(infoData)
+      setDataSource(
+        infoData.map((item: any) => {
+          return {
+            ...item,
+            key: item.id,
+          }
+        }),
+      )
     }
   }, [infoData])
 
   // 删除
-  const delteRecored = async (ids: number) => {
-    // await deleteCooperateSupplier(ids)
+  const delteRecored = async (ids: any) => {
+    await editCargoFile({ dataSource, id })
     setDataSource(dataSource.filter((item) => item.id !== ids))
     message.success('删除成功!')
     handleSuccess()
@@ -58,7 +65,7 @@ const EditCargo: React.FC<infoProps> = ({ infoData, handleSuccess, id }) => {
           },
         ],
       },
-      renderFormItem: () => <DictSelect authorword="stock_type" />,
+      renderFormItem: () => <DictSelect authorword="stock_file_type" />,
       render: (_: any, recored: any) => <>{contractTypeData[recored.contractType]}</>,
     },
     {
@@ -127,10 +134,9 @@ const EditCargo: React.FC<infoProps> = ({ infoData, handleSuccess, id }) => {
             return [defaultDom.save, defaultDom.cancel]
           },
           onSave: async (rowKey, data) => {
+            console.log(dataSource)
             if (data.id) {
-              await editCooperateSupplier({ ...data, id })
-            } else {
-              await addCooperateSupplier({ ...data, id })
+              await editCargoFile({ ...data, id })
             }
             message.success('保存成功!')
           },

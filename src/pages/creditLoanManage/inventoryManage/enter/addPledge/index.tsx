@@ -189,7 +189,7 @@ const Detail: React.FC = (props: any) => {
           },
         ],
       },
-      renderFormItem: () => <DictSelect authorword="phone_code" />,
+      renderFormItem: () => <DictSelect authorword="stock_file_type" />,
     },
     // {
     //   title: '',

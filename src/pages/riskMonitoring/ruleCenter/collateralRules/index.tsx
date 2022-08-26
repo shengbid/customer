@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Button, Form, message, Spin } from 'antd'
 import ComInputNumber from '@/components/Input/InputNumber'
 import ComCard from '@/components/ComPage'
+import { getRiskRuleList, editRiskRuleList } from '@/services'
 import styles from './index.less'
 
 interface infoProps {
@@ -11,18 +12,42 @@ interface infoProps {
 
 // 押品质押规则配置
 const CollateralRules: React.FC<infoProps> = (props: any) => {
-  const [spinning, setSpinning] = useState<boolean>(false)
+  const [spinning, setSpinning] = useState<boolean>(true)
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
   const [form] = Form.useForm()
+  const [form1] = Form.useForm()
+  const [form2] = Form.useForm()
+  const [form3] = Form.useForm()
 
   const { type } = props
 
-  useEffect(() => {
+  // 获取数据
+  const getRuleList = async () => {
+    const { data } = await getRiskRuleList()
     setSpinning(false)
+    if (data) {
+      form.setFieldsValue({ accountPledgeRate: data.accountPledgeRate })
+      if (data.jxPledgeGoodRuleList && data.jxPledgeGoodRuleList.length) {
+        form1.setFieldsValue(data.jxPledgeGoodRuleList[0])
+        form2.setFieldsValue(data.jxPledgeGoodRuleList[1])
+        form3.setFieldsValue(data.jxPledgeGoodRuleList[2])
+      }
+    }
+  }
+
+  useEffect(() => {
+    getRuleList()
   }, [])
 
-  const handleOk = (values: any) => {
-    console.log(values)
+  const handleOk = async () => {
+    await form.validateFields()
+    await form1.validateFields()
+    await form2.validateFields()
+    await form3.validateFields()
+    const data = form.getFieldsValue()
+    const data1 = form1.getFieldsValue()
+    console.log(data, data1)
+    await editRiskRuleList({})
     setConfirmLoading(false)
     message.success('配置成功!')
   }
@@ -38,18 +63,12 @@ const CollateralRules: React.FC<infoProps> = (props: any) => {
         </div>
       ) : null}
       <Spin spinning={spinning}>
-        <Form
-          name="basic"
-          initialValues={{ signtype: 1 }}
-          onFinish={handleOk}
-          form={form}
-          autoComplete="off"
-        >
+        <Form name="basic" form={form} autoComplete="off">
           <ComCard title="应收账款质押规则配置">
             <div style={{ width: '40%' }}>
               <Form.Item
                 label="应收账款质押折扣率"
-                name="rate"
+                name="accountPledgeRate"
                 rules={[
                   {
                     required: true,
@@ -62,15 +81,16 @@ const CollateralRules: React.FC<infoProps> = (props: any) => {
             </div>
             <div className="tipcontent">注：应收账款最终价值=应收账款总额 * 当前应收账款折扣率</div>
           </ComCard>
+        </Form>
 
-          <ComCard title="存货质押规则配置">
-            <div className="tipcontent">商品最终价值=该商品的公允价 * 当前商品效期折扣率</div>
-
+        <ComCard title="存货质押规则配置">
+          <div className="tipcontent">商品最终价值=该商品的公允价 * 当前商品效期折扣率</div>
+          <Form name="basic1" form={form1} autoComplete="off">
             <div className={styles.ruleline}>
               <span className={styles.text}>1、商品剩余有效天数≥商品整体有效期的</span>
               <div className={styles.rate}>
                 <Form.Item
-                  name="rate11"
+                  name="goodKeepRateStart"
                   rules={[
                     {
                       required: true,
@@ -84,7 +104,7 @@ const CollateralRules: React.FC<infoProps> = (props: any) => {
               <span className={styles.text}>，则商品效期折扣率为</span>
               <div className={styles.rate}>
                 <Form.Item
-                  name="rate12"
+                  name="goodEffectiveRate"
                   rules={[
                     {
                       required: true,
@@ -96,12 +116,13 @@ const CollateralRules: React.FC<infoProps> = (props: any) => {
                 </Form.Item>
               </div>
             </div>
-
+          </Form>
+          <Form name="basic2" form={form2} autoComplete="off">
             <div className={styles.ruleline}>
               <span className={styles.text}>2、商品整体有效期的</span>
               <div className={styles.rate}>
                 <Form.Item
-                  name="rate21"
+                  name="goodKeepRateStart"
                   rules={[
                     {
                       required: true,
@@ -115,7 +136,7 @@ const CollateralRules: React.FC<infoProps> = (props: any) => {
               <span className={styles.text}> ＜ 商品剩余有效天数 ＜ 商品整体有效期的</span>
               <div className={styles.rate}>
                 <Form.Item
-                  name="rate22"
+                  name="goodEffectiveRate"
                   rules={[
                     {
                       required: true,
@@ -129,7 +150,7 @@ const CollateralRules: React.FC<infoProps> = (props: any) => {
               <span className={styles.text}>，则商品效期折扣率为</span>
               <div className={styles.rate}>
                 <Form.Item
-                  name="rate23"
+                  name="goodKeepRateEnd"
                   rules={[
                     {
                       required: true,
@@ -141,12 +162,13 @@ const CollateralRules: React.FC<infoProps> = (props: any) => {
                 </Form.Item>
               </div>
             </div>
-
+          </Form>
+          <Form name="basic3" form={form3} autoComplete="off">
             <div className={styles.ruleline}>
               <span className={styles.text}>3、商品剩余有效天数 ≤ 商品整体有效期的</span>
               <div className={styles.rate}>
                 <Form.Item
-                  name="rate31"
+                  name="goodKeepRateStart"
                   rules={[
                     {
                       required: true,
@@ -160,7 +182,7 @@ const CollateralRules: React.FC<infoProps> = (props: any) => {
               <span className={styles.text}>，则商品效期折扣率为</span>
               <div className={styles.rate}>
                 <Form.Item
-                  name="rate32"
+                  name="goodEffectiveRate"
                   rules={[
                     {
                       required: true,
@@ -172,14 +194,14 @@ const CollateralRules: React.FC<infoProps> = (props: any) => {
                 </Form.Item>
               </div>
             </div>
-          </ComCard>
+          </Form>
+        </ComCard>
 
-          <div className="middle-btns" style={{ marginTop: 30 }}>
-            <Button type="primary" htmlType="submit" loading={confirmLoading}>
-              提交
-            </Button>
-          </div>
-        </Form>
+        <div className="middle-btns" style={{ marginTop: 30 }}>
+          <Button type="primary" onClick={handleOk} loading={confirmLoading}>
+            提交
+          </Button>
+        </div>
       </Spin>
     </div>
   )

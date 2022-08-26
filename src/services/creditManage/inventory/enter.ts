@@ -45,3 +45,10 @@ export async function turnToPledge(id: string) {
     data: { id },
   })
 }
+// 新增编辑删除理货报告
+export async function editCargoFile(data: any) {
+  return request<{ data: any }>(`${url}/pledge`, {
+    method: 'post',
+    data,
+  })
+}

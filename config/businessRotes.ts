@@ -154,7 +154,7 @@ export default [
     routes: [
       {
         path: '/riskMonitoring',
-        redirect: '/riskMonitoring/ruleCenter',
+        redirect: '/riskMonitoring/ruleCenter/collateralRules',
       },
       {
         path: '/riskMonitoring/ruleCenter',
