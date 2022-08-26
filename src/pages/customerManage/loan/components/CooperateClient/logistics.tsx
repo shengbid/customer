@@ -16,16 +16,16 @@ const { Link } = Typography
 interface infoProps {
   infoData: any
   type: number
-  enterpriseId: number
+  info: any
   handleSuccess: () => void
 }
 
 // 合作物流企业
-const Logistics: React.FC<infoProps> = ({ infoData, enterpriseId, type, handleSuccess }) => {
+const Logistics: React.FC<infoProps> = ({ infoData, info, type, handleSuccess }) => {
   const [dataSource, setDataSource] = useState<reportFileProps[]>([])
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [auditStatusData, setAuditStatusData] = useState<any>({})
-  const [info, setInfo] = useState<any>({ enterpriseId })
+  const [infos, setInfo] = useState<any>(info)
 
   const coopreateStatus = {
     1: '待合作',
@@ -140,7 +140,7 @@ const Logistics: React.FC<infoProps> = ({ infoData, enterpriseId, type, handleSu
           <Link
             key="detail"
             onClick={() => {
-              setInfo(recored)
+              setInfo({ ...recored, ...info })
               setModalVisible(true)
             }}
           >
@@ -165,7 +165,7 @@ const Logistics: React.FC<infoProps> = ({ infoData, enterpriseId, type, handleSu
             type="primary"
             onClick={() => {
               setModalVisible(true)
-              setInfo({ enterpriseId })
+              setInfo(info)
             }}
           >
             新增
@@ -178,7 +178,7 @@ const Logistics: React.FC<infoProps> = ({ infoData, enterpriseId, type, handleSu
       <AddCooperate
         type={type}
         modalVisible={modalVisible}
-        info={info}
+        info={infos}
         handleCancel={() => {
           setModalVisible(false)
         }}

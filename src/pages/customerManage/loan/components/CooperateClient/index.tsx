@@ -17,10 +17,10 @@ import { omit } from 'lodash'
 const { Option } = Select
 
 interface infoProps {
-  enterpriseId: number
+  info: any
 }
 
-const CooperateClient: React.FC<infoProps> = ({ enterpriseId }) => {
+const CooperateClient: React.FC<infoProps> = ({ info }) => {
   const [tableData, setTableData] = useState<any[]>()
   const [tableData2, setTableData2] = useState<any[]>()
   // const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([])
@@ -39,7 +39,10 @@ const CooperateClient: React.FC<infoProps> = ({ enterpriseId }) => {
   const getList = async () => {
     setSpinning1(true)
     try {
-      const { data } = await getLoanCooperateSignList({ enterpriseId, partnerType: 1 })
+      const { data } = await getLoanCooperateSignList({
+        enterpriseId: info.enterpriseId,
+        partnerType: 1,
+      })
       if (data) {
         setTableData(
           data.map((item: any) => {
@@ -59,7 +62,10 @@ const CooperateClient: React.FC<infoProps> = ({ enterpriseId }) => {
   const getList2 = async () => {
     setSpinning2(true)
     try {
-      const { data } = await getLoanCooperateSignList({ enterpriseId, partnerType: 2 })
+      const { data } = await getLoanCooperateSignList({
+        enterpriseId: info.enterpriseId,
+        partnerType: 2,
+      })
       setSpinning2(false)
       if (data) {
         setTableData2(
@@ -87,7 +93,7 @@ const CooperateClient: React.FC<infoProps> = ({ enterpriseId }) => {
   const getSupplierList = async () => {
     setSpinning3(true)
     try {
-      const { data } = await cooperateSupplierList({ enterpriseId })
+      const { data } = await cooperateSupplierList({ enterpriseId: info.enterpriseId })
       setSpinning3(false)
       if (data) {
         setDataSource2(
@@ -169,7 +175,7 @@ const CooperateClient: React.FC<infoProps> = ({ enterpriseId }) => {
           ))}
         </Select>
       ),
-      render: (_, recored: any) => <>{recored.supplierName}</>,
+      render: (_: any, recored: any) => <>{recored.supplierName}</>,
     },
     {
       title: <RequiredLabel label="账号" />,
@@ -254,20 +260,10 @@ const CooperateClient: React.FC<infoProps> = ({ enterpriseId }) => {
   return (
     <>
       <Spin spinning={spinning1}>
-        <Logistics
-          infoData={tableData}
-          handleSuccess={() => getList()}
-          enterpriseId={enterpriseId}
-          type={1}
-        />
+        <Logistics infoData={tableData} handleSuccess={() => getList()} info={info} type={1} />
       </Spin>
       <Spin spinning={spinning2}>
-        <Logistics
-          infoData={tableData2}
-          handleSuccess={() => getList2()}
-          enterpriseId={enterpriseId}
-          type={2}
-        />
+        <Logistics infoData={tableData2} handleSuccess={() => getList2()} info={info} type={2} />
       </Spin>
 
       {/* <ComCard title="合作仓库">
@@ -320,9 +316,9 @@ const CooperateClient: React.FC<infoProps> = ({ enterpriseId }) => {
               },
               onSave: async (rowKey, data) => {
                 if (data.id) {
-                  await editCooperateSupplier({ ...data, enterpriseId })
+                  await editCooperateSupplier({ ...data, enterpriseId: info.enterpriseId })
                 } else {
-                  await addCooperateSupplier({ ...data, enterpriseId })
+                  await addCooperateSupplier({ ...data, enterpriseId: info.enterpriseId })
                 }
                 message.success('保存成功!')
                 getSupplierList()

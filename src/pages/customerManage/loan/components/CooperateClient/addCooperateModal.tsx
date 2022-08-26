@@ -43,10 +43,10 @@ const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handle
   const [dataSource, setDataSource] = useState<any[]>([])
   const [dataSource2, setDataSource2] = useState<any[]>([
     {
-      contractType: 3,
+      contractType: type === 1 ? 3 : 4,
     },
   ])
-  const [editableKeys, setEditableRowKeys] = useState<any[]>([3])
+  const [editableKeys, setEditableRowKeys] = useState<any[]>([type === 1 ? 3 : 4])
   const [templateList, setTemplateList] = useState<any[]>([])
   const [signType, setSignType] = useState<number>(1)
   const [companyList, setCompanyList] = useState<any[]>([])
@@ -69,7 +69,7 @@ const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handle
   const getTemplateList = async () => {
     setSpinning(true)
     try {
-      const { rows } = await getDocusignTemplates({ templateType: 3 })
+      const { rows } = await getDocusignTemplates({ templateType: type === 1 ? 3 : 4 })
       if (rows) {
         setTemplateList(rows)
       }
@@ -97,6 +97,7 @@ const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handle
 
   useEffect(() => {
     if (modalVisible) {
+      setSignType(1)
       getTemplateList()
       getCompany()
       getDict()
@@ -164,17 +165,33 @@ const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handle
       title: <RequiredLabel label="合同名称" />,
       dataIndex: 'contractName',
       width: '25%',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '此项是必填项',
+          },
+        ],
+      },
     },
     {
       title: <RequiredLabel label="合同编号" />,
       dataIndex: 'contractNo',
       width: '17%',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '此项是必填项',
+          },
+        ],
+      },
     },
     {
       title: '合同类型',
       dataIndex: 'contractType',
       width: '17%',
-      render: () => <span>三方运输协议</span>,
+      render: () => <span>{type === 1 ? '三方运输协议' : '三方监管协议'}</span>,
       editable: false,
     },
     {
@@ -182,6 +199,14 @@ const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handle
       dataIndex: 'signTime',
       width: '17%',
       valueType: 'date',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '此项是必填项',
+          },
+        ],
+      },
     },
     {
       title: <RequiredLabel label="合同附件" />,
@@ -204,12 +229,24 @@ const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handle
     setConfirmLoading(true)
     try {
       if (signType === 2) {
-        await tableForm.validateFields()
+        try {
+          await tableForm.validateFields()
+        } catch (error) {
+          setConfirmLoading(false)
+          message.warning('请填写完整合同信息再提交')
+          return
+        }
+
         values.offlineContractAdd = dataSource2.map((item: any) => {
           return {
             ...omit(item, ['fileList']),
             signWay: 2,
             recipientList: [
+              {
+                role: 1,
+                enterpriseId: info.enterpriseId,
+                enterpriseName: info.enterpriseName,
+              },
               {
                 role: 3,
                 enterpriseId: companyInfo.value,
@@ -219,7 +256,7 @@ const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handle
             fileName: item.fileList[0].fileName,
             fileUrl: item.fileList[0].fileUrl,
           }
-        })
+        })[0]
       } else {
         let flag = false
         dataSource.some((item: any) => {

@@ -43,7 +43,9 @@ const Detail: React.FC = (props: any) => {
       {activeKey === '1' ? <CreditBasic status={status} companyId={enterpriseId} /> : null}
       {activeKey === '2' && status !== '01' ? <CreditInfo enterpriseId={enterpriseId} /> : null}
       {activeKey === '6' ? <PledgeRule enterpriseId={enterpriseId} /> : null}
-      {activeKey === '7' ? <CooperateClient enterpriseId={enterpriseId} /> : null}
+      {activeKey === '7' ? (
+        <CooperateClient info={{ enterpriseId, enterpriseName: companyName }} />
+      ) : null}
     </ComPageContanier>
   )
 }
