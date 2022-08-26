@@ -45,7 +45,7 @@ const ComUpload: React.FC<comuploadProps> = ({
           const newItem = item
           if (!item.url) {
             newItem.url = `${item.pictureDomain}${item.fileUrl}`
-            newItem.name = item.fileName
+            newItem.name = item.fileName ? item.fileName : item.name
             newItem.uid = item.fileId ? item.fileId : Math.floor(Math.random() * 1000)
           }
           newValues.push(newItem)
