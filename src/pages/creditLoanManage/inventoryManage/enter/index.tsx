@@ -81,7 +81,7 @@ const ListManage: React.FC = () => {
         <Select>
           {wareList.map((item: any) => (
             <Option key={item.id} value={item.id}>
-              {item.fullName}
+              {item.warehouseName}
             </Option>
           ))}
         </Select>

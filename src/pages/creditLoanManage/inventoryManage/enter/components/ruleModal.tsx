@@ -6,17 +6,7 @@ import { useIntl } from 'umi'
 import styles from './rule.less'
 import ComInputNumber from '@/components/Input/InputNumber'
 
-interface detailProps extends addModalProps {
-  isDetail?: boolean
-}
-
-const AddModal: React.FC<detailProps> = ({
-  modalVisible,
-  handleSubmit,
-  handleCancel,
-  info,
-  isDetail,
-}) => {
+const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleCancel, info }) => {
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
   const [spinning] = useState<boolean>(false)
   const [form] = Form.useForm()
@@ -176,20 +166,18 @@ const AddModal: React.FC<detailProps> = ({
             </div>
           </div>
 
-          {isDetail ? null : (
-            <div className="modal-btns" style={{ marginTop: 24 }}>
-              <Button type="primary" htmlType="submit" loading={confirmLoading}>
-                {intl.formatMessage({
-                  id: 'pages.btn.confirm',
-                })}
-              </Button>
-              <Button onClick={cancel} className="cancel-btn">
-                {intl.formatMessage({
-                  id: 'pages.btn.cancel',
-                })}
-              </Button>
-            </div>
-          )}
+          <div className="modal-btns" style={{ marginTop: 24 }}>
+            <Button type="primary" htmlType="submit" loading={confirmLoading}>
+              {intl.formatMessage({
+                id: 'pages.btn.confirm',
+              })}
+            </Button>
+            <Button onClick={cancel} className="cancel-btn">
+              {intl.formatMessage({
+                id: 'pages.btn.cancel',
+              })}
+            </Button>
+          </div>
         </Form>
       </Spin>
     </Modal>

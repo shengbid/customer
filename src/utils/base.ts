@@ -62,7 +62,7 @@ export function formatAmount(val: any, type = false, unit = '$') {
     return '-'
   }
   if (val === 0 || val === '0') {
-    return 0
+    return unit + 0
   }
   let value = val
   if (val < 0) {
