@@ -4,7 +4,7 @@ import type { addModalProps } from '@/services/types'
 import { addLoanCustomer } from '@/services'
 import { useIntl } from 'umi'
 import styles from './rule.less'
-import ComInputNumber from '@/components/Input/InputNumber'
+import PointInput from '@/components/Input/pointInput'
 
 const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleCancel, info }) => {
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
@@ -71,7 +71,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
                   },
                 ]}
               >
-                <ComInputNumber max={100} addonAfter="%" />
+                <PointInput max={100} addonAfter="%" />
               </Form.Item>
             </div>
             <span className={styles.text}>，则商品效期折扣率为</span>
@@ -85,7 +85,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
                   },
                 ]}
               >
-                <ComInputNumber max={100} addonAfter="%" />
+                <PointInput max={100} addonAfter="%" />
               </Form.Item>
             </div>
           </div>
@@ -102,7 +102,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
                   },
                 ]}
               >
-                <ComInputNumber max={100} addonAfter="%" />
+                <PointInput max={100} addonAfter="%" />
               </Form.Item>
             </div>
             <span className={styles.text}> ＜ 商品剩余有效天数 ＜ 商品整体有效期的</span>
@@ -116,7 +116,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
                   },
                 ]}
               >
-                <ComInputNumber max={100} addonAfter="%" />
+                <PointInput max={100} addonAfter="%" />
               </Form.Item>
             </div>
             <span className={styles.text}>，则商品效期折扣率为</span>
@@ -130,7 +130,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
                   },
                 ]}
               >
-                <ComInputNumber max={100} addonAfter="%" />
+                <PointInput max={100} addonAfter="%" />
               </Form.Item>
             </div>
           </div>
@@ -147,7 +147,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
                   },
                 ]}
               >
-                <ComInputNumber max={100} addonAfter="%" />
+                <PointInput max={100} addonAfter="%" />
               </Form.Item>
             </div>
             <span className={styles.text}>，则商品效期折扣率为</span>
@@ -161,7 +161,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
                   },
                 ]}
               >
-                <ComInputNumber max={100} addonAfter="%" />
+                <PointInput max={100} addonAfter="%" />
               </Form.Item>
             </div>
           </div>

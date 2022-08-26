@@ -12,11 +12,11 @@ import { isEmpty } from 'lodash'
 
 interface infoProps {
   infoData: any
+  info: any
   handleSuccess: () => void
-  id: string
 }
 
-const EditCargo: React.FC<infoProps> = ({ infoData, handleSuccess, id }) => {
+const EditCargo: React.FC<infoProps> = ({ infoData, info, handleSuccess }) => {
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([])
   const [dataSource, setDataSource] = useState<any[]>([])
   const [tableform] = Form.useForm()
@@ -46,7 +46,7 @@ const EditCargo: React.FC<infoProps> = ({ infoData, handleSuccess, id }) => {
 
   // 删除
   const delteRecored = async (ids: any) => {
-    await editCargoFile({ dataSource, id })
+    await editCargoFile({ id: info.id, version: info.version, stockAnnexList: dataSource })
     setDataSource(dataSource.filter((item) => item.id !== ids))
     message.success('删除成功!')
     handleSuccess()
@@ -136,7 +136,11 @@ const EditCargo: React.FC<infoProps> = ({ infoData, handleSuccess, id }) => {
           onSave: async (rowKey, data) => {
             console.log(dataSource)
             if (data.id) {
-              await editCargoFile({ ...data, id })
+              await editCargoFile({
+                id: info.id,
+                version: info.version,
+                stockAnnexList: dataSource,
+              })
             }
             message.success('保存成功!')
           },

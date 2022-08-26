@@ -211,7 +211,11 @@ const Detail: React.FC = (props: any) => {
           </Descriptions>
         </ComCard> */}
 
-        <CargoFile infoData={dataSource2} handleSuccess={getDetail} id={id} />
+        <CargoFile
+          infoData={dataSource2}
+          handleSuccess={getDetail}
+          info={{ id: basicData.id, version: basicData.version }}
+        />
         {/* 质押规则 */}
         <RuleModal
           modalVisible={ruleVisible}

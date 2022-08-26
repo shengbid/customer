@@ -63,7 +63,18 @@ const Detail: React.FC = (props: any) => {
           setDataSource(data.intoWarehouseGoodList)
         }
         if (!isEmpty(data.stockAnnexList)) {
-          setDataSource2(data.stockAnnexList)
+          const arr: any[] = []
+          setDataSource2(
+            data.stockAnnexList.map((item: any) => {
+              const obj = {
+                ...item,
+                key: Math.floor(Math.random() * 10000),
+              }
+              arr.push(obj.key)
+              return obj
+            }),
+          )
+          setEditableRowKeys2(arr)
         }
       }
     } catch (error) {
@@ -235,13 +246,20 @@ const Detail: React.FC = (props: any) => {
       renderFormItem: () => <ComUpload />,
     },
   ]
+  const cancel = () => {
+    history.push('/creditLoanManage/inventoryManage/enter')
+  }
 
   const submit = async () => {
     if (type === '2') {
       await tableForm.validateFields()
       try {
         setConfirmLoading(true)
-        await turnToWay({ id: basicData.id, stockAnnexList: dataSource })
+        await turnToWay({
+          id: basicData.id,
+          version: basicData.version,
+          stockAnnexList: dataSource2,
+        })
         setConfirmLoading(false)
       } catch (error) {
         setConfirmLoading(false)
@@ -256,8 +274,10 @@ const Detail: React.FC = (props: any) => {
         setConfirmLoading(true)
         await turnToWareHouse({
           id: basicData.id,
-          warehouseName: wareName,
-          stockAnnexList: dataSource,
+          version: basicData.version,
+          warehouseName: wareName.label,
+          warehouseId: wareName.value,
+          stockAnnexList: dataSource2,
         })
         setConfirmLoading(false)
       } catch (error) {
@@ -266,10 +286,8 @@ const Detail: React.FC = (props: any) => {
     }
 
     setConfirmLoading(false)
-  }
-
-  const cancel = () => {
-    history.push('/creditLoanManage/inventoryManage/enter')
+    message.success('提交成功')
+    cancel()
   }
 
   return (
@@ -290,7 +308,12 @@ const Detail: React.FC = (props: any) => {
               <DescriptionsItem label="入库仓库">虚拟仓库</DescriptionsItem>
             ) : (
               <DescriptionsItem label="入库仓库">
-                <Select value={wareName} onChange={setWareName}>
+                <Select
+                  value={wareName}
+                  labelInValue
+                  onChange={setWareName}
+                  style={{ width: '60%' }}
+                >
                   {wareList.map((item: any) => (
                     <Option key={item.id} value={item.id}>
                       {item.warehouseName}
@@ -332,13 +355,13 @@ const Detail: React.FC = (props: any) => {
         <ComCard title="理货报告及附件">
           <ComEditTable<any>
             columns={columns2}
-            rowKey="id"
+            rowKey="key"
             className="nopaddingtable"
             value={dataSource2}
             recordCreatorProps={{
               newRecordType: 'dataSource',
               record: () => ({
-                id: Date.now(),
+                key: Date.now(),
               }),
             }}
             editable={{
@@ -359,7 +382,7 @@ const Detail: React.FC = (props: any) => {
         <div className="middle-btns" style={{ marginTop: 30 }}>
           <Popconfirm
             key="delete"
-            title="继续退出则不会新增库存质押申请,您是否继续退出?"
+            title="继续退出则不会保存填写数据,您是否继续退出?"
             onConfirm={cancel}
             okText="继续退出"
             cancelText="取消"

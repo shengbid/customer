@@ -47,8 +47,8 @@ export async function turnToPledge(id: string) {
 }
 // 新增编辑删除理货报告
 export async function editCargoFile(data: any) {
-  return request<{ data: any }>(`${url}/pledge`, {
-    method: 'post',
+  return request<{ data: any }>(`/system/stockAnnex/edit`, {
+    method: 'put',
     data,
   })
 }

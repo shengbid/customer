@@ -212,7 +212,7 @@ const ListManage: React.FC = () => {
             转在途
           </Link>
         ) : null,
-        Number(recored.auditStatus) === 5 && recored.inWarehouseStatus === 'wzzczt' ? (
+        Number(recored.auditStatus) === 5 || recored.inWarehouseStatus === 'wzzczt' ? (
           <Link
             key="edit2"
             onClick={() =>

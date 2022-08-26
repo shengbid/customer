@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Form, message, Spin } from 'antd'
-import ComInputNumber from '@/components/Input/InputNumber'
+import { Button, Form, message, Spin, Input } from 'antd'
+import PointInput from '@/components/Input/pointInput'
 import ComCard from '@/components/ComPage'
 import { getRiskRuleList, editRiskRuleList } from '@/services'
 import styles from './index.less'
@@ -19,11 +19,12 @@ const CollateralRules: React.FC<infoProps> = (props: any) => {
   const [form2] = Form.useForm()
   const [form3] = Form.useForm()
 
-  const { type } = props
+  const { enterpriseId } = props
 
   // 获取数据
   const getRuleList = async () => {
-    const { data } = await getRiskRuleList()
+    setSpinning(true)
+    const { data } = await getRiskRuleList({ enterpriseId })
     setSpinning(false)
     if (data) {
       form.setFieldsValue({ accountPledgeRate: data.accountPledgeRate })
@@ -46,15 +47,20 @@ const CollateralRules: React.FC<infoProps> = (props: any) => {
     await form3.validateFields()
     const data = form.getFieldsValue()
     const data1 = form1.getFieldsValue()
-    console.log(data, data1)
-    await editRiskRuleList({})
+    const data2 = form2.getFieldsValue()
+    const data3 = form3.getFieldsValue()
+
+    const jxPledgeGoodRuleList = [data1, data2, data3]
+
+    await editRiskRuleList({ accountPledgeRate: data.accountPledgeRate, jxPledgeGoodRuleList })
     setConfirmLoading(false)
     message.success('配置成功!')
+    getRuleList()
   }
 
   return (
     <div className={styles.container}>
-      {type === 1 ? (
+      {!enterpriseId ? (
         <div className={styles.tip}>
           <p>本页面的押品质押规则为系统默认规则。</p>
           <p>
@@ -76,7 +82,7 @@ const CollateralRules: React.FC<infoProps> = (props: any) => {
                   },
                 ]}
               >
-                <ComInputNumber max={100} addonAfter="%" />
+                <PointInput max={100} addonAfter="%" />
               </Form.Item>
             </div>
             <div className="tipcontent">注：应收账款最终价值=应收账款总额 * 当前应收账款折扣率</div>
@@ -89,6 +95,9 @@ const CollateralRules: React.FC<infoProps> = (props: any) => {
             <div className={styles.ruleline}>
               <span className={styles.text}>1、商品剩余有效天数≥商品整体有效期的</span>
               <div className={styles.rate}>
+                <Form.Item label="id" name="id" style={{ display: 'none' }}>
+                  <Input />
+                </Form.Item>
                 <Form.Item
                   name="goodKeepRateStart"
                   rules={[
@@ -98,7 +107,7 @@ const CollateralRules: React.FC<infoProps> = (props: any) => {
                     },
                   ]}
                 >
-                  <ComInputNumber max={100} addonAfter="%" />
+                  <PointInput max={100} addonAfter="%" />
                 </Form.Item>
               </div>
               <span className={styles.text}>，则商品效期折扣率为</span>
@@ -112,7 +121,7 @@ const CollateralRules: React.FC<infoProps> = (props: any) => {
                     },
                   ]}
                 >
-                  <ComInputNumber max={100} addonAfter="%" />
+                  <PointInput max={100} addonAfter="%" />
                 </Form.Item>
               </div>
             </div>
@@ -121,6 +130,9 @@ const CollateralRules: React.FC<infoProps> = (props: any) => {
             <div className={styles.ruleline}>
               <span className={styles.text}>2、商品整体有效期的</span>
               <div className={styles.rate}>
+                <Form.Item label="id" name="id" style={{ display: 'none' }}>
+                  <Input />
+                </Form.Item>
                 <Form.Item
                   name="goodKeepRateStart"
                   rules={[
@@ -130,7 +142,7 @@ const CollateralRules: React.FC<infoProps> = (props: any) => {
                     },
                   ]}
                 >
-                  <ComInputNumber max={100} addonAfter="%" />
+                  <PointInput max={100} addonAfter="%" />
                 </Form.Item>
               </div>
               <span className={styles.text}> ＜ 商品剩余有效天数 ＜ 商品整体有效期的</span>
@@ -144,7 +156,7 @@ const CollateralRules: React.FC<infoProps> = (props: any) => {
                     },
                   ]}
                 >
-                  <ComInputNumber max={100} addonAfter="%" />
+                  <PointInput max={100} addonAfter="%" />
                 </Form.Item>
               </div>
               <span className={styles.text}>，则商品效期折扣率为</span>
@@ -158,7 +170,7 @@ const CollateralRules: React.FC<infoProps> = (props: any) => {
                     },
                   ]}
                 >
-                  <ComInputNumber max={100} addonAfter="%" />
+                  <PointInput max={100} addonAfter="%" />
                 </Form.Item>
               </div>
             </div>
@@ -167,6 +179,9 @@ const CollateralRules: React.FC<infoProps> = (props: any) => {
             <div className={styles.ruleline}>
               <span className={styles.text}>3、商品剩余有效天数 ≤ 商品整体有效期的</span>
               <div className={styles.rate}>
+                <Form.Item label="id" name="id" style={{ display: 'none' }}>
+                  <Input />
+                </Form.Item>
                 <Form.Item
                   name="goodKeepRateStart"
                   rules={[
@@ -176,7 +191,7 @@ const CollateralRules: React.FC<infoProps> = (props: any) => {
                     },
                   ]}
                 >
-                  <ComInputNumber max={100} addonAfter="%" />
+                  <PointInput max={100} addonAfter="%" />
                 </Form.Item>
               </div>
               <span className={styles.text}>，则商品效期折扣率为</span>
@@ -190,7 +205,7 @@ const CollateralRules: React.FC<infoProps> = (props: any) => {
                     },
                   ]}
                 >
-                  <ComInputNumber max={100} addonAfter="%" />
+                  <PointInput max={100} addonAfter="%" />
                 </Form.Item>
               </div>
             </div>
