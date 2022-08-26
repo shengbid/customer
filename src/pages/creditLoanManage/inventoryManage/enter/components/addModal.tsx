@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Modal, Button, Form, message, Spin, Row, Col } from 'antd'
 import type { addModalProps } from '@/services/types'
-import { addLoanCustomer } from '@/services'
+import { pledgeDetail, turnToPledge } from '@/services'
 import DictSelect from '@/components/ComSelect'
 import { useIntl } from 'umi'
 import Descriptions from '@/components/ComPage/Descriptions'
@@ -11,12 +11,19 @@ const { DescriptionsItem } = Descriptions
 const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleCancel, info }) => {
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
   const [infoData, setInfoData] = useState<any>({})
-  const [spinning] = useState<boolean>(false)
+  const [spinning, setSpinning] = useState<boolean>(true)
   const [form] = Form.useForm()
+
+  // 获取详情
+  const getDetail = async () => {
+    const { data } = await pledgeDetail(info)
+    setSpinning(false)
+    if (data) setInfoData(data)
+  }
 
   useEffect(() => {
     if (modalVisible && info) {
-      setInfoData({})
+      getDetail()
     }
   }, [modalVisible, info])
 
@@ -26,13 +33,13 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
     console.log(values)
     setConfirmLoading(true)
     try {
-      await addLoanCustomer(values)
+      await turnToPledge({ id: info, ...values })
       setConfirmLoading(false)
     } catch (error) {
       setConfirmLoading(false)
       return
     }
-    message.success(`新增成功`)
+    message.success(`质押成功`)
     handleSubmit()
     form.resetFields()
   }
@@ -53,20 +60,13 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
       onCancel={cancel}
     >
       <Spin spinning={spinning}>
-        <Form
-          name="basic"
-          initialValues={{ signtype: 1 }}
-          onFinish={handleOk}
-          form={form}
-          autoComplete="off"
-          layout="vertical"
-        >
+        <Form name="basic" onFinish={handleOk} form={form} autoComplete="off" layout="vertical">
           <h3 style={{ fontWeight: 'bold' }}>选择质押类型</h3>
 
           <Row gutter={24}>
             <Col span={12}>
               <Form.Item
-                name="name"
+                name="pledgeType"
                 rules={[
                   {
                     required: true,
@@ -74,7 +74,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
                   },
                 ]}
               >
-                <DictSelect authorword="company_register" />
+                <DictSelect authorword="pledge_type" />
               </Form.Item>
             </Col>
           </Row>

@@ -131,6 +131,12 @@ export default [
             component: './creditLoanManage/inventoryManage/enter/Detail',
           },
           {
+            path: '/creditLoanManage/inventoryManage/enter/addPledge',
+            // name: '转在途,在仓',
+            // access: 'hasMenu',
+            component: './creditLoanManage/inventoryManage/enter/addPledge',
+          },
+          {
             path: '/creditLoanManage/inventoryManage/delivery',
             name: '出库管理',
             access: 'hasMenu',

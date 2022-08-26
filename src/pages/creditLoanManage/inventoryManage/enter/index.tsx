@@ -15,7 +15,7 @@ const { Option } = Select
 
 const ListManage: React.FC = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false)
-  const [id] = useState<any>()
+  const [id, setId] = useState<any>()
   const intl = useIntl()
   const actionRef = useRef<ActionType>()
   const [statusData, setStatusData] = useState<any>([])
@@ -201,10 +201,10 @@ const ListManage: React.FC = () => {
             key="edit"
             onClick={() =>
               history.push({
-                pathname: '/creditLoanManage/inventoryManage/enter/detail',
+                pathname: '/creditLoanManage/inventoryManage/enter/addPledge',
                 query: {
                   id: String(recored.id),
-                  type: '1',
+                  type: '2',
                 },
               })
             }
@@ -217,9 +217,10 @@ const ListManage: React.FC = () => {
             key="edit2"
             onClick={() =>
               history.push({
-                pathname: '/creditLoanManage/inventoryManage/enter/detail',
+                pathname: '/creditLoanManage/inventoryManage/enter/addPledge',
                 query: {
                   id: String(recored.id),
+                  type: '3',
                 },
               })
             }
@@ -232,6 +233,7 @@ const ListManage: React.FC = () => {
             key="edit3"
             onClick={() => {
               setModalVisible(true)
+              setId(recored.id)
             }}
           >
             质押
@@ -244,7 +246,6 @@ const ListManage: React.FC = () => {
               pathname: '/creditLoanManage/inventoryManage/enter/detail',
               query: {
                 id: String(recored.id),
-                type: '3',
               },
             })
           }
