@@ -19,6 +19,7 @@ import {
   turnToWareHouse,
 } from '@/services'
 import RuleModal from '../components/ruleModal'
+import { isEmpty } from 'lodash'
 
 const { DescriptionsItem } = Descriptions
 const { Option } = Select
@@ -56,7 +57,15 @@ const Detail: React.FC = (props: any) => {
     try {
       const { data } = await getInventoryEnterDetail(id)
       setSpinning(false)
-      setBasicData(data)
+      if (data) {
+        setBasicData(data)
+        if (!isEmpty(data.intoWarehouseGoodList)) {
+          setDataSource(data.intoWarehouseGoodList)
+        }
+        if (!isEmpty(data.stockAnnexList)) {
+          setDataSource2(data.stockAnnexList)
+        }
+      }
     } catch (error) {
       setSpinning(false)
     }
@@ -80,61 +89,61 @@ const Detail: React.FC = (props: any) => {
   const columns: ProColumns<any>[] = [
     {
       title: '商品编号/ID',
-      key: 'fullName',
-      dataIndex: 'fullName',
+      key: 'enterpriseGoodNumber',
+      dataIndex: 'enterpriseGoodNumber',
     },
     {
       title: '商品名称',
-      key: 'fullName',
-      dataIndex: 'fullName',
+      key: 'goodName',
+      dataIndex: 'goodName',
     },
     {
       title: '条形码',
-      key: 'fullName',
-      dataIndex: 'fullName',
+      key: 'barCode',
+      dataIndex: 'barCode',
     },
     {
       title: '效期到期日',
-      key: 'fullName',
-      dataIndex: 'fullName',
+      key: 'effectiveDate',
+      dataIndex: 'effectiveDate',
     },
     {
       title: '保质期(月)',
-      key: 'code',
-      dataIndex: 'code',
+      key: 'warrantyMonth',
+      dataIndex: 'warrantyMonth',
       width: 90,
     },
     {
       title: '批次号',
-      key: 'code',
-      dataIndex: 'code',
+      key: 'batchNumber',
+      dataIndex: 'batchNumber',
       width: 90,
     },
     {
       title: '良品数量',
-      key: 'code',
-      dataIndex: 'code',
+      key: 'completeCount',
+      dataIndex: 'completeCount',
       valueType: 'digit',
       width: 100,
     },
     {
       title: '残次品数量',
-      key: 'code',
-      dataIndex: 'code',
+      key: 'imperfectCount',
+      dataIndex: 'imperfectCount',
       valueType: 'digit',
       width: 100,
     },
     {
       title: '入库总数',
-      key: 'code',
-      dataIndex: 'code',
+      key: 'warehouseTotal',
+      dataIndex: 'warehouseTotal',
       valueType: 'digit',
       width: 100,
     },
     {
       title: '采购单价',
-      key: 'code',
-      dataIndex: 'code',
+      key: 'purchasePrice',
+      dataIndex: 'purchasePrice',
       // valueType: 'digit',
       width: 125,
       hideInSearch: true,
@@ -142,8 +151,8 @@ const Detail: React.FC = (props: any) => {
     },
     {
       title: '公允单价',
-      key: 'code',
-      dataIndex: 'code',
+      key: 'fairPrice',
+      dataIndex: 'fairPrice',
       // valueType: 'digit',
       width: 110,
       hideInSearch: true,
@@ -151,8 +160,8 @@ const Detail: React.FC = (props: any) => {
     },
     {
       title: '入库总价',
-      key: 'code',
-      dataIndex: 'code',
+      key: 'warehousePrice',
+      dataIndex: 'warehousePrice',
       // valueType: 'digit',
       width: 110,
       hideInSearch: true,
@@ -160,8 +169,8 @@ const Detail: React.FC = (props: any) => {
     },
     {
       title: '单位',
-      key: 'code',
-      dataIndex: 'code',
+      key: 'unit',
+      dataIndex: 'unit',
       width: 60,
       hideInSearch: true,
     },
@@ -223,7 +232,7 @@ const Detail: React.FC = (props: any) => {
           },
         ],
       },
-      renderFormItem: () => <ComUpload limit={1} />,
+      renderFormItem: () => <ComUpload />,
     },
   ]
 

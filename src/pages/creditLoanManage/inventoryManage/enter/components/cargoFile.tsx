@@ -8,6 +8,7 @@ import { addCooperateSupplier, editCooperateSupplier } from '@/services'
 import DictSelect from '@/components/ComSelect'
 import ComUpload from '@/components/ComUpload'
 import { getDictData } from '@/utils/dictData'
+import { isEmpty } from 'lodash'
 
 interface infoProps {
   infoData: any
@@ -73,8 +74,9 @@ const EditCargo: React.FC<infoProps> = ({ infoData, handleSuccess, id }) => {
         ],
       },
       renderFormItem: () => <ComUpload />,
+      render: (val: any, recored: any) =>
+        isEmpty(recored.fileList) ? <>-</> : <ComUpload value={recored.fileList} isDetail />,
     },
-
     {
       title: '操作',
       valueType: 'option',
