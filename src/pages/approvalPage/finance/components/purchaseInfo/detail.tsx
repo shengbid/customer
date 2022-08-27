@@ -5,10 +5,16 @@ import type { ProColumns } from '@ant-design/pro-table'
 import { formatAmount } from '@/utils/base'
 import Descriptions from '@/components/ComPage/Descriptions'
 import DictShow from '@/components/ComSelect/dictShow'
+import ComUpload from '@/components/ComUpload'
 
 const { DescriptionsItem } = Descriptions
 
-const PurchaseInfo = ({ creditParams }: any) => {
+interface detailProps {
+  creditParams: any
+  type: number // 1代理采购  2在途  3在仓
+}
+
+const PurchaseInfo = ({ creditParams, type }: detailProps) => {
   const [dataSource, setDataSource] = useState<any[]>([])
   const [infoData, setInfoData] = useState<any>({})
 
@@ -45,80 +51,103 @@ const PurchaseInfo = ({ creditParams }: any) => {
       title: 'SKU NO',
       dataIndex: 'goodSku',
       width: '7%',
-      editable: false,
     },
     {
       title: '商品条形码',
       dataIndex: 'barCode',
       width: '7%',
-      editable: false,
     },
     {
       title: '参考编码REF NO',
       dataIndex: 'goodSku',
       width: '7%',
-      editable: false,
+    },
+    {
+      title: '保质期(月)',
+      dataIndex: 'date2',
+      width: '7%',
+      hideInTable: type === 1,
     },
     {
       title: '有效期至',
       dataIndex: 'date2',
       width: '7%',
-      editable: false,
+    },
+    {
+      title: '批次号',
+      dataIndex: 'date2',
+      width: '7%',
+      hideInTable: type !== 3,
+    },
+    {
+      title: '商品编码',
+      dataIndex: 'date2',
+      width: '7%',
+      hideInTable: type !== 3,
     },
     {
       title: '申请单价',
       dataIndex: 'price1',
       width: '7%',
-      editable: false,
       render: (val) => formatAmount(val),
     },
     {
       title: '批复单价',
       dataIndex: 'price1',
       width: '7%',
-      editable: false,
       render: (val) => formatAmount(val),
     },
     {
       title: '数量',
       dataIndex: 'count',
       width: '6%',
-      editable: false,
       valueType: 'digit',
     },
     {
       title: '采购金额',
       dataIndex: 'price2',
       width: '6%',
-      editable: false,
       render: (val) => formatAmount(val),
     },
     {
       title: '保证金比例',
       dataIndex: 'count',
       width: '7%',
-      editable: false,
       valueType: 'percent',
+      hideInTable: type !== 1,
+    },
+    {
+      title: '质押比例',
+      dataIndex: 'count',
+      width: '7%',
+      valueType: 'percent',
+      hideInTable: type === 1,
     },
     {
       title: '垫付单价',
       dataIndex: 'price1',
       width: '6%',
-      editable: false,
       render: (val) => formatAmount(val),
+      hideInTable: type !== 1,
+    },
+    {
+      title: '质押单价',
+      dataIndex: 'price1',
+      width: '6%',
+      render: (val) => formatAmount(val),
+      hideInTable: type === 1,
     },
     {
       title: '委托方应付保证金',
       dataIndex: 'price1',
       width: '7%',
-      editable: false,
       render: (val) => formatAmount(val),
+      hideInTable: type !== 1,
     },
     {
       title: '受委托方垫付金额',
       dataIndex: 'price1',
       width: '7%',
-      editable: false,
       render: (val) => formatAmount(val),
     },
   ]
@@ -129,11 +158,41 @@ const PurchaseInfo = ({ creditParams }: any) => {
         <SimpleProtable rowKey="id" columns={columns} dataSource={dataSource || []} />
 
         <Descriptions>
-          <DescriptionsItem label="预计交货时间">{infoData.sellProduct}</DescriptionsItem>
-          <DescriptionsItem label="运输方式">
-            <DictShow dictValue={infoData.businessTypeList} dictkey="cus_zyyw" />
-          </DescriptionsItem>
+          {type === 1 ? (
+            <DescriptionsItem label="预计交货时间">{infoData.sellProduct}</DescriptionsItem>
+          ) : null}
+          {type !== 3 ? (
+            <DescriptionsItem label="运输方式">
+              <DictShow dictValue={infoData.businessTypeList} dictkey="cus_zyyw" />
+            </DescriptionsItem>
+          ) : null}
+          {type === 2 ? (
+            <DescriptionsItem label="运输公司">{infoData.enterpriseDebt}</DescriptionsItem>
+          ) : null}
           <DescriptionsItem label="交货地点">{infoData.enterpriseDebt}</DescriptionsItem>
+          {type === 2 ? (
+            <DescriptionsItem label="预计交货时间">{infoData.enterpriseDebt}</DescriptionsItem>
+          ) : null}
+          {type !== 1 ? (
+            <DescriptionsItem label="购买链路信息">
+              <ComUpload isDetail={true} value={[]} />
+            </DescriptionsItem>
+          ) : null}
+          {type === 3 ? (
+            <DescriptionsItem label="物流信息">
+              <ComUpload isDetail={true} value={[]} />
+            </DescriptionsItem>
+          ) : null}
+          {type === 3 ? (
+            <DescriptionsItem label="仓储资料">
+              <ComUpload isDetail={true} value={[]} />
+            </DescriptionsItem>
+          ) : null}
+          {type === 3 ? (
+            <DescriptionsItem label="货权转移凭证">
+              <ComUpload isDetail={true} value={[]} />
+            </DescriptionsItem>
+          ) : null}
         </Descriptions>
       </CardTitle>
     </>
