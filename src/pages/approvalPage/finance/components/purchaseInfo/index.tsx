@@ -216,11 +216,12 @@ const PurchaseInfo = ({ creditParams }: any, ref: any) => {
         />
 
         <Descriptions>
-          <DescriptionsItem label="预计交货时间">{infoData.sellProduct}</DescriptionsItem>
           <DescriptionsItem label="运输方式">
             <DictShow dictValue={infoData.businessTypeList} dictkey="cus_zyyw" />
           </DescriptionsItem>
+          <DescriptionsItem label="运输公司">{infoData.sellProduct}</DescriptionsItem>
           <DescriptionsItem label="交货地点">{infoData.enterpriseDebt}</DescriptionsItem>
+          <DescriptionsItem label="预计交货时间">{infoData.enterpriseDebt}</DescriptionsItem>
         </Descriptions>
       </CardTitle>
     </>

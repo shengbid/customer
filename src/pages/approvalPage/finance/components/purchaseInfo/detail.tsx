@@ -12,9 +12,10 @@ const { DescriptionsItem } = Descriptions
 interface detailProps {
   creditParams: any
   type: number // 1代理采购  2在途  3在仓
+  showInfo?: any // 节点展示内容
 }
 
-const PurchaseInfo = ({ creditParams, type }: detailProps) => {
+const PurchaseInfo = ({ creditParams, type, showInfo = {} }: detailProps) => {
   const [dataSource, setDataSource] = useState<any[]>([])
   const [infoData, setInfoData] = useState<any>({})
 
@@ -155,21 +156,26 @@ const PurchaseInfo = ({ creditParams, type }: detailProps) => {
   return (
     <>
       <CardTitle title="采购信息">
-        <SimpleProtable rowKey="id" columns={columns} dataSource={dataSource || []} />
+        <SimpleProtable
+          rowKey="id"
+          scroll={{ x: 1300 }}
+          columns={columns}
+          dataSource={dataSource || []}
+        />
 
         <Descriptions>
-          {type === 1 ? (
-            <DescriptionsItem label="预计交货时间">{infoData.sellProduct}</DescriptionsItem>
-          ) : null}
+          <DescriptionsItem label="交货地点">{infoData.enterpriseDebt}</DescriptionsItem>
           {type !== 3 ? (
             <DescriptionsItem label="运输方式">
               <DictShow dictValue={infoData.businessTypeList} dictkey="cus_zyyw" />
             </DescriptionsItem>
           ) : null}
+          {type === 1 ? (
+            <DescriptionsItem label="预计交货时间">{infoData.sellProduct}</DescriptionsItem>
+          ) : null}
           {type === 2 ? (
             <DescriptionsItem label="运输公司">{infoData.enterpriseDebt}</DescriptionsItem>
           ) : null}
-          <DescriptionsItem label="交货地点">{infoData.enterpriseDebt}</DescriptionsItem>
           {type === 2 ? (
             <DescriptionsItem label="预计交货时间">{infoData.enterpriseDebt}</DescriptionsItem>
           ) : null}
@@ -188,7 +194,12 @@ const PurchaseInfo = ({ creditParams, type }: detailProps) => {
               <ComUpload isDetail={true} value={[]} />
             </DescriptionsItem>
           ) : null}
-          {type === 3 ? (
+          {showInfo.transfer ? (
+            <DescriptionsItem label="货权转移凭证">
+              <ComUpload value={[]} />
+            </DescriptionsItem>
+          ) : null}
+          {type === 3 || showInfo.transferFile ? (
             <DescriptionsItem label="货权转移凭证">
               <ComUpload isDetail={true} value={[]} />
             </DescriptionsItem>

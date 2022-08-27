@@ -3,11 +3,16 @@ import CardTitle from '@/components/ComPage/CardTitle'
 import Descriptions from '@/components/ComPage/Descriptions'
 import DictShow from '@/components/ComSelect/dictShow'
 import { formatAmount } from '@/utils/base'
+import { DatePicker } from 'antd'
 
 const { DescriptionsItem } = Descriptions
+interface infoProps {
+  showInfo?: any // 节点展示内容
+}
 
-const ApplyDetail: React.FC = () => {
+const ApplyDetail: React.FC<infoProps> = ({ showInfo = {} }) => {
   const [infoData, setInfoData] = useState<any>({})
+  const [financeStartDate, setFinanceStartDate] = useState<any>('')
 
   const getDetail = () => {
     setInfoData({})
@@ -33,6 +38,14 @@ const ApplyDetail: React.FC = () => {
         <DescriptionsItem label="产品可用额度">
           {formatAmount(infoData.enterpriseDebt)}
         </DescriptionsItem>
+        {showInfo.financeStartDate ? (
+          <DescriptionsItem label="融资开始日(计息起始日)">
+            <DatePicker value={financeStartDate} onChange={setFinanceStartDate} />
+          </DescriptionsItem>
+        ) : null}
+        {showInfo.financeStartDateDetail ? (
+          <DescriptionsItem label="融资开始日(计息起始日)">{infoData.sellProduct}</DescriptionsItem>
+        ) : null}
         <DescriptionsItem label="委托方应付保证金">
           {formatAmount(infoData.enterpriseDebt)}
         </DescriptionsItem>

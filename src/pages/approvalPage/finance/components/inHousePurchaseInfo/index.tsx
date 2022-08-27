@@ -7,17 +7,23 @@ import RequiredLabel from '@/components/RequiredLabel'
 import { formatAmount } from '@/utils/base'
 import Descriptions from '@/components/ComPage/Descriptions'
 import ComUpload from '@/components/ComUpload'
+import IntergerInput from '@/components/Input/integerInput'
+import PointInput from '@/components/Input/pointInput'
 
 const { DescriptionsItem } = Descriptions
 
-const PurchaseInfo = ({ creditParams }: any, ref: any) => {
+interface infoProps {
+  creditParams: any
+  showInfo: any
+}
+
+const PurchaseInfo = ({ creditParams, showInfo = {} }: infoProps, ref: any) => {
   const [dataSource, setDataSource] = useState<any[]>([])
   const [editableKeys, setEditableRowKeys] = useState<any[]>([])
   const [infoData, setInfoData] = useState<any>({})
   const [tableForm] = Form.useForm()
 
   // 下一个节点驳回时,需要查询数据
-  // 获取关联企业
   const getRlist = async () => {
     // const { rows } = await getRelateCompany(creditParams.enterpriseId)
     // if (rows && rows.length) {
@@ -92,6 +98,7 @@ const PurchaseInfo = ({ creditParams }: any, ref: any) => {
       title: '保质期(月)',
       dataIndex: 'date',
       width: '7%',
+      editable: false,
     },
     {
       title: '有效期至',
@@ -100,9 +107,10 @@ const PurchaseInfo = ({ creditParams }: any, ref: any) => {
       editable: false,
     },
     {
-      title: <RequiredLabel label="批次号" />,
+      title: showInfo.repayPrice ? '批次号' : <RequiredLabel label="批次号" />,
       dataIndex: 'date',
       width: '7%',
+      editable: !showInfo.repayPrice,
       formItemProps: {
         rules: [
           {
@@ -113,9 +121,10 @@ const PurchaseInfo = ({ creditParams }: any, ref: any) => {
       },
     },
     {
-      title: <RequiredLabel label="商品编码" />,
+      title: showInfo.repayPrice ? '商品编码' : <RequiredLabel label="商品编码" />,
       dataIndex: 'date',
       width: '7%',
+      editable: !showInfo.repayPrice,
       formItemProps: {
         rules: [
           {
@@ -133,17 +142,35 @@ const PurchaseInfo = ({ creditParams }: any, ref: any) => {
       render: (val) => formatAmount(val),
     },
     {
-      title: '批复单价',
+      title: showInfo.repayPrice ? <RequiredLabel label="批复单价" /> : '批复单价',
       dataIndex: 'price',
       width: '8%',
+      editable: showInfo.repayPrice,
       render: (val) => formatAmount(val),
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '此项是必填项',
+          },
+        ],
+      },
+      renderFormItem: () => <PointInput addonBefore="$" />,
     },
     {
       title: '数量',
       dataIndex: 'count',
       width: '6%',
-      editable: false,
       valueType: 'digit',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '此项是必填项',
+          },
+        ],
+      },
+      renderFormItem: () => <IntergerInput />,
     },
     {
       title: '采购金额',
@@ -216,7 +243,7 @@ const PurchaseInfo = ({ creditParams }: any, ref: any) => {
           </DescriptionsItem>
 
           <DescriptionsItem label="货权转移凭证">
-            <ComUpload value={[]} />
+            <ComUpload isDetail={showInfo.repayPrice} value={[]} />
           </DescriptionsItem>
         </Descriptions>
       </CardTitle>

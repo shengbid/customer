@@ -3,15 +3,18 @@ import SimpleProtable from '@/components/ComProtable/SimpleProTable'
 import type { ProColumns } from '@ant-design/pro-table'
 import CardTitle from '@/components/ComPage/CardTitle'
 import Descriptions from '@/components/ComPage/Descriptions'
-import DictShow from '@/components/ComSelect/dictShow'
+import { Button } from 'antd'
+
 const { DescriptionsItem } = Descriptions
 
-const Detail: React.FC = () => {
-  const [infoData, setInfoData] = useState<any>({})
+interface infoProps {
+  showInfo?: any // 节点展示内容
+}
+
+const Detail: React.FC<infoProps> = ({ showInfo = {} }) => {
   const [dataSource, setDataSource] = useState<any[]>([])
 
   useEffect(() => {
-    setInfoData({})
     setDataSource([
       {
         id: 1,
@@ -54,16 +57,25 @@ const Detail: React.FC = () => {
   return (
     <CardTitle title="在线签署合同">
       <Descriptions>
-        <DescriptionsItem label="合同签署方式">
-          <DictShow dictValue={infoData.businessTypeList} dictkey="cus_zyyw" />
-        </DescriptionsItem>
-        <DescriptionsItem label="采购申请书" span={3}>
-          <SimpleProtable rowKey="id" columns={columns} dataSource={dataSource || []} />
-        </DescriptionsItem>
-        <DescriptionsItem label="采购合同" span={3}>
-          <SimpleProtable rowKey="id" columns={columns} dataSource={dataSource || []} />
-        </DescriptionsItem>
+        <DescriptionsItem label="合同签署方式">线上签署</DescriptionsItem>
       </Descriptions>
+      <div>
+        <p>
+          采购申请书
+          {showInfo.sign ? (
+            <Button type="link">预览并签署</Button>
+          ) : (
+            <Button type="link">预览</Button>
+          )}
+        </p>
+        <SimpleProtable rowKey="id" columns={columns} dataSource={dataSource || []} />
+      </div>
+      <div>
+        <p>
+          采购合同 <Button type="link">预览</Button>
+        </p>
+        <SimpleProtable rowKey="id" columns={columns} dataSource={dataSource || []} />
+      </div>
     </CardTitle>
   )
 }

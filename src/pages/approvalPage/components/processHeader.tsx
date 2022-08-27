@@ -14,7 +14,7 @@ const ProcessHeader: React.FC<headerProps> = ({ infoData }) => {
   const [headerInfo, setHeaderInfo] = useState<any>({})
 
   useEffect(() => {
-    if (infoData && infoData.createTime) {
+    if (infoData && infoData.startTime) {
       setHeaderInfo(infoData)
     }
   }, [infoData])
@@ -34,7 +34,7 @@ const ProcessHeader: React.FC<headerProps> = ({ infoData }) => {
           </Button>
         }
       >
-        <DescriptionsItem label="创建时间">{headerInfo.createTime}</DescriptionsItem>
+        <DescriptionsItem label="创建时间">{headerInfo.startTime}</DescriptionsItem>
         <DescriptionsItem label="发起人">{headerInfo.fqrNickname}</DescriptionsItem>
         <DescriptionsItem label="流程编号">{headerInfo.processNo}</DescriptionsItem>
       </ComDescriptions>

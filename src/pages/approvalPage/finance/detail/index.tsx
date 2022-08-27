@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { getProcessIds, getActivityParams } from '@/services'
 import ComCollapse from '@/components/ComPage/ComCollapse'
 import ViewBpmn from '@/components/Bpmn/ViewBpmn'
-import ComCard from '@/components/ComPage/ComCard'
-import Approval from '../approval'
 import ApprovalDom from '../formkeyHandler/formKeyDetailDom'
 import ProcessHeader from '../../components/processHeader'
 
@@ -43,14 +41,9 @@ const ApprovalDetail: React.FC = (props: any) => {
     <div>
       <ProcessHeader infoData={activityParams} />
 
-      {/* 审批历史 */}
-      <ComCard title="审核信息">
-        <Approval businessKey={activityParams.businessKey} />
-      </ComCard>
-
       {/* 详情 */}
       {activityParams.formKey ? (
-        <ApprovalDom params={params} activityParams={activityParams} />
+        <ApprovalDom creditParams={{}} params={params} activityParams={activityParams} />
       ) : null}
 
       {/* 流程图 */}
