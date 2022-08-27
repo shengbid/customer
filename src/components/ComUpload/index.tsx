@@ -200,7 +200,7 @@ const ComUpload: React.FC<comuploadProps> = ({
       className={isDetail ? 'detailupload' : ''}
     >
       {limit > files.length && !isDetail && limit > (value ? value.length : 0) ? (
-        <Button icon={<UploadOutlined />} type="text" />
+        <Button icon={<UploadOutlined />} type="link" />
       ) : null}
     </Upload>
   )
