@@ -39,10 +39,10 @@ export async function turnToWay(data: any) {
   })
 }
 // 入库质押
-export async function turnToPledge(id: string) {
+export async function turnToPledge(data: any) {
   return request<{ data: any }>(`${url}/pledge`, {
     method: 'post',
-    data: { id },
+    data,
   })
 }
 // 新增编辑删除理货报告

@@ -46,8 +46,9 @@ const EditCargo: React.FC<infoProps> = ({ infoData, info, handleSuccess }) => {
 
   // 删除
   const delteRecored = async (ids: any) => {
-    await editCargoFile({ id: info.id, version: info.version, stockAnnexList: dataSource })
-    setDataSource(dataSource.filter((item) => item.id !== ids))
+    const arr = dataSource.filter((item) => item.id !== ids)
+    await editCargoFile({ id: info.id, version: info.version, stockAnnexList: arr })
+    setDataSource(arr)
     message.success('删除成功!')
     handleSuccess()
   }
@@ -133,21 +134,27 @@ const EditCargo: React.FC<infoProps> = ({ infoData, info, handleSuccess }) => {
           actionRender: (row, config, defaultDom) => {
             return [defaultDom.save, defaultDom.cancel]
           },
-          onSave: async (rowKey, data) => {
+          onSave: async () => {
             console.log(dataSource)
-            if (data.id) {
-              await editCargoFile({
-                id: info.id,
-                version: info.version,
-                stockAnnexList: dataSource,
-              })
-            }
+
+            await editCargoFile({
+              id: info.id,
+              version: info.version,
+              stockAnnexList: dataSource,
+            })
             message.success('保存成功!')
+            handleSuccess()
           },
           // onCancel: () => {
           //   handleSuccess
           // },
-          onChange: setEditableRowKeys,
+          onValuesChange: (record: any, recordList: any) => {
+            setDataSource(recordList)
+          },
+          onChange: (editableKeyss: any, editableRows: any[]) => {
+            setEditableRowKeys(editableKeyss)
+            setDataSource(editableRows)
+          },
         }}
       />
     </ComCard>
