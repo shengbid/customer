@@ -179,7 +179,7 @@ const ListManage: React.FC = () => {
       key: 'inWarehouseStatus',
       dataIndex: 'inWarehouseStatus',
       hideInSearch: true,
-      render: (_, recored) => statusData[recored.auditStatus],
+      render: (_, recored) => statusData[recored.inWarehouseStatus],
     },
     {
       title: '创建时间',
