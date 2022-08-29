@@ -27,6 +27,14 @@ const ApprovalDom: React.FC<detailProps> = ({ activityParams, creditParams }) =>
         ) : null}
       </>
     ),
+    purchase3: (
+      <>
+        <PurchaseInfoDetail creditParams={creditParams} type={1} />
+        <ApplyDetail />
+        <SupplierAccount creditParams={creditParams} />
+        <SignContract />
+      </>
+    ),
     purchase4: (
       <>
         <SignContract />
@@ -51,6 +59,18 @@ const ApprovalDom: React.FC<detailProps> = ({ activityParams, creditParams }) =>
       </>
     ),
     inWay5: (
+      <>
+        <PurchaseInfoDetail
+          type={2}
+          showInfo={{ transferFile: true }}
+          creditParams={creditParams}
+        />
+        <ApplyDetail />
+        <SupplierAccount creditParams={creditParams} isEdit={false} />
+        <SignContract />
+      </>
+    ),
+    inWay6: (
       <>
         <PurchaseInfoDetail
           type={2}
@@ -90,6 +110,14 @@ const ApprovalDom: React.FC<detailProps> = ({ activityParams, creditParams }) =>
       </>
     ),
     inWareHouse4: (
+      <>
+        <PurchaseInfoDetail type={3} creditParams={creditParams} />
+        <ApplyDetail />
+        <SupplierAccount creditParams={creditParams} isEdit={false} />
+        <SignContract />
+      </>
+    ),
+    inWareHouse5: (
       <>
         <SignContract />
         <PurchaseInfoDetail type={3} creditParams={creditParams} />

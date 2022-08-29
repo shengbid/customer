@@ -32,7 +32,7 @@ const CreditDom: React.FC<detailProps> = ({ activityParams, creditParams, approv
         <SignContract />
       </>
     ),
-    purchase3: (
+    purchase4: (
       <>
         <SignContract />
         <PurchaseInfo ref={approvalDomRef} creditParams={creditParams} />
@@ -81,7 +81,7 @@ const CreditDom: React.FC<detailProps> = ({ activityParams, creditParams, approv
         <SignContract />
       </>
     ),
-    inWay6: (
+    inWay7: (
       <>
         <SignContract showInfo={{ sign: true }} />
         <PurchaseInfoDetail
@@ -122,7 +122,7 @@ const CreditDom: React.FC<detailProps> = ({ activityParams, creditParams, approv
         <SignContract />
       </>
     ),
-    inWareHouse4: (
+    inWareHouse5: (
       <>
         <SignContract showInfo={{ sign: true }} />
         <PurchaseInfoDetail type={3} creditParams={creditParams} />
