@@ -26,7 +26,7 @@ const EditCargo: React.FC<infoProps> = ({ infoData, info, handleSuccess }) => {
     const obj = await getDictData('stock_file_type')
     setContractTypeData(obj)
   }
-
+  console.log(info)
   useEffect(() => {
     getDict()
   }, [])
@@ -47,7 +47,12 @@ const EditCargo: React.FC<infoProps> = ({ infoData, info, handleSuccess }) => {
   // 删除
   const delteRecored = async (ids: any) => {
     const arr = dataSource.filter((item) => item.id !== ids)
-    await editCargoFile({ id: info.id, version: info.version, stockAnnexList: arr })
+    await editCargoFile({
+      id: info.id,
+      version: info.version,
+      stockAnnexList: arr,
+      enterpriseId: info.enterpriseId,
+    })
     setDataSource(arr)
     message.success('删除成功!')
     handleSuccess()
@@ -67,7 +72,7 @@ const EditCargo: React.FC<infoProps> = ({ infoData, info, handleSuccess }) => {
         ],
       },
       renderFormItem: () => <DictSelect authorword="stock_file_type" />,
-      render: (_: any, recored: any) => <>{contractTypeData[recored.contractType]}</>,
+      render: (_: any, recored: any) => <>{contractTypeData[recored.fileType]}</>,
     },
     {
       title: <RequiredLabel label="附件" />,
@@ -135,19 +140,18 @@ const EditCargo: React.FC<infoProps> = ({ infoData, info, handleSuccess }) => {
             return [defaultDom.save, defaultDom.cancel]
           },
           onSave: async () => {
-            console.log(dataSource)
-
             await editCargoFile({
               id: info.id,
               version: info.version,
               stockAnnexList: dataSource,
+              enterpriseId: info.enterpriseId,
             })
             message.success('保存成功!')
             handleSuccess()
           },
-          // onCancel: () => {
-          //   handleSuccess
-          // },
+          onCancel: () => {
+            handleSuccess()
+          },
           onValuesChange: (record: any, recordList: any) => {
             setDataSource(recordList)
           },

@@ -214,7 +214,11 @@ const Detail: React.FC = (props: any) => {
         <CargoFile
           infoData={dataSource2}
           handleSuccess={getDetail}
-          info={{ id: basicData.id, version: basicData.version }}
+          info={{
+            id: basicData.id,
+            version: basicData.version,
+            enterpriseId: basicData.enterpriseId,
+          }}
         />
         {/* 质押规则 */}
         <RuleModal
