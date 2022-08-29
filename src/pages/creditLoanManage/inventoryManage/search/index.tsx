@@ -1,20 +1,36 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import MenuProTable from '@/components/ComProtable/MenuProTable'
 import type { inventorySearchListProps, inventorySearchListParamProps } from '@/services/types'
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
-import { getInventorySearchList } from '@/services'
+import { getInventorySearchList, getWareHouseSelectList } from '@/services'
 import DictSelect from '@/components/ComSelect'
 import { formatAmount } from '@/utils/base'
+import { Select } from 'antd'
+
+const { Option } = Select
 
 const ListManage: React.FC = () => {
   const actionRef = useRef<ActionType>()
-  const [statusData, setStatusData] = useState<any>([])
+  const [wareList, setWareList] = useState<any>([])
+  const [stockType, setStockType] = useState<any>([])
+
+  // 获取仓库列表
+  const getWareList = async () => {
+    const { data } = await getWareHouseSelectList()
+    if (data) {
+      setWareList(data)
+    }
+  }
+
+  useEffect(() => {
+    getWareList()
+  }, [])
 
   const columns: ProColumns<inventorySearchListProps>[] = [
     {
       title: '企业名称',
-      key: 'fullName',
-      dataIndex: 'fullName',
+      key: 'enterpriseName',
+      dataIndex: 'enterpriseName',
     },
     {
       title: '商品编号/ID',
@@ -24,8 +40,8 @@ const ListManage: React.FC = () => {
     },
     {
       title: '商品名称',
-      key: 'fullName',
-      dataIndex: 'fullName',
+      key: 'goodName',
+      dataIndex: 'goodName',
     },
     {
       title: '条形码',
@@ -33,30 +49,25 @@ const ListManage: React.FC = () => {
       dataIndex: 'fullName',
     },
     {
-      title: '仓库',
-      key: 'enterpriseType',
-      dataIndex: 'enterpriseType',
+      title: '仓库名称',
+      key: 'warehouseName',
+      dataIndex: 'warehouseName',
       hideInTable: true,
-      renderFormItem: (_, { type }) => {
-        if (type === 'form') {
-          return null
-        }
-        return (
-          <DictSelect
-            authorword="credit_status"
-            getDictData={(data: any) => {
-              setStatusData(data)
-            }}
-          />
-        )
-      },
+      renderFormItem: () => (
+        <Select>
+          {wareList.map((item: any) => (
+            <Option key={item.id} value={item.id}>
+              {item.warehouseName}
+            </Option>
+          ))}
+        </Select>
+      ),
     },
     {
       title: '仓库名称',
-      key: 'enterpriseType',
-      dataIndex: 'enterpriseType',
+      key: 'warehouseName',
+      dataIndex: 'warehouseName',
       hideInSearch: true,
-      render: (_, recored) => statusData[recored.enterpriseType],
     },
     {
       title: '是否质押',
@@ -65,19 +76,18 @@ const ListManage: React.FC = () => {
     },
     {
       title: '库存类型',
-      key: 'enterpriseType',
-      dataIndex: 'enterpriseType',
+      key: 'stockType',
+      dataIndex: 'stockType',
       hideInTable: true,
-      hideInSearch: true,
       renderFormItem: (_, { type }) => {
         if (type === 'form') {
           return null
         }
         return (
           <DictSelect
-            authorword="credit_status"
+            authorword="stock_type"
             getDictData={(data: any) => {
-              setStatusData(data)
+              setStockType(data)
             }}
           />
         )
@@ -85,10 +95,10 @@ const ListManage: React.FC = () => {
     },
     {
       title: '库存类型',
-      key: 'enterpriseType',
-      dataIndex: 'enterpriseType',
+      key: 'stockType',
+      dataIndex: 'stockType',
       hideInSearch: true,
-      render: (_, recored) => statusData[recored.enterpriseType],
+      render: (_, recored) => stockType[recored.stockType],
     },
     {
       title: '良品数量/残次品数量',
@@ -135,8 +145,8 @@ const ListManage: React.FC = () => {
     },
     {
       title: '单位',
-      key: 'createTime',
-      dataIndex: 'createTime',
+      key: 'unit',
+      dataIndex: 'unit',
       hideInSearch: true,
     },
   ]
