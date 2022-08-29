@@ -41,12 +41,8 @@ interface addProps extends addModalProps {
 const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handleCancel, info }) => {
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
   const [dataSource, setDataSource] = useState<any[]>([])
-  const [dataSource2, setDataSource2] = useState<any[]>([
-    {
-      contractType: type === 1 ? 3 : 4,
-    },
-  ])
-  const [editableKeys, setEditableRowKeys] = useState<any[]>([type === 1 ? 3 : 4])
+  const [dataSource2, setDataSource2] = useState<any[]>([])
+  const [editableKeys, setEditableRowKeys] = useState<any[]>([])
   const [templateList, setTemplateList] = useState<any[]>([])
   const [signType, setSignType] = useState<number>(1)
   const [companyList, setCompanyList] = useState<any[]>([])
@@ -64,6 +60,24 @@ const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handle
     const obj = await getDictData('phone_code')
     setPhoneData(obj)
   }
+
+  useEffect(() => {
+    if (type === 1) {
+      setDataSource2([
+        {
+          contractType: 3,
+        },
+      ])
+      setEditableRowKeys([3])
+    } else {
+      setDataSource2([
+        {
+          contractType: 4,
+        },
+      ])
+      setEditableRowKeys([4])
+    }
+  }, [type])
 
   // 获取合同模板
   const getTemplateList = async () => {
@@ -309,8 +323,8 @@ const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handle
   const onChange = (e: any) => {
     setSignType(e.target.value)
     if (e.target.value === 2) {
-      setDataSource2([{ contractType: 3 }])
-      setEditableRowKeys([3])
+      setDataSource2([{ contractType: type === 1 ? 3 : 4 }])
+      setEditableRowKeys([type === 1 ? 3 : 4])
     }
   }
 
@@ -466,6 +480,7 @@ const AddModal: React.FC<addProps> = ({ type, modalVisible, handleSubmit, handle
                 form: tableForm,
                 editableKeys,
                 onValuesChange: (record, recordList) => {
+                  console.log(recordList)
                   setDataSource2(recordList)
                 },
                 onChange: setEditableRowKeys,
