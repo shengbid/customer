@@ -1,33 +1,43 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import MenuProTable from '@/components/ComProtable/MenuProTable'
 import type { inventoryDeliveryListProps, inventoryDeliveryListParamProps } from '@/services/types'
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
-import { message, Typography, Popconfirm } from 'antd'
-import { getInventoryDeliveryList, deleteLoanCustomer } from '@/services'
-import DictSelect from '@/components/ComSelect'
-import AddModal from './components/addModal'
-import { useIntl } from 'umi'
+import { /*message, Popconfirm,*/ Typography, Select } from 'antd'
+import { getInventoryDeliveryList, getWareHouseSelectList } from '@/services'
+import { useIntl, history } from 'umi'
 
 // const { MenuAddButton } = MenuProTable
 const { Link } = Typography
+const { Option } = Select
 
 const ListManage: React.FC = () => {
-  const [modalVisible, setModalVisible] = useState<boolean>(false)
-  const [id, setId] = useState<any>()
   const intl = useIntl()
   const actionRef = useRef<ActionType>()
-  const [statusData, setStatusData] = useState<any>([])
+  // const [statusData, setStatusData] = useState<any>([])
+  const [wareList, setWareList] = useState<any>([])
+
+  // 获取仓库列表
+  const getWareList = async () => {
+    const { data } = await getWareHouseSelectList()
+    if (data) {
+      setWareList(data)
+    }
+  }
+
+  useEffect(() => {
+    getWareList()
+  }, [])
 
   // 删除
-  const delteRecored = async (ids: number | string) => {
-    await deleteLoanCustomer(ids)
-    message.success(
-      intl.formatMessage({
-        id: 'pages.form.delete',
-      }),
-    )
-    actionRef.current?.reload()
-  }
+  // const delteRecored = async (ids: number | string) => {
+  //   await deleteLoanCustomer(ids)
+  //   message.success(
+  //     intl.formatMessage({
+  //       id: 'pages.form.delete',
+  //     }),
+  //   )
+  //   actionRef.current?.reload()
+  // }
 
   const columns: ProColumns<inventoryDeliveryListProps>[] = [
     {
@@ -38,8 +48,8 @@ const ListManage: React.FC = () => {
     },
     {
       title: '企业名称',
-      key: 'fullName',
-      dataIndex: 'fullName',
+      key: 'enterpriseName',
+      dataIndex: 'enterpriseName',
     },
     {
       title: '关联还款单号',
@@ -48,65 +58,41 @@ const ListManage: React.FC = () => {
     },
     {
       title: '关联金融产品',
-      key: 'fullName',
-      dataIndex: 'fullName',
+      key: 'financeProduct',
+      dataIndex: 'financeProduct',
     },
     {
       title: '仓库',
-      key: 'enterpriseType',
-      dataIndex: 'enterpriseType',
+      key: 'warehouseName',
+      dataIndex: 'warehouseName',
       hideInTable: true,
-      renderFormItem: (_, { type }) => {
-        if (type === 'form') {
-          return null
-        }
-        return (
-          <DictSelect
-            authorword="credit_status"
-            getDictData={(data: any) => {
-              setStatusData(data)
-            }}
-          />
-        )
-      },
+      renderFormItem: () => (
+        <Select>
+          {wareList.map((item: any) => (
+            <Option key={item.id} value={item.id}>
+              {item.warehouseName}
+            </Option>
+          ))}
+        </Select>
+      ),
     },
     {
       title: '仓库名称',
-      key: 'enterpriseType',
-      dataIndex: 'enterpriseType',
+      key: 'warehouseName',
+      dataIndex: 'warehouseName',
       hideInSearch: true,
-      render: (_, recored) => statusData[recored.enterpriseType],
     },
     {
       title: '销售类型',
-      key: 'enterpriseType',
-      dataIndex: 'enterpriseType',
-      hideInTable: true,
-      renderFormItem: (_, { type }) => {
-        if (type === 'form') {
-          return null
-        }
-        return (
-          <DictSelect
-            authorword="credit_status"
-            getDictData={(data: any) => {
-              setStatusData(data)
-            }}
-          />
-        )
-      },
-    },
-    {
-      title: '销售类型',
-      key: 'enterpriseType',
-      dataIndex: 'enterpriseType',
+      key: 'saleType',
+      dataIndex: 'saleType',
       hideInSearch: true,
-      render: (_, recored) => statusData[recored.enterpriseType],
+      // render: (_, recored) => statusData[recored.enterpriseType],
     },
     {
       title: '出库数量',
-      key: 'code',
-      dataIndex: 'code',
+      key: 'outWarehouseNumber',
+      dataIndex: 'outWarehouseNumber',
       valueType: 'digit',
       width: 110,
       hideInSearch: true,
@@ -116,6 +102,7 @@ const ListManage: React.FC = () => {
       key: 'createTime',
       dataIndex: 'createTime',
       hideInSearch: true,
+      width: 148,
     },
     {
       title: intl.formatMessage({
@@ -127,24 +114,28 @@ const ListManage: React.FC = () => {
       render: (_, recored) => [
         <Link
           key="edit"
-          onClick={() => {
-            setModalVisible(true)
-            setId(recored.id)
-          }}
+          onClick={() =>
+            history.push({
+              pathname: '/creditLoanManage/inventoryManage/delivery/detail',
+              query: {
+                id: String(recored.id),
+              },
+            })
+          }
         >
           详情
         </Link>,
-        <Popconfirm
-          key="delete"
-          title="是否确认删除?"
-          onConfirm={() => {
-            delteRecored(recored.id)
-          }}
-          okText="确定"
-          cancelText="取消"
-        >
-          <Link>删除</Link>
-        </Popconfirm>,
+        // <Popconfirm
+        //   key="delete"
+        //   title="是否确认删除?"
+        //   onConfirm={() => {
+        //     delteRecored(recored.id)
+        //   }}
+        //   okText="确定"
+        //   cancelText="取消"
+        // >
+        //   <Link>删除</Link>
+        // </Popconfirm>,
       ],
     },
   ]
@@ -156,12 +147,6 @@ const ListManage: React.FC = () => {
       data: rows,
       total,
     }
-  }
-
-  // 新增
-  const submit = () => {
-    setModalVisible(false)
-    actionRef?.current?.reload()
   }
 
   return (
@@ -182,13 +167,6 @@ const ListManage: React.FC = () => {
         //   />
         // }
         tableAlertRender={false}
-      />
-
-      <AddModal
-        modalVisible={modalVisible}
-        handleSubmit={submit}
-        info={id}
-        handleCancel={() => setModalVisible(false)}
       />
     </>
   )

@@ -13,6 +13,7 @@ const ListManage: React.FC = () => {
   const actionRef = useRef<ActionType>()
   const [wareList, setWareList] = useState<any>([])
   const [stockType, setStockType] = useState<any>([])
+  const [pledgeType, setPledgeType] = useState<any>([])
 
   // 获取仓库列表
   const getWareList = async () => {
@@ -34,8 +35,8 @@ const ListManage: React.FC = () => {
     },
     {
       title: '商品编号/ID',
-      key: 'fullName',
-      dataIndex: 'fullName',
+      key: 'enterpriseGoodNumber',
+      dataIndex: 'enterpriseGoodNumber',
       hideInSearch: true,
     },
     {
@@ -45,8 +46,8 @@ const ListManage: React.FC = () => {
     },
     {
       title: '条形码',
-      key: 'fullName',
-      dataIndex: 'fullName',
+      key: 'barCode',
+      dataIndex: 'barCode',
     },
     {
       title: '仓库名称',
@@ -70,9 +71,30 @@ const ListManage: React.FC = () => {
       hideInSearch: true,
     },
     {
-      title: '是否质押',
+      title: '质押状态',
       key: 'fullName',
       dataIndex: 'fullName',
+      hideInTable: true,
+      renderFormItem: (_, { type }) => {
+        if (type === 'form') {
+          return null
+        }
+        return (
+          <DictSelect
+            authorword="stock_type"
+            getDictData={(data: any) => {
+              setPledgeType(data)
+            }}
+          />
+        )
+      },
+    },
+    {
+      title: '质押状态',
+      key: 'stockType',
+      dataIndex: 'stockType',
+      hideInSearch: true,
+      render: (_, recored) => pledgeType[recored.stockType],
     },
     {
       title: '库存类型',
@@ -102,14 +124,19 @@ const ListManage: React.FC = () => {
     },
     {
       title: '良品数量/残次品数量',
-      key: 'createTime',
-      dataIndex: 'createTime',
+      key: 'completeCount',
+      dataIndex: 'completeCount',
       hideInSearch: true,
+      render: (val, recored) => (
+        <>
+          {val}/{recored.imperfectCount}
+        </>
+      ),
     },
     {
       title: '效期截止日',
-      key: 'code',
-      dataIndex: 'code',
+      key: 'effectiveDate',
+      dataIndex: 'effectiveDate',
       width: 90,
       hideInSearch: true,
     },
@@ -121,14 +148,14 @@ const ListManage: React.FC = () => {
     // },
     {
       title: '批次号',
-      key: 'createTime',
-      dataIndex: 'createTime',
+      key: 'batchNumber',
+      dataIndex: 'batchNumber',
       hideInSearch: true,
     },
     {
       title: '公允单价',
-      key: 'code',
-      dataIndex: 'code',
+      key: 'fairPrice',
+      dataIndex: 'fairPrice',
       // valueType: 'digit',
       width: 110,
       hideInSearch: true,
@@ -136,8 +163,8 @@ const ListManage: React.FC = () => {
     },
     {
       title: '库存估值',
-      key: 'code',
-      dataIndex: 'code',
+      key: 'goodValuation',
+      dataIndex: 'goodValuation',
       // valueType: 'digit',
       width: 127,
       hideInSearch: true,

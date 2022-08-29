@@ -21,6 +21,7 @@ export interface inventorySearchListProps {
   goodValuation: string
   auditStatus: string
   inWarehouseStatus: string
+  imperfectCount: string
 }
 // 库存入库查询列表
 export interface inventoryEnterListParamProps extends pageLimitProps {

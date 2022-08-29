@@ -4,14 +4,13 @@ import { Button, /*Typography,*/ Spin, Table } from 'antd'
 import { history } from 'umi'
 import ComCard from '@/components/ComPage/ComCard'
 import Descriptions from '@/components/ComPage/Descriptions'
-import DictShow from '@/components/ComSelect/dictShow'
 import SimpleProtable from '@/components/ComProtable/SimpleProTable'
 import type { ProColumns } from '@ant-design/pro-table'
 import { formatAmount } from '@/utils/base'
 import { getInventoryEnterDetail } from '@/services'
-import RuleModal from '../components/ruleModal'
 import CargoFile from '../components/cargoFile'
 import { isEmpty } from 'lodash'
+import { formatEmpty } from '@/utils/base'
 
 // const { Link } = Typography
 
@@ -22,11 +21,9 @@ const Detail: React.FC = (props: any) => {
   const [basicData, setBasicData] = useState<any>({})
   const [dataSource, setDataSource] = useState<any[]>([])
   const [dataSource2, setDataSource2] = useState<any[]>([])
-  const [ruleVisible, setRuleVisible] = useState<boolean>(false)
   const [spinning, setSpinning] = useState<boolean>(true)
-  const [title, setTitle] = useState<string>('转在仓库存详情')
 
-  const { type, id } = props.location.query
+  const { id } = props.location.query
 
   // 获取详情
   const getDetail = async () => {
@@ -49,11 +46,6 @@ const Detail: React.FC = (props: any) => {
 
   useEffect(() => {
     getDetail()
-    if (type === '1') {
-      setTitle('转在途库存详情')
-    } else if (type === '3') {
-      setTitle('库存质押详情')
-    }
   }, [])
 
   useEffect(() => {
@@ -78,15 +70,9 @@ const Detail: React.FC = (props: any) => {
       dataIndex: 'barCode',
     },
     {
-      title: '效期到期日',
+      title: '有效期',
       key: 'effectiveDate',
       dataIndex: 'effectiveDate',
-    },
-    {
-      title: '保质期(月)',
-      key: 'warrantyMonth',
-      dataIndex: 'warrantyMonth',
-      width: 90,
     },
     {
       title: '批次号',
@@ -109,7 +95,7 @@ const Detail: React.FC = (props: any) => {
       width: 100,
     },
     {
-      title: '入库总数',
+      title: '本次出库数量',
       key: 'warehouseTotal',
       dataIndex: 'warehouseTotal',
       valueType: 'digit',
@@ -152,13 +138,13 @@ const Detail: React.FC = (props: any) => {
   ]
 
   const cancel = () => {
-    history.push('/creditLoanManage/inventoryManage/enter')
+    history.goBack()
   }
 
   return (
     <Spin spinning={spinning}>
       <ComPageContanier
-        title={title}
+        title="出库详情"
         extra={
           <Button type="primary" onClick={cancel}>
             返回
@@ -168,30 +154,20 @@ const Detail: React.FC = (props: any) => {
         <ComCard title="基础信息" style={{ marginTop: 12 }}>
           <Descriptions>
             <DescriptionsItem label="货主企业">{basicData.enterpriseName}</DescriptionsItem>
-            <DescriptionsItem label="申请编号">{basicData.pledgeApplyNumber}</DescriptionsItem>
-            <DescriptionsItem label="入库仓库">{basicData.warehouseName}</DescriptionsItem>
-            <DescriptionsItem label="质押类型">
-              <DictShow dictValue={basicData.pledgeType} dictkey="pledge_type" />
+            <DescriptionsItem label="出库单号">{basicData.pledgeApplyNumber}</DescriptionsItem>
+            <DescriptionsItem label="出库仓库">{basicData.warehouseName}</DescriptionsItem>
+            <DescriptionsItem label="关联金融产品">{basicData.financOrder}</DescriptionsItem>
+            <DescriptionsItem label="关联还款单号">{basicData.financOrder}</DescriptionsItem>
+            <DescriptionsItem label="销售类型">{basicData.financOrder}</DescriptionsItem>
+            <DescriptionsItem label="实际出仓时间">{basicData.createTime}</DescriptionsItem>
+            <DescriptionsItem label="关联销售单号">
+              {formatEmpty(basicData.financOrder)}
             </DescriptionsItem>
-            <DescriptionsItem label="库存类型">
-              <DictShow dictValue={basicData.stockType} dictkey="stock_type" />
-            </DescriptionsItem>
-            <DescriptionsItem label="关联融资单号">{basicData.financOrder}</DescriptionsItem>
-            {type === '3' ? (
-              <>
-                {/* <DescriptionsItem label="实际入仓时间">{basicData.identityNumber}</DescriptionsItem> */}
-                <DescriptionsItem label="转在仓时间">{basicData.inWarehouseDate}</DescriptionsItem>
-                <DescriptionsItem label="转在仓状态">
-                  <DictShow dictValue={basicData.inWarehouseStatus} dictkey="in_warehouse_status" />
-                </DescriptionsItem>
-              </>
-            ) : (
-              <DescriptionsItem label="创建时间">{basicData.createTime}</DescriptionsItem>
-            )}
+            <DescriptionsItem label="销售平台">{basicData.createTime}</DescriptionsItem>
           </Descriptions>
         </ComCard>
 
-        <ComCard title="本次入仓商品信息">
+        <ComCard title="出库商品信息">
           <SimpleProtable
             columns={columns}
             dataSource={dataSource}
@@ -200,38 +176,30 @@ const Detail: React.FC = (props: any) => {
               let totalUsableCount = 0
               let totalBadCount = 0
               let totalDeliveryCount = 0
-              let totalPrice = 0
 
-              pageData.forEach(
-                ({ completeCount, imperfectCount, warehouseTotal, warehousePrice }) => {
-                  if (completeCount) {
-                    totalUsableCount += Number(completeCount)
-                  }
-                  if (imperfectCount) {
-                    totalBadCount += Number(imperfectCount)
-                  }
-                  if (warehouseTotal) {
-                    totalDeliveryCount += Number(warehouseTotal)
-                  }
-                  if (warehousePrice) {
-                    totalPrice += Number(warehousePrice)
-                  }
-                },
-              )
+              pageData.forEach(({ completeCount, imperfectCount, warehouseTotal }) => {
+                if (completeCount) {
+                  totalUsableCount += Number(completeCount)
+                }
+                if (imperfectCount) {
+                  totalBadCount += Number(imperfectCount)
+                }
+                if (warehouseTotal) {
+                  totalDeliveryCount += Number(warehouseTotal)
+                }
+              })
               if (isEmpty(dataSource)) {
                 return <></>
               }
               return (
                 <Table.Summary.Row>
-                  <Table.Summary.Cell index={0} colSpan={6}>
+                  <Table.Summary.Cell index={0} colSpan={5}>
                     合计
                   </Table.Summary.Cell>
                   <Table.Summary.Cell index={1}>{totalUsableCount}</Table.Summary.Cell>
                   <Table.Summary.Cell index={2}>{totalBadCount}</Table.Summary.Cell>
                   <Table.Summary.Cell index={3}>{totalDeliveryCount}</Table.Summary.Cell>
-                  <Table.Summary.Cell index={4} colSpan={2} />
-                  <Table.Summary.Cell index={5}>{totalPrice}</Table.Summary.Cell>
-                  <Table.Summary.Cell index={6} />
+                  <Table.Summary.Cell index={3} colSpan={5} />
                 </Table.Summary.Row>
               )
             }}
@@ -262,13 +230,6 @@ const Detail: React.FC = (props: any) => {
             version: basicData.version,
             enterpriseId: basicData.enterpriseId,
           }}
-        />
-        {/* 质押规则 */}
-        <RuleModal
-          modalVisible={ruleVisible}
-          info={basicData.enterpriseId}
-          handleCancel={() => setRuleVisible(false)}
-          handleSubmit={() => setRuleVisible(false)}
         />
       </ComPageContanier>
     </Spin>
