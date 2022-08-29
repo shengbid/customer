@@ -15,7 +15,7 @@ const { Option } = Select
 
 const ListManage: React.FC = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false)
-  const [id, setId] = useState<any>()
+  const [info, setInfo] = useState<any>()
   const intl = useIntl()
   const actionRef = useRef<ActionType>()
   const [statusData, setStatusData] = useState<any>([])
@@ -233,7 +233,7 @@ const ListManage: React.FC = () => {
             key="edit3"
             onClick={() => {
               setModalVisible(true)
-              setId(recored.id)
+              setInfo(recored)
             }}
           >
             质押
@@ -305,7 +305,7 @@ const ListManage: React.FC = () => {
       <AddModal
         modalVisible={modalVisible}
         handleSubmit={submit}
-        info={id}
+        info={info}
         handleCancel={() => setModalVisible(false)}
       />
     </>

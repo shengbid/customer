@@ -16,13 +16,13 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
 
   // 获取详情
   const getDetail = async () => {
-    const { data } = await pledgeDetail(info)
+    const { data } = await pledgeDetail(info.id)
     setSpinning(false)
     if (data) setInfoData(data)
   }
 
   useEffect(() => {
-    if (modalVisible && info) {
+    if (modalVisible && info.id) {
       getDetail()
     }
   }, [modalVisible, info])
@@ -33,7 +33,7 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
     console.log(values)
     setConfirmLoading(true)
     try {
-      await turnToPledge({ id: info, ...values })
+      await turnToPledge({ id: info.id, version: info.version, ...values })
       setConfirmLoading(false)
     } catch (error) {
       setConfirmLoading(false)
