@@ -32,6 +32,7 @@ export const sysJobCLData = {
   '3': statusText.cl3,
 }
 
+// 表格数据字典获取
 export const getDictData = async (authorword: string) => {
   const { data } = await getDictSelectList(authorword)
 
