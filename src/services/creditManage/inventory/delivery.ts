@@ -16,3 +16,10 @@ export async function getInventoryDeliveryDetail(id: string) {
     params: { id },
   })
 }
+// 新增编辑删除附件
+export async function editDeliveryFile(data: any) {
+  return request<{ data: any }>(`/system/stockAnnex/edit`, {
+    method: 'put',
+    data,
+  })
+}

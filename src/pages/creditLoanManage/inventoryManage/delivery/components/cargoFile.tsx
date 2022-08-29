@@ -4,7 +4,7 @@ import { EditableProTable } from '@ant-design/pro-table'
 import RequiredLabel from '@/components/RequiredLabel'
 import ComCard from '@/components/ComPage/ComCard'
 import type { ProColumns } from '@ant-design/pro-table'
-import { editCargoFile } from '@/services'
+import { editDeliveryFile } from '@/services'
 // import DictSelect from '@/components/ComSelect'
 import ComUpload from '@/components/ComUpload'
 // import { getDictData } from '@/utils/dictData'
@@ -48,7 +48,7 @@ const EditCargo: React.FC<infoProps> = ({ infoData, info, handleSuccess }) => {
   // 删除
   const delteRecored = async (ids: any) => {
     const arr = dataSource.filter((item) => item.id !== ids)
-    await editCargoFile({
+    await editDeliveryFile({
       id: info.id,
       version: info.version,
       stockAnnexList: arr,
@@ -149,7 +149,7 @@ const EditCargo: React.FC<infoProps> = ({ infoData, info, handleSuccess }) => {
             return [defaultDom.save, defaultDom.cancel]
           },
           onSave: async () => {
-            await editCargoFile({
+            await editDeliveryFile({
               id: info.id,
               version: info.version,
               stockAnnexList: dataSource,

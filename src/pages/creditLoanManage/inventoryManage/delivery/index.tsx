@@ -42,8 +42,8 @@ const ListManage: React.FC = () => {
   const columns: ProColumns<inventoryDeliveryListProps>[] = [
     {
       title: '出库单号',
-      key: 'fullName',
-      dataIndex: 'fullName',
+      key: 'outWarehouseCode',
+      dataIndex: 'outWarehouseCode',
       hideInSearch: true,
     },
     {
@@ -53,8 +53,8 @@ const ListManage: React.FC = () => {
     },
     {
       title: '关联还款单号',
-      key: 'fullName',
-      dataIndex: 'fullName',
+      key: 'repaymentCode',
+      dataIndex: 'repaymentCode',
     },
     {
       title: '关联金融产品',

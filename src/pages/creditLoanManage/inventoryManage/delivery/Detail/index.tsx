@@ -7,7 +7,7 @@ import Descriptions from '@/components/ComPage/Descriptions'
 import SimpleProtable from '@/components/ComProtable/SimpleProTable'
 import type { ProColumns } from '@ant-design/pro-table'
 import { formatAmount } from '@/utils/base'
-import { getInventoryEnterDetail } from '@/services'
+import { getInventoryDeliveryDetail } from '@/services'
 import CargoFile from '../components/cargoFile'
 import { isEmpty } from 'lodash'
 import { formatEmpty } from '@/utils/base'
@@ -28,12 +28,12 @@ const Detail: React.FC = (props: any) => {
   // 获取详情
   const getDetail = async () => {
     try {
-      const { data } = await getInventoryEnterDetail(id)
+      const { data } = await getInventoryDeliveryDetail(id)
       setSpinning(false)
       if (data) {
         setBasicData(data)
-        if (!isEmpty(data.intoWarehouseGoodList)) {
-          setDataSource(data.intoWarehouseGoodList)
+        if (!isEmpty(data.outGoodList)) {
+          setDataSource(data.outGoodList)
         }
         if (!isEmpty(data.stockAnnexList)) {
           setDataSource2(data.stockAnnexList)
@@ -95,7 +95,7 @@ const Detail: React.FC = (props: any) => {
       width: 100,
     },
     {
-      title: '本次出库数量',
+      title: '出库数量',
       key: 'warehouseTotal',
       dataIndex: 'warehouseTotal',
       valueType: 'digit',
@@ -120,7 +120,7 @@ const Detail: React.FC = (props: any) => {
       render: (val) => formatAmount(val),
     },
     {
-      title: '入库总价',
+      title: '总价',
       key: 'warehousePrice',
       dataIndex: 'warehousePrice',
       // valueType: 'digit',
@@ -154,16 +154,16 @@ const Detail: React.FC = (props: any) => {
         <ComCard title="基础信息" style={{ marginTop: 12 }}>
           <Descriptions>
             <DescriptionsItem label="货主企业">{basicData.enterpriseName}</DescriptionsItem>
-            <DescriptionsItem label="出库单号">{basicData.pledgeApplyNumber}</DescriptionsItem>
+            <DescriptionsItem label="出库单号">{basicData.outWarehouseCode}</DescriptionsItem>
             <DescriptionsItem label="出库仓库">{basicData.warehouseName}</DescriptionsItem>
             <DescriptionsItem label="关联金融产品">{basicData.financOrder}</DescriptionsItem>
-            <DescriptionsItem label="关联还款单号">{basicData.financOrder}</DescriptionsItem>
-            <DescriptionsItem label="销售类型">{basicData.financOrder}</DescriptionsItem>
-            <DescriptionsItem label="实际出仓时间">{basicData.createTime}</DescriptionsItem>
+            <DescriptionsItem label="关联还款单号">{basicData.repaymentCode}</DescriptionsItem>
+            <DescriptionsItem label="销售类型">{basicData.saleType}</DescriptionsItem>
+            <DescriptionsItem label="实际出仓时间">--</DescriptionsItem>
             <DescriptionsItem label="关联销售单号">
               {formatEmpty(basicData.financOrder)}
             </DescriptionsItem>
-            <DescriptionsItem label="销售平台">{basicData.createTime}</DescriptionsItem>
+            <DescriptionsItem label="销售平台">--</DescriptionsItem>
           </Descriptions>
         </ComCard>
 
@@ -199,7 +199,7 @@ const Detail: React.FC = (props: any) => {
                   <Table.Summary.Cell index={1}>{totalUsableCount}</Table.Summary.Cell>
                   <Table.Summary.Cell index={2}>{totalBadCount}</Table.Summary.Cell>
                   <Table.Summary.Cell index={3}>{totalDeliveryCount}</Table.Summary.Cell>
-                  <Table.Summary.Cell index={3} colSpan={5} />
+                  <Table.Summary.Cell index={3} colSpan={4} />
                 </Table.Summary.Row>
               )
             }}
