@@ -26,7 +26,7 @@ const EditCargo: React.FC<infoProps> = ({ infoData, info, handleSuccess }) => {
     const obj = await getDictData('stock_file_type')
     setContractTypeData(obj)
   }
-  console.log(info)
+
   useEffect(() => {
     getDict()
   }, [])
@@ -37,10 +37,11 @@ const EditCargo: React.FC<infoProps> = ({ infoData, info, handleSuccess }) => {
         infoData.map((item: any) => {
           return {
             ...item,
-            key: item.id,
+            key: item.groupId,
           }
         }),
       )
+      setEditableRowKeys([])
     }
   }, [infoData])
 
@@ -71,7 +72,15 @@ const EditCargo: React.FC<infoProps> = ({ infoData, info, handleSuccess }) => {
           },
         ],
       },
-      renderFormItem: () => <DictSelect authorword="stock_file_type" />,
+      renderFormItem: (_, { record }) => {
+        const arr: any[] = []
+        dataSource.forEach((item) => {
+          if (item.fileType !== record.fileType) {
+            arr.push(item.fileType)
+          }
+        })
+        return <DictSelect onShowData={arr} authorword="stock_file_type" />
+      },
       render: (_: any, recored: any) => <>{contractTypeData[recored.fileType]}</>,
     },
     {
@@ -98,6 +107,7 @@ const EditCargo: React.FC<infoProps> = ({ infoData, info, handleSuccess }) => {
         <a
           key="editable"
           onClick={() => {
+            console.log(record)
             action?.startEditable?.(record.key)
           }}
         >
@@ -155,9 +165,8 @@ const EditCargo: React.FC<infoProps> = ({ infoData, info, handleSuccess }) => {
           onValuesChange: (record: any, recordList: any) => {
             setDataSource(recordList)
           },
-          onChange: (editableKeyss: any, editableRows: any[]) => {
+          onChange: (editableKeyss: any) => {
             setEditableRowKeys(editableKeyss)
-            setDataSource(editableRows)
           },
         }}
       />

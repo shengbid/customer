@@ -190,7 +190,7 @@ const Detail: React.FC = (props: any) => {
   const columns2 = [
     {
       title: <RequiredLabel label="文件类型" />,
-      dataIndex: 'typeName',
+      dataIndex: 'fileType',
       width: '35%',
       formItemProps: {
         rules: [
@@ -200,7 +200,15 @@ const Detail: React.FC = (props: any) => {
           },
         ],
       },
-      renderFormItem: () => <DictSelect authorword="stock_file_type" />,
+      renderFormItem: (_: any, { record }: any) => {
+        const arr: any[] = []
+        dataSource2.forEach((item) => {
+          if (item.fileType !== record.fileType) {
+            arr.push(item.fileType)
+          }
+        })
+        return <DictSelect onShowData={arr} authorword="stock_file_type" />
+      },
     },
     // {
     //   title: '',
@@ -259,6 +267,7 @@ const Detail: React.FC = (props: any) => {
           id: basicData.id,
           version: basicData.version,
           stockAnnexList: dataSource2,
+          enterpriseId: basicData.enterpriseId,
         })
         setConfirmLoading(false)
       } catch (error) {
@@ -278,6 +287,7 @@ const Detail: React.FC = (props: any) => {
           warehouseName: wareName.label,
           warehouseId: wareName.value,
           stockAnnexList: dataSource2,
+          enterpriseId: basicData.enterpriseId,
         })
         setConfirmLoading(false)
       } catch (error) {
