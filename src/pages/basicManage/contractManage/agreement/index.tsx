@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import MenuProTable from '@/components/ComProtable/MenuProTable'
 import type { contractListProps, contractListParamsProps } from '@/services/types'
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
@@ -8,6 +8,7 @@ import { getContractList, getDocusignSignUrl } from '@/services'
 import DictSelect from '@/components/ComSelect'
 import ExportFile from '@/components/ComUpload/exportFile'
 import DownFile from '@/components/ComUpload/downFile'
+import { getDictData } from '@/utils/dictData'
 
 const { Link } = Typography
 // 合同协议管理列表
@@ -16,6 +17,15 @@ const Agreement: React.FC = () => {
   const [quatoStatusData, setQuatoStatusData] = useState<any>({})
   const [contractTypeData, setContractTypeData] = useState<any>([])
   const actionRef = useRef<ActionType>()
+
+  const getDict = async () => {
+    const obj = await getDictData('contract_type')
+    setContractTypeData(obj)
+  }
+
+  useEffect(() => {
+    getDict()
+  }, [])
 
   const getList = async (param: contractListParamsProps) => {
     // console.log(param)
@@ -57,18 +67,18 @@ const Agreement: React.FC = () => {
       width: '10%',
       render: (_, recored) => <>{contractTypeData[recored.contractType]}</>,
     },
-    {
-      title: '合同类型',
-      key: 'contractType',
-      dataIndex: 'contractType',
-      hideInTable: true,
-      renderFormItem: (_, { type }) => {
-        if (type === 'form') {
-          return null
-        }
-        return <DictSelect authorword="contract_type" getDictData={setContractTypeData} />
-      },
-    },
+    // {
+    //   title: '合同类型',
+    //   key: 'contractType',
+    //   dataIndex: 'contractType',
+    //   hideInTable: true,
+    //   renderFormItem: (_, { type }) => {
+    //     if (type === 'form') {
+    //       return null
+    //     }
+    //     return <DictSelect authorword="contract_type" getDictData={setContractTypeData} />
+    //   },
+    // },
     {
       title: '签署方式',
       hideInSearch: true,
