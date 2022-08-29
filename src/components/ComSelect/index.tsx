@@ -18,6 +18,7 @@ export interface iconSelectProps {
   labelInValue?: boolean
   allowClear?: boolean
   disabled?: boolean
+  onShowData?: any // 不展示的数据
   size?: SizeType
   mode?: 'multiple' | 'tags' | undefined
   dataType?: 'array' // 默认返回对象,传入返回array
@@ -41,20 +42,29 @@ const DictSelect: React.FC<iconSelectProps> = (props) => {
     size,
     mode,
     dataType,
+    onShowData = [],
   } = props
 
   const getList = async () => {
     const { data } = await getDictSelectList(authorword)
-    if (data) setDictList(data)
-    if (getDictData) {
-      const obj = {}
-      data.forEach((item) => {
-        obj[item.dictValue] = item.dictLabel
-      })
-      if (dataType) {
-        getDictData(data)
-      } else {
-        getDictData(obj)
+    if (data) {
+      let arr = data
+      if (onShowData.length) {
+        arr = data.filter((item) => {
+          return !onShowData.includes(item.dictValue)
+        })
+      }
+      setDictList(arr)
+      if (getDictData) {
+        const obj = {}
+        data.forEach((item) => {
+          obj[item.dictValue] = item.dictLabel
+        })
+        if (dataType) {
+          getDictData(data)
+        } else {
+          getDictData(obj)
+        }
       }
     }
   }
