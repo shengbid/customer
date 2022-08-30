@@ -146,7 +146,7 @@ export default [
             path: '/creditLoanManage/inventoryManage/delivery/detail',
             // name: '出库管理详情',
             // access: 'hasMenu',
-            component: './creditLoanManage/inventoryManage/delivery/detail',
+            component: './creditLoanManage/inventoryManage/delivery/Detail',
           },
         ],
       },
