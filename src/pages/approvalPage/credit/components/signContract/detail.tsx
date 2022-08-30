@@ -111,8 +111,10 @@ const Detail: React.FC<infoProps> = ({ creditParams, activityParams }) => {
           <DescriptionsItem label="现场拍摄视频">
             <ComUpload isDetail value={fileList} />
           </DescriptionsItem>
-          <DescriptionsItem label="授信生效日">{infoData.sellProduct}</DescriptionsItem>
-          <DescriptionsItem label="授信到期日">{infoData.sellProduct}</DescriptionsItem>
+          <>
+            <DescriptionsItem label="授信生效日">{infoData.sellProduct}</DescriptionsItem>
+            <DescriptionsItem label="授信到期日">{infoData.sellProduct}</DescriptionsItem>
+          </>
         </Descriptions>
         <SimpleProtable key="year" columns={columns} dataSource={dataSource || []} />
       </ComCard>
