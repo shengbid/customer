@@ -43,7 +43,7 @@ const SignContract = ({ activityParams, creditParams }: any, ref: any) => {
               },
             ],
             bizNo: activityParams.instanceId,
-            bizcode: 1,
+            bizCode: 1,
             fileName: item.fileList[0].fileName,
             fileUrl: item.fileList[0].fileUrl,
           }
