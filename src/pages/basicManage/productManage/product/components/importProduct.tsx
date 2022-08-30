@@ -134,17 +134,22 @@ const ImportProduct: React.FC<addModalProps> = ({
       footer={null}
       onCancel={handleCancel}
     >
+      <div style={{ paddingBottom: 15, fontSize: 14 }}>
+        <span>
+          本次新增 <span style={{ color: 'red' }}>{dataSource.length}</span> 个商品
+        </span>
+        {count ? (
+          <span>
+            ，其中 <span style={{ color: 'red' }}>{count}</span> 个商品已存在，
+            若继续提交会覆盖已有商品信息。
+          </span>
+        ) : null}
+      </div>
       <SimpleProtable
         key="barCode"
         columns={columns}
         dataSource={dataSource}
         scroll={{ x: 1100 }}
-        tableAlertRender={() => (
-          <div>
-            <span>本次新增 {dataSource.length} 个商品</span>
-            {count ? <span>，其中{count}个商品已存在， 若继续提交会覆盖已有商品信息。</span> : null}
-          </div>
-        )}
       />
       <div className="modal-btns" style={{ marginTop: 24 }}>
         <Button type="primary" onClick={submit} loading={confirmLoading}>
