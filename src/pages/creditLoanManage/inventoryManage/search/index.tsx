@@ -39,6 +39,7 @@ const ListManage: React.FC = () => {
       title: '企业名称',
       key: 'enterpriseName',
       dataIndex: 'enterpriseName',
+      width: '14%',
     },
     {
       title: '商品编号/ID',
@@ -79,8 +80,8 @@ const ListManage: React.FC = () => {
     },
     {
       title: '质押状态',
-      key: 'fullName',
-      dataIndex: 'fullName',
+      key: 'auditStatus',
+      dataIndex: 'auditStatus',
       hideInTable: true,
       renderFormItem: (_, { type }) => {
         if (type === 'form') {
@@ -88,7 +89,7 @@ const ListManage: React.FC = () => {
         }
         return (
           <DictSelect
-            authorword="stock_type"
+            authorword="stock_audit_status"
             getDictData={(data: any) => {
               setPledgeType(data)
             }}
@@ -98,10 +99,10 @@ const ListManage: React.FC = () => {
     },
     {
       title: '质押状态',
-      key: 'stockType',
-      dataIndex: 'stockType',
+      key: 'auditStatus',
+      dataIndex: 'auditStatus',
       hideInSearch: true,
-      render: (_, recored) => pledgeType[recored.stockType],
+      render: (_, recored) => pledgeType[recored.auditStatus],
     },
     // {
     //   title: '库存类型',
@@ -134,6 +135,7 @@ const ListManage: React.FC = () => {
       key: 'completeCount',
       dataIndex: 'completeCount',
       hideInSearch: true,
+      width: 150,
       render: (val, recored) => (
         <>
           {val}/{recored.imperfectCount}
@@ -164,7 +166,7 @@ const ListManage: React.FC = () => {
       key: 'fairPrice',
       dataIndex: 'fairPrice',
       // valueType: 'digit',
-      width: 110,
+      width: 90,
       hideInSearch: true,
       render: (val) => formatAmount(val),
     },
@@ -173,7 +175,7 @@ const ListManage: React.FC = () => {
       key: 'goodValuation',
       dataIndex: 'goodValuation',
       // valueType: 'digit',
-      width: 127,
+      width: 97,
       hideInSearch: true,
       render: (val) => formatAmount(val),
     },
@@ -181,6 +183,7 @@ const ListManage: React.FC = () => {
       title: '单位',
       key: 'unit',
       dataIndex: 'unit',
+      width: 77,
       hideInSearch: true,
     },
   ]
