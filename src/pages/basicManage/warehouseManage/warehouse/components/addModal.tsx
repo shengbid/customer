@@ -153,8 +153,8 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
 
   const handleOk = async (values: any) => {
     setConfirmLoading(true)
-    await tableForm.validateFields()
     try {
+      await tableForm.validateFields()
       if (info) {
         await editWarehouse({
           jxWarehouseManage: {

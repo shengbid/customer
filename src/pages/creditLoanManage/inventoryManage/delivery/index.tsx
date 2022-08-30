@@ -62,7 +62,7 @@ const ListManage: React.FC = () => {
       dataIndex: 'financeProduct',
     },
     {
-      title: '仓库',
+      title: '仓库名称',
       key: 'warehouseName',
       dataIndex: 'warehouseName',
       hideInTable: true,

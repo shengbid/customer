@@ -6,6 +6,7 @@ import { getInventorySearchList, getWareHouseSelectList } from '@/services'
 import DictSelect from '@/components/ComSelect'
 import { formatAmount } from '@/utils/base'
 import { Select } from 'antd'
+import { getDictData } from '@/utils/dictData'
 
 const { Option } = Select
 
@@ -14,6 +15,11 @@ const ListManage: React.FC = () => {
   const [wareList, setWareList] = useState<any>([])
   const [stockType, setStockType] = useState<any>([])
   const [pledgeType, setPledgeType] = useState<any>([])
+
+  const getDict = async () => {
+    const obj = await getDictData('stock_type')
+    setStockType(obj)
+  }
 
   // 获取仓库列表
   const getWareList = async () => {
@@ -24,6 +30,7 @@ const ListManage: React.FC = () => {
   }
 
   useEffect(() => {
+    getDict()
     getWareList()
   }, [])
 
@@ -96,25 +103,25 @@ const ListManage: React.FC = () => {
       hideInSearch: true,
       render: (_, recored) => pledgeType[recored.stockType],
     },
-    {
-      title: '库存类型',
-      key: 'stockType',
-      dataIndex: 'stockType',
-      hideInTable: true,
-      renderFormItem: (_, { type }) => {
-        if (type === 'form') {
-          return null
-        }
-        return (
-          <DictSelect
-            authorword="stock_type"
-            getDictData={(data: any) => {
-              setStockType(data)
-            }}
-          />
-        )
-      },
-    },
+    // {
+    //   title: '库存类型',
+    //   key: 'stockType',
+    //   dataIndex: 'stockType',
+    //   hideInTable: true,
+    //   renderFormItem: (_, { type }) => {
+    //     if (type === 'form') {
+    //       return null
+    //     }
+    //     return (
+    //       <DictSelect
+    //         authorword="stock_type"
+    //         getDictData={(data: any) => {
+    //           setStockType(data)
+    //         }}
+    //       />
+    //     )
+    //   },
+    // },
     {
       title: '库存类型',
       key: 'stockType',
