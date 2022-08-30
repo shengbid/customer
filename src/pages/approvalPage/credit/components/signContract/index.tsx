@@ -11,6 +11,8 @@ import { creditContractDetail } from '@/services'
 import moment from 'moment'
 import { dateFormat } from '@/utils/base'
 
+const { RangePicker } = DatePicker
+
 const SignContract = ({ activityParams, creditParams }: any, ref: any) => {
   const [dataSource, setDataSource] = useState<signContractProps[]>([
     {
@@ -47,8 +49,8 @@ const SignContract = ({ activityParams, creditParams }: any, ref: any) => {
         })
         const values = form.getFieldsValue()
         const cusCreditReq = {
-          creditBecomDate: moment(values.creditBecomDate).format(dateFormat),
-          creditExpireDate: moment(values.creditExpireDate).format(dateFormat),
+          creditBecomDate: moment(values.rangeData[0]).format(dateFormat),
+          creditExpireDate: moment(values.rangeData[1]).format(dateFormat),
         }
         return { businessData: { cusContractList, cusCreditReq } }
       } catch (error) {
@@ -153,6 +155,18 @@ const SignContract = ({ activityParams, creditParams }: any, ref: any) => {
             </Col>
             <Col span={8}>
               <Form.Item
+                label="授信起止时间"
+                name="rangeData"
+                rules={[
+                  {
+                    required: true,
+                    message: `请选择授信起止时间`,
+                  },
+                ]}
+              >
+                <RangePicker style={{ width: '100%' }} />
+              </Form.Item>
+              {/* <Form.Item
                 label="授信生效日"
                 name="creditBecomDate"
                 rules={[
@@ -163,9 +177,9 @@ const SignContract = ({ activityParams, creditParams }: any, ref: any) => {
                 ]}
               >
                 <DatePicker style={{ width: '100%' }} />
-              </Form.Item>
+              </Form.Item> */}
             </Col>
-            <Col span={8}>
+            {/* <Col span={8}>
               <Form.Item
                 label="授信到期日"
                 name="creditExpireDate"
@@ -178,7 +192,7 @@ const SignContract = ({ activityParams, creditParams }: any, ref: any) => {
               >
                 <DatePicker style={{ width: '100%' }} />
               </Form.Item>
-            </Col>
+            </Col> */}
           </Row>
         </Form>
 
