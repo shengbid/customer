@@ -136,17 +136,17 @@ const Logistics: React.FC<infoProps> = ({ infoData, info, type, handleSuccess })
         >
           <Link>删除</Link>
         </Popconfirm>,
-        recored.cooperationStatus === 30 ? (
-          <Link
-            key="detail"
-            onClick={() => {
-              setInfo({ ...recored, ...info })
-              setModalVisible(true)
-            }}
-          >
-            重新签署
-          </Link>
-        ) : null,
+        // recored.cooperationStatus === 30 ? (
+        <Link
+          key="detail"
+          onClick={() => {
+            setInfo({ ...recored, ...info })
+            setModalVisible(true)
+          }}
+        >
+          重新签署
+        </Link>,
+        // ) : null,
       ],
     },
   ]
