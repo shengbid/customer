@@ -13,9 +13,12 @@ const AddModal: React.FC<addModalProps> = ({ modalVisible, handleSubmit, handleC
   const [title, setTitle] = useState<string>('新增商品信息')
 
   useEffect(() => {
-    if (modalVisible && info) {
-      setTitle('修改商品信息')
-      form.setFieldsValue(info)
+    if (modalVisible) {
+      setTitle('新增商品信息')
+      if (info) {
+        setTitle('修改商品信息')
+        form.setFieldsValue(info)
+      }
     }
   }, [modalVisible, info])
 
