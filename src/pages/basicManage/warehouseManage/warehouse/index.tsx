@@ -82,7 +82,7 @@ const ListManage: React.FC = () => {
       render: (_, recored) => statusData[recored.warehouseType],
     },
     {
-      title: '所属物流企业',
+      title: '所属仓储企业',
       key: 'logistics',
       dataIndex: 'logistics',
       hideInTable: true,
@@ -91,7 +91,7 @@ const ListManage: React.FC = () => {
           return null
         }
         return (
-          <Select labelInValue>
+          <Select labelInValue placeholder="请选择" allowClear>
             {companyList.map((item: any) => (
               <Option key={item.id} value={item.id}>
                 {item.fullName}
@@ -102,7 +102,7 @@ const ListManage: React.FC = () => {
       },
     },
     {
-      title: '所属物流企业',
+      title: '所属仓储企业',
       key: 'logisticsEnterprise',
       dataIndex: 'logisticsEnterprise',
       hideInSearch: true,
